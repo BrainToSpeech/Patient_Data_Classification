@@ -68,25 +68,20 @@ separately.
 bash run_sliding_windows.sh
 ```
 
-The current script trains on `X_emg_raw.npy` over seven overlapping
+The current script trains on `X_eeg_raw.npy` over seven overlapping
 0.5-second windows. Each window trains all ten binary models sequentially and
 saves them under:
 
 ```text
-checkpoints_emg_eegnet/<run_timestamp>/
+checkpoints_eeg_eegnet/<run_timestamp>/
 ```
 
-To train EEG instead, change `X_emg_raw.npy` to `X_eeg_raw.npy` and use an EEG
-checkpoint directory in `run_sliding_windows.sh`.
-
-To train one custom window directly:
+To train EMG instead, change the following arguments in
 
 ```bash
-python train_10_binary_eegnet.py \
-  --data-dir data/processed/260602_sub1_hjlee_raw \
+bash run_sliding_windows.sh \
   --input-file X_emg_raw.npy \
-  --start-s 2.25 \
-  --end-s 2.75
+  --checkpoint-root checkpoints_emg_eegnet
 ```
 
 The trainer uses a chronological `60% / 20% / 20%` train/validation/test split,
