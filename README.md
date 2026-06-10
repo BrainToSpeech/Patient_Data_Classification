@@ -8,7 +8,7 @@ binary EEGNet models over multiple time windows.
 ```text
 260602_sub1_hjlee.xdf
     -> preprocess_bts.py
-    -> EEG/EMG epochs and binary labels
+    -> EEG/EMG preprocessed data and binary labels
     -> run_sliding_windows.sh
     -> ten binary EEGNet models per time window
     -> check_results.ipynb
