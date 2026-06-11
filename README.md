@@ -35,7 +35,7 @@ Place the recording in the repository root:
 The XDF must contain:
 
 - an `EEG` stream containing EEG channels, `EMG1`, and `EMG2`
-- a `Markers` stream containing onset triggers `101` to `105`
+- a `Markers` stream containing onset triggers `1` to `5`
 - the `FCz` EEG reference channel
 
 ## 1. Preprocess
