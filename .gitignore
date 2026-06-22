@@ -1,0 +1,14 @@
+# Raw and processed data
+*.xdf
+*.npy
+*.npz
+data/
+
+# Training outputs
+*.pt
+checkpoints*/
+
+# Python and notebook caches
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
