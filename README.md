@@ -25,7 +25,7 @@ to be tracked in Git.
 Use `xdf_to_np.py` to convert the raw XDF recording into one NPZ file.
 
 ```bash
-cd /home/bts_sh/jihoon/Demo_binary
+cd /home/bts/jihoon/Demo_binary
 python xdf_to_np.py
 ```
 
@@ -55,7 +55,7 @@ In this dataset, `y` is stored as labels `1..5`.
 Use `npz_to_eegnet_inputs.py` to prepare the files used by the training script.
 
 ```bash
-cd /home/bts_sh/jihoon/Demo_binary
+cd /home/bts/jihoon/Demo_binary
 python npz_to_eegnet_inputs.py
 ```
 
@@ -124,7 +124,7 @@ Use `train_10_binary_eegnet_randomsplit.py` to train one EEGNet model for each
 binary task.
 
 ```bash
-cd /home/bts_sh/jihoon/Demo_binary
+cd /home/bts/jihoon/Demo_binary
 python train_10_binary_eegnet_randomsplit.py
 ```
 
@@ -212,7 +212,7 @@ tasks.
 ## Recommended Command
 
 ```bash
-cd /home/bts_sh/jihoon/Demo_binary
+cd /home/bts/jihoon/Demo_binary
 python train_10_binary_eegnet_randomsplit.py
 ```
 
