@@ -2,7 +2,6 @@
 *.xdf
 *.npy
 *.npz
-data/
 
 # Training outputs
 *.pt
@@ -12,3 +11,5 @@ checkpoints*/
 __pycache__/
 *.py[cod]
 .ipynb_checkpoints/
+
+backup/

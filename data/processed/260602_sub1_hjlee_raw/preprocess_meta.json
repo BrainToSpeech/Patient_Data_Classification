@@ -1,0 +1,14 @@
+{
+  "source_npz": "/home/bts_sh/jihoon/Demo_binary/data/260602_sub1_hjlee.npz",
+  "epoch": {
+    "crop_tmin": 0.0,
+    "sfreq": 2000.0
+  },
+  "eeg": {
+    "shape": [
+      500,
+      64,
+      4000
+    ]
+  }
+}
