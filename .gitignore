@@ -1,15 +1,11 @@
-# Raw and processed data
+# Raw recordings
 *.xdf
-*.npy
+
+# Large generated arrays
 *.npz
+*.npy
 
 # Training outputs
-*.pt
 checkpoints*/
-
-# Python and notebook caches
 __pycache__/
-*.py[cod]
-.ipynb_checkpoints/
-
-backup/
+**/__pycache__/
