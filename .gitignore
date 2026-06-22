@@ -10,5 +10,8 @@ checkpoints*/
 __pycache__/
 **/__pycache__/train_10_binary_randomsplit.py
 
+
 backup/
 scripts/
+
+changes.md
