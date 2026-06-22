@@ -9,8 +9,6 @@
 checkpoints*/
 __pycache__/
 **/__pycache__/train_10_binary_randomsplit.py
-backup/train_5_ovr_eegnet.py
-backup/train_10_binary_randomsplit.py
-backup/train_10_ovo_eegnet.py
 
+backup/
 scripts/
