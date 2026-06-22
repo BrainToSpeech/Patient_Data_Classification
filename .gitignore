@@ -12,3 +12,5 @@ __pycache__/
 backup/train_5_ovr_eegnet.py
 backup/train_10_binary_randomsplit.py
 backup/train_10_ovo_eegnet.py
+
+scripts/
