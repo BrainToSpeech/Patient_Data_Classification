@@ -1,37 +1,31 @@
-# Binary EEG Classification Pipeline
+# Binary EEGNet Classification
 
-This project converts one XDF recording into NumPy arrays, builds binary labels,
-and trains ten binary classifiers using one shared random stratified split.
-
-## Pipeline
+This folder contains a simple EEG classification pipeline:
 
 ```text
-260602_sub1_hjlee.xdf
-    -> xdf_to_np.py
-    -> data/260602_sub1_hjlee.npz
-    -> npz_to_eegnet_inputs.py
-    -> data/processed/260602_sub1_hjlee_raw/*.npy
-    -> train_10_binary_randomsplit.py
-    -> checkpoints_<model>_randomsplit/<run_id>/
+XDF recording
+  -> NPZ file
+  -> NPY training files
+  -> ten binary EEGNet models
 ```
 
-The ten binary tasks are:
+The current workflow uses three main scripts:
 
 ```text
-01, 02, 03, 04, 12, 13, 14, 23, 24, 34
+xdf_to_np.py
+npz_to_eegnet_inputs.py
+train_10_binary_eegnet_randomsplit.py
 ```
 
-For example, in task `01`, original labels `0` and `1` become binary label
-`0`, while original labels `2`, `3`, and `4` become binary label `1`.
+Generated data files, raw XDF recordings, and checkpoint folders are not meant
+to be tracked in Git.
 
 ## 1. Convert XDF To NPZ
 
-Use `xdf_to_np.py` to read the XDF file, extract EEG epochs, and save one NPZ
-file.
+Use `xdf_to_np.py` to convert the raw XDF recording into one NPZ file.
 
 ```bash
 cd /home/bts_sh/jihoon/Demo_binary
-
 python xdf_to_np.py
 ```
 
@@ -47,28 +41,26 @@ Output:
 data/260602_sub1_hjlee.npz
 ```
 
-The NPZ file contains:
+The NPZ file stores already-epoched EEG data:
 
 ```text
 X: (time, channels, trials)
 y: (trials,)
 ```
 
-In the current data flow, `y` is stored as original labels `1..5`.
+In this dataset, `y` is stored as labels `1..5`.
 
-## 2. Convert NPZ To Training NPY Files
+## 2. Convert NPZ To NPY Training Files
 
-Use `npz_to_eegnet_inputs.py` to convert the already-epoched NPZ data into the
-NPY files expected by the training script.
+Use `npz_to_eegnet_inputs.py` to prepare the files used by the training script.
 
 ```bash
 cd /home/bts_sh/jihoon/Demo_binary
-
 python npz_to_eegnet_inputs.py
 ```
 
-This script does not epoch or crop the data. It only changes the array layout
-and creates binary label files.
+This script does not perform epoching or cropping. The NPZ file is already
+epoched. This step only changes the array layout and creates binary labels.
 
 Input:
 
@@ -95,11 +87,11 @@ data/processed/260602_sub1_hjlee_raw/
 └── y_34.npy
 ```
 
-Layout conversion:
+Array layout conversion:
 
 ```text
-NPZ X:        (time, channels, trials)
-X_eeg_raw:   (trials, channels, time)
+NPZ X:      (time, channels, trials)
+training X: (trials, channels, time)
 ```
 
 Label conversion:
@@ -110,32 +102,30 @@ y.npy:         original labels shifted to 0..4
 y_ab.npy:      binary labels for task ab
 ```
 
-For each binary task `ab`:
+The ten binary tasks are:
+
+```text
+01, 02, 03, 04, 12, 13, 14, 23, 24, 34
+```
+
+For task `ab`:
 
 ```text
 original label a or b -> binary label 0
 all other labels      -> binary label 1
 ```
 
-## 3. Train Ten Binary Models
+For example, `y_01.npy` maps original labels `0` and `1` to binary label `0`,
+and original labels `2`, `3`, and `4` to binary label `1`.
 
-Use `train_10_binary_randomsplit.py` to train one binary model for each of the
-ten binary label files.
+## 3. Train Binary EEGNet Models
 
-Minimal EEGNet run:
-
-```bash
-cd /home/bts_sh/jihoon/Demo_binary
-
-python train_10_binary_randomsplit.py --model eegnet
-```
-
-Minimal SVM+CSP run:
+Use `train_10_binary_eegnet_randomsplit.py` to train one EEGNet model for each
+binary task.
 
 ```bash
 cd /home/bts_sh/jihoon/Demo_binary
-
-python train_10_binary_randomsplit.py --model svm_csp
+python train_10_binary_eegnet_randomsplit.py
 ```
 
 The script reads:
@@ -146,12 +136,12 @@ data/processed/260602_sub1_hjlee_raw/y.npy
 data/processed/260602_sub1_hjlee_raw/y_01.npy ... y_34.npy
 ```
 
-### Data Split
+### Split Strategy
 
-The split is random at the trial level. It is not a time-axis split.
+The train/validation/test split is a random trial-level split. It is not a
+time-axis split.
 
-The script first splits trial indices using `y.npy`, the original 5-class label,
-as the stratification target.
+The split is stratified using `y.npy`, the original 5-class labels.
 
 Default split:
 
@@ -162,18 +152,20 @@ test:  20%
 ```
 
 The same `train_idx`, `val_idx`, and `test_idx` are reused for all ten binary
-tasks. Each task only changes the label array from `y_01.npy` to `y_02.npy`,
+tasks. Each task changes only the label file, such as `y_01.npy`, `y_02.npy`,
 and so on.
 
-### EEGNet Mode
+### Training Details
 
-With `--model eegnet`, the script:
+For each binary task, the script:
 
+- loads the corresponding binary label file
+- logs the original-label and binary-label distributions
 - normalizes `X_eeg_raw.npy` once using train-set channel-wise mean and std
-- trains one EEGNet per binary task
-- uses `WeightedRandomSampler` to balance binary classes in the train loader
+- trains an EEGNet binary classifier
+- uses `WeightedRandomSampler` to reduce binary class imbalance during training
 - evaluates validation loss and balanced accuracy after each epoch
-- saves the checkpoint with the lowest validation loss
+- saves the best checkpoint based on validation loss
 
 The reported accuracy is balanced accuracy:
 
@@ -181,96 +173,70 @@ The reported accuracy is balanced accuracy:
 (class 0 accuracy + class 1 accuracy) / 2
 ```
 
-### SVM+CSP Mode
+## 4. Outputs And Checkpoints
 
-With `--model svm_csp`, the script uses raw epoch data for CSP. It does not
-apply the EEGNet train-set normalization before CSP fitting.
-
-The SVM+CSP flow is:
-
-```text
-raw epoched EEG
-    -> CSP feature extraction
-    -> StandardScaler
-    -> SVM classifier
-```
-
-CSP is fit only on the train split for each binary task. Validation and test
-sets are transformed using the fitted CSP pipeline.
-
-## 4. Model And Output Saving
-
-Each training run creates a timestamped run directory.
-
-For EEGNet:
+Each run creates one timestamped output folder:
 
 ```text
 checkpoints_eegnet_randomsplit/<YYYYMMDD_HHMMSS>/
 ```
 
-For SVM+CSP:
-
-```text
-checkpoints_svm_csp_randomsplit/<YYYYMMDD_HHMMSS>/
-```
-
-Inside each run directory:
+Inside that folder:
 
 ```text
 run_config.json
 results.json
 train.log
-y_01/
-y_02/
-...
-y_34/
-```
-
-For EEGNet, each task directory contains:
-
-```text
 y_01/best_model.pt
 y_02/best_model.pt
 ...
+y_34/best_model.pt
 ```
 
 `best_model.pt` is selected by the lowest validation loss, not by validation
 accuracy.
 
-`train.log` records:
+`train.log` contains:
 
 - hyperparameters
 - input shape and device
 - train/validation/test split sizes
 - original label distribution
 - binary label distribution for each task
-- training and validation loss/accuracy every 10 epochs for EEGNet
-- final validation/test result for each binary task
+- train loss/accuracy and validation loss/accuracy every 10 epochs
+- final test accuracy for each binary model
 
-`results.json` stores the final metrics for all ten binary tasks.
+`results.json` stores the final validation and test metrics for all ten binary
+tasks.
 
-## Useful Commands
-
-Create the NPZ from XDF:
+## Recommended Command
 
 ```bash
-python xdf_to_np.py
+cd /home/bts_sh/jihoon/Demo_binary
+python train_10_binary_eegnet_randomsplit.py
 ```
 
-Create training NPY files:
+Common optional arguments:
 
 ```bash
-python npz_to_eegnet_inputs.py
+python train_10_binary_eegnet_randomsplit.py \
+  --epochs 500 \
+  --patience 50 \
+  --batch-size 16
 ```
 
-Train EEGNet:
+## Git Notes
 
-```bash
-python train_10_binary_randomsplit.py --model eegnet
-```
+The repository should track source code and documentation, not large generated
+files.
 
-Train SVM+CSP:
+Typical ignored files:
 
-```bash
-python train_10_binary_randomsplit.py --model svm_csp
+```text
+*.xdf
+*.npz
+*.npy
+data/
+checkpoints*/
+__pycache__/
 ```
