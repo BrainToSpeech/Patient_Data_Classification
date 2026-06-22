@@ -1,0 +1,24 @@
+{
+  "args": {
+    "data_dir": "/home/bts_sh/jihoon/Demo_binary/data/processed/260602_sub1_hjlee_raw",
+    "input_file": "X_eeg_raw.npy",
+    "checkpoint_root": "/home/bts_sh/jihoon/Demo_binary/checkpoints_eegnet_randomsplit",
+    "epochs": 2000,
+    "batch_size": 16,
+    "lr": 0.0001,
+    "weight_decay": 0.0001,
+    "patience": 100,
+    "seed": 42,
+    "val_test_ratio": 0.2
+  },
+  "input_shape": [
+    500,
+    64,
+    4000
+  ],
+  "split_sizes": [
+    300,
+    100,
+    100
+  ]
+}

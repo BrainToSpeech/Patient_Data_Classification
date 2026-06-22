@@ -6,8 +6,8 @@
 *.npy
 
 # Training outputs
-checkpoints*/
 __pycache__/
+*.pt
 
 backup/
 scripts/
