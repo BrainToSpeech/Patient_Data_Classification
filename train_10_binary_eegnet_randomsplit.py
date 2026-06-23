@@ -345,9 +345,9 @@ def main():
 
     (run_dir / "results.json").write_text(json.dumps(results, indent=2))
 
-    write_log(log_path, "\nTest accuracy")
+    write_log(log_path, "\nTest balanced accuracy")
     for name, result in results.items():
-        write_log(log_path, f"y_{name}: {result['test_acc']:.3f}")
+        write_log(log_path, f"y_{name}: {result['test_bal_acc']:.3f}")
     write_log(log_path, f"\nSaved to: {display_path(run_dir)}")
 
 
