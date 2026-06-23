@@ -17,6 +17,12 @@ npz_to_eegnet_inputs.py
 train_10_binary_eegnet_randomsplit.py
 ```
 
+Training settings are stored in:
+
+```text
+train_config.json
+```
+
 Generated data files, raw XDF recordings, and checkpoint folders are not meant
 to be tracked in Git.
 
@@ -163,9 +169,36 @@ For each binary task, the script:
 - logs the original-label and binary-label distributions
 - normalizes `X_eeg_raw.npy` once using train-set channel-wise mean and std
 - trains an EEGNet binary classifier
-- uses `WeightedRandomSampler` to reduce binary class imbalance during training
 - evaluates validation loss and balanced accuracy after each epoch
 - saves the best checkpoint based on validation loss
+
+### Weighted Sampler
+
+`weighted_sampler` is controlled in `train_config.json`:
+
+```json
+"weighted_sampler": true
+```
+
+When `weighted_sampler` is `true`, each binary task uses the full shared split:
+
+```text
+train: 300 trials
+val:   100 trials
+test:  100 trials
+```
+
+The train loader uses `WeightedRandomSampler`, so samples from the smaller
+binary class are drawn more often during training.
+
+When `weighted_sampler` is `false`, the script builds a smaller balanced task
+dataset from the original labels:
+
+```text
+train: pair labels 60 each, other labels 40 each
+val:   pair labels 20 each, other labels 13 each
+test:  pair labels 20 each, other labels 13 each
+```
 
 The reported accuracy is balanced accuracy:
 
@@ -219,11 +252,11 @@ python train_10_binary_eegnet_randomsplit.py
 Common optional arguments:
 
 ```bash
-python train_10_binary_eegnet_randomsplit.py \
-  --epochs 500 \
-  --patience 50 \
-  --batch-size 16
+python train_10_binary_eegnet_randomsplit.py --config train_config.json
 ```
+
+To change epochs, batch size, learning rate, or `weighted_sampler`, edit
+`train_config.json`.
 
 ## Git Notes
 
