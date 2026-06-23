@@ -13,3 +13,4 @@ backup/
 scripts/
 
 changes.md
+train_10_binary_eegnet_randomsplit_v2.py

@@ -14,7 +14,6 @@ from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
 
 LABEL_NAMES = ["01", "02", "03", "04", "12", "13", "14", "23", "24", "34"]
 BASE_DIR = Path(__file__).resolve().parent
-DATA_DIR = BASE_DIR / "data/processed/260602_sub1_hjlee_raw"
 
 
 class EEGDataset(Dataset):
@@ -68,7 +67,9 @@ def evaluate(model, loader, criterion, device):
         total += len(y)
         class_total += torch.bincount(y, minlength=2)
         class_correct += torch.bincount(y[pred == y], minlength=2)
-    return total_loss / total, (class_correct / class_total).mean().item()
+    balanced_acc = (class_correct / class_total).mean().item()
+    accuracy = correct / total
+    return total_loss / total, balanced_acc, accuracy
 
 
 def format_class_counts(y, indices):
@@ -81,6 +82,16 @@ def format_original_label_counts(y, indices):
     labels = " ".join(f"label{i}={count}" for i, count in enumerate(counts))
     return f"{labels} total={counts.sum()}"
 
+def balanced_task_indices(original_y, base_idx, pair_labels, pair_n, other_n, seed):
+    rng = np.random.default_rng(seed)
+    selected = []
+
+    for label in range(5):
+        n = pair_n if label in pair_labels else other_n
+        candidates = base_idx[original_y[base_idx] == label]
+        selected.append(rng.choice(candidates, size=n, replace=False))
+
+    return np.concatenate(selected)
 
 def write_log(log_path, message=""):
     print(message)
@@ -88,19 +99,31 @@ def write_log(log_path, message=""):
         f.write(f"{message}\n")
 
 
+def display_path(path):
+    path = Path(path)
+    try:
+        return f"./{path.relative_to(Path.cwd())}"
+    except ValueError:
+        return str(path)
+
+
+def load_config(config_path):
+    with config_path.open(encoding="utf-8") as f:
+        config = json.load(f)
+
+    for key in ["data_dir", "checkpoint_root"]:
+        path = Path(config[key])
+        config[key] = path if path.is_absolute() else BASE_DIR / path
+
+    return argparse.Namespace(**config)
+
+
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data-dir", type=Path, default=DATA_DIR)
-    parser.add_argument("--input-file", default="X_eeg_raw.npy")
-    parser.add_argument("--checkpoint-root", type=Path, default=BASE_DIR / "checkpoints_eegnet_randomsplit")
-    parser.add_argument("--epochs", type=int, default=2000)
-    parser.add_argument("--batch-size", type=int, default=16)
-    parser.add_argument("--lr", type=float, default=1e-4)
-    parser.add_argument("--weight-decay", type=float, default=1e-4)
-    parser.add_argument("--patience", type=int, default=100)
-    parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--val_test_ratio", type=float, default=0.2)
-    args = parser.parse_args()
+    parser.add_argument("--config", type=Path, default=BASE_DIR / "train_config.json")
+    cli_args = parser.parse_args()
+    args = load_config(cli_args.config)
+    args.config = cli_args.config
 
     torch.manual_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -109,8 +132,10 @@ def main():
     log_path = run_dir / "train.log"
 
     write_log(log_path, "Training configuration")
-    write_log(log_path, f"  data_dir={args.data_dir}")
+    write_log(log_path, f"  config={display_path(args.config)}")
+    write_log(log_path, f"  data_dir={display_path(args.data_dir)}")
     write_log(log_path, f"  input_file={args.input_file}")
+    write_log(log_path, f"  checkpoint_root={display_path(args.checkpoint_root)}")
     write_log(log_path, f"  epochs={args.epochs}")
     write_log(log_path, f"  batch_size={args.batch_size}")
     write_log(log_path, f"  lr={args.lr}")
@@ -118,13 +143,14 @@ def main():
     write_log(log_path, f"  patience={args.patience}")
     write_log(log_path, f"  seed={args.seed}")
     write_log(log_path, f"  val_test_ratio={args.val_test_ratio}")
+    write_log(log_path, f"  weighted_sampler={args.weighted_sampler}")
 
     write_log(log_path, f"\nLoading {args.input_file}...")
     X = np.load(args.data_dir / args.input_file, mmap_mode="r")
     if X.shape[-1] < 32:
         raise ValueError("Input time dimension is too short for EEGNet pooling.")
 
-    write_log(log_path, f"Device: {device} | X: {X.shape} | run: {run_dir}")
+    write_log(log_path, f"Device: {device} | X: {X.shape} | run: {display_path(run_dir)}")
 
     if not 0 < args.val_test_ratio < 0.5:
         raise ValueError("--val_test_ratio must be between 0 and 0.5.")
@@ -156,8 +182,9 @@ def main():
     write_log(log_path, f"  test:  {format_original_label_counts(original_y, test_idx)}")
 
     config_args = vars(args) | {
-        "data_dir": str(args.data_dir),
-        "checkpoint_root": str(args.checkpoint_root),
+        "config": display_path(args.config),
+        "data_dir": display_path(args.data_dir),
+        "checkpoint_root": display_path(args.checkpoint_root),
     }
     run_config = {
         "args": config_args,
@@ -181,38 +208,54 @@ def main():
 
         y = np.load(args.data_dir / f"y_{label_name}.npy").astype(np.int64)
 
-        train_counts = np.bincount(y[train_idx], minlength=2)
-        sample_weights = 1.0 / train_counts[y[train_idx]]
+        pair_labels = {int(label_name[0]), int(label_name[1])}
+
+        if args.weighted_sampler:
+            task_train_idx, task_val_idx, task_test_idx = train_idx, val_idx, test_idx
+        else:
+            task_train_idx = balanced_task_indices(original_y, train_idx, pair_labels, 60, 40, args.seed)
+            task_val_idx = balanced_task_indices(original_y, val_idx, pair_labels, 20, 13, args.seed)
+            task_test_idx = balanced_task_indices(original_y, test_idx, pair_labels, 20, 13, args.seed)
+
+        train_counts = np.bincount(y[task_train_idx], minlength=2)
+        sample_weights = 1.0 / train_counts[y[task_train_idx]]
         write_log(log_path, "Binary label distribution:")
-        write_log(log_path, f"  train: {format_class_counts(y, train_idx)}")
-        write_log(log_path, f"  val:   {format_class_counts(y, val_idx)}")
-        write_log(log_path, f"  test:  {format_class_counts(y, test_idx)}")
+        write_log(log_path, f"  train: {format_class_counts(y, task_train_idx)}")
+        write_log(log_path, f"  val:   {format_class_counts(y, task_val_idx)}")
+        write_log(log_path, f"  test:  {format_class_counts(y, task_test_idx)}")
         write_log(log_path, "Original labels in this split:")
-        write_log(log_path, f"  train: {format_original_label_counts(original_y, train_idx)}")
-        write_log(log_path, f"  val:   {format_original_label_counts(original_y, val_idx)}")
-        write_log(log_path, f"  test:  {format_original_label_counts(original_y, test_idx)}")
+        write_log(log_path, f"  train: {format_original_label_counts(original_y, task_train_idx)}")
+        write_log(log_path, f"  val:   {format_original_label_counts(original_y, task_val_idx)}")
+        write_log(log_path, f"  test:  {format_original_label_counts(original_y, task_test_idx)}")
 
-        sampler = WeightedRandomSampler(
-            weights=torch.as_tensor(sample_weights, dtype=torch.double),
-            num_samples=len(train_idx),
-            replacement=True,
-            generator=torch.Generator().manual_seed(args.seed),
-        )
-
-        train_loader = DataLoader(
-            EEGDataset(X, y, train_idx),
-            batch_size=args.batch_size,
-            sampler=sampler,
-        )
+        if args.weighted_sampler:
+            sampler = WeightedRandomSampler(
+                weights=torch.as_tensor(sample_weights, dtype=torch.double),
+                num_samples=len(task_train_idx),
+                replacement=True,
+                generator=torch.Generator().manual_seed(args.seed),
+            )
+            train_loader = DataLoader(
+                EEGDataset(X, y, task_train_idx),
+                batch_size=args.batch_size,
+                sampler=sampler,
+            )
+        else:
+            sampler = None
+            train_loader = DataLoader(
+                EEGDataset(X, y, task_train_idx),
+                batch_size=args.batch_size,
+                shuffle=True,
+            )
 
         val_loader = DataLoader(
-            EEGDataset(X, y, val_idx),
+            EEGDataset(X, y, task_val_idx),
             batch_size=args.batch_size,
             shuffle=False,
         )
 
         test_loader = DataLoader(
-            EEGDataset(X, y, test_idx),
+            EEGDataset(X, y, task_test_idx),
             batch_size=args.batch_size,
             shuffle=False,
         )
@@ -225,16 +268,9 @@ def main():
             lr=args.lr,
             weight_decay=args.weight_decay,
         )
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-            optimizer,
-            mode="min",
-            factor=0.5,
-            patience=20,
-            min_lr=1e-7,
-        )
 
         best_val_loss = float("inf")
-        best_val_acc = best_epoch = waiting = 0
+        best_val_bal_acc = best_val_acc = best_epoch = waiting = 0
 
         for epoch in range(1, args.epochs + 1):
             model.train()
@@ -253,18 +289,17 @@ def main():
                 train_class_total += torch.bincount(y_batch, minlength=2)
                 train_class_correct += torch.bincount(y_batch[pred == y_batch], minlength=2)
 
-            train_loss /= len(train_idx)
-            train_acc = (train_class_correct / train_class_total).mean().item()
-            val_loss, val_acc = evaluate(model, val_loader, criterion, device)
-            scheduler.step(val_loss)
+            train_loss /= len(task_train_idx)
+            train_bal_acc = (train_class_correct / train_class_total).mean().item()
+            train_acc = (train_class_correct.sum() / train_class_total.sum()).item()
+            val_loss, val_bal_acc, val_acc = evaluate(model, val_loader, criterion, device)
             if epoch == 1 or epoch % 10 == 0:
                 write_log(log_path, f"epoch {epoch:03d} | "
-                    f"train(loss/acc)={train_loss:.4f}/{train_acc:.2f} | "
-                    f"val(loss/acc)={val_loss:.4f}/{val_acc:.2f} | "
-                    f"lr={optimizer.param_groups[0]['lr']:.1e}")
+                    f"train loss: {train_loss:.4f} bal_acc: {train_bal_acc:.2f} acc: {train_acc:.2f} | "
+                    f"val loss: {val_loss:.4f} bal_acc: {val_bal_acc:.2f} acc: {val_acc:.2f}")
 
             if val_loss < best_val_loss:
-                best_val_loss, best_val_acc = val_loss, val_acc
+                best_val_loss, best_val_bal_acc, best_val_acc = val_loss, val_bal_acc, val_acc
                 best_epoch, waiting = epoch, 0
                 torch.save(model.state_dict(), checkpoint)
             else:
@@ -274,21 +309,24 @@ def main():
 
         state = torch.load(checkpoint, map_location=device, weights_only=True)
         model.load_state_dict(state)
-        test_loss, test_acc = evaluate(model, test_loader, criterion, device)
+        test_loss, test_bal_acc, test_acc = evaluate(model, test_loader, criterion, device)
         results[label_name] = {
             "best_epoch": best_epoch,
             "best_val_loss": best_val_loss,
+            "best_val_bal_acc": best_val_bal_acc,
             "best_val_acc": best_val_acc,
             "test_loss": test_loss,
+            "test_bal_acc": test_bal_acc,
             "test_acc": test_acc,
         }
         write_log(
             log_path,
-            f"best epoch={best_epoch} val={best_val_loss:.4f}/{best_val_acc:.2f} | "
-            f"test={test_loss:.4f}/{test_acc:.2f}"
+            f"best epoch={best_epoch} | "
+            f"val loss: {best_val_loss:.4f} bal_acc: {best_val_bal_acc:.2f} acc: {best_val_acc:.2f} | "
+            f"test loss: {test_loss:.4f} bal_acc: {test_bal_acc:.2f} acc: {test_acc:.2f}"
         )
 
-        del model, optimizer, scheduler, train_loader, val_loader, test_loader, sampler
+        del model, optimizer, train_loader, val_loader, test_loader, sampler
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
@@ -297,7 +335,7 @@ def main():
     write_log(log_path, "\nTest accuracy")
     for name, result in results.items():
         write_log(log_path, f"y_{name}: {result['test_acc']:.3f}")
-    write_log(log_path, f"\nSaved to: {run_dir.resolve()}")
+    write_log(log_path, f"\nSaved to: {display_path(run_dir)}")
 
 
 if __name__ == "__main__":

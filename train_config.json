@@ -1,0 +1,13 @@
+{
+  "data_dir": "data/processed/260602_sub1_hjlee_raw",
+  "input_file": "X_eeg_raw.npy",
+  "checkpoint_root": "checkpoints_eegnet_randomsplit",
+  "epochs": 2000,
+  "batch_size": 16,
+  "lr": 0.00001,
+  "weight_decay": 0.0001,
+  "patience": 100,
+  "seed": 42,
+  "val_test_ratio": 0.2,
+  "weighted_sampler": true
+}
