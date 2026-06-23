@@ -12,7 +12,10 @@ import torch.nn as nn
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
 
+# Binary task names. "01" means original labels 0/1 vs labels 2/3/4.
 LABEL_NAMES = ["01", "02", "03", "04", "12", "13", "14", "23", "24", "34"]
+
+# Folder that contains this script.
 BASE_DIR = Path(__file__).resolve().parent
 
 
@@ -87,6 +90,7 @@ def balanced_task_indices(original_y, base_idx, pair_labels, pair_n, other_n, se
     selected = []
 
     for label in range(5):
+        # pair labels are the two labels mapped to binary class 0.
         n = pair_n if label in pair_labels else other_n
         candidates = base_idx[original_y[base_idx] == label]
         selected.append(rng.choice(candidates, size=n, replace=False))
@@ -102,6 +106,7 @@ def write_log(log_path, message=""):
 def display_path(path):
     path = Path(path)
     try:
+        # Keep logs readable by hiding the full /home/... prefix.
         return f"./{path.relative_to(Path.cwd())}"
     except ValueError:
         return str(path)
@@ -119,6 +124,7 @@ def load_config(config_path):
 
 
 def main():
+    # 학습 설정은 train_config.json에서 수정
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=BASE_DIR / "train_config.json")
     cli_args = parser.parse_args()
@@ -161,6 +167,7 @@ def main():
         raise ValueError(f"X and y.npy trial counts do not match: {n_trials} != {len(original_y)}")
     all_idx = np.arange(n_trials)
 
+    # original label 기준으로 train/val/test split
     train_idx, remaining_idx = train_test_split(
         all_idx,
         test_size=2 * args.val_test_ratio,
@@ -193,6 +200,7 @@ def main():
     }
     (run_dir / "run_config.json").write_text(json.dumps(run_config, indent=2))
 
+    # train set 통계로 한 번만 정규화
     write_log(log_path, "Normalizing X using training-set mean and std...")
     train_mean = X[train_idx].mean(axis=(0, 2))[:, None].astype(np.float32)
     train_std = X[train_idx].std(axis=(0, 2))[:, None].astype(np.float32)
@@ -208,8 +216,10 @@ def main():
 
         y = np.load(args.data_dir / f"y_{label_name}.npy").astype(np.int64)
 
+        # Example: label_name "01" -> pair_labels {0, 1}.
         pair_labels = {int(label_name[0]), int(label_name[1])}
 
+        # weighted_sampler=False이면 original label 수를 맞춰서 task dataset 구성
         if args.weighted_sampler:
             task_train_idx, task_val_idx, task_test_idx = train_idx, val_idx, test_idx
         else:
@@ -217,6 +227,7 @@ def main():
             task_val_idx = balanced_task_indices(original_y, val_idx, pair_labels, 20, 13, args.seed)
             task_test_idx = balanced_task_indices(original_y, test_idx, pair_labels, 20, 13, args.seed)
 
+        # Class-count based weights for WeightedRandomSampler.
         train_counts = np.bincount(y[task_train_idx], minlength=2)
         sample_weights = 1.0 / train_counts[y[task_train_idx]]
         write_log(log_path, "Binary label distribution:")
@@ -228,6 +239,7 @@ def main():
         write_log(log_path, f"  val:   {format_original_label_counts(original_y, task_val_idx)}")
         write_log(log_path, f"  test:  {format_original_label_counts(original_y, task_test_idx)}")
 
+        # weighted_sampler=True이면 train loader만 weighted sampling 적용
         if args.weighted_sampler:
             sampler = WeightedRandomSampler(
                 weights=torch.as_tensor(sample_weights, dtype=torch.double),
@@ -301,6 +313,7 @@ def main():
             if val_loss < best_val_loss:
                 best_val_loss, best_val_bal_acc, best_val_acc = val_loss, val_bal_acc, val_acc
                 best_epoch, waiting = epoch, 0
+                # best model 기준은 validation loss
                 torch.save(model.state_dict(), checkpoint)
             else:
                 waiting += 1
