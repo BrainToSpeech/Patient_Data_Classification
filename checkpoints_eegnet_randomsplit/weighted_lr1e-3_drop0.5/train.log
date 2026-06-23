@@ -1,0 +1,1833 @@
+Training configuration
+  config=./train_config.json
+  data_dir=./data/processed/260602_sub1_hjlee_raw
+  input_file=X_eeg_raw.npy
+  checkpoint_root=./checkpoints_eegnet_randomsplit
+  epochs=2000
+  batch_size=16
+  dropout=0.5
+  lr=0.001
+  weight_decay=0.001
+  patience=100
+  seed=42
+  val_test_ratio=0.2
+  weighted_sampler=True
+  debug_gradient_optimizer=True
+
+Loading X_eeg_raw.npy...
+Device: cuda | X: (500, 64, 4000) | run: ./checkpoints_eegnet_randomsplit/20260623_143116
+Data split: train=300 val=100 test=100
+Original label distribution:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Normalizing X using training-set mean and std...
+
+=== y_01 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00431478
+  features.1.weight: 0.00000006
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00253195
+  features.3.weight: 0.00224107
+  features.3.bias: 0.00083096
+  features.7.weight: 0.00726237
+  features.8.weight: 0.00452412
+  features.9.weight: 0.00733506
+  features.9.bias: 0.01997394
+  classifier.weight: 0.02742785
+  classifier.bias: 0.15354796
+Optimizer check epoch 001 classifier.weight delta: 0.00100001
+epoch 001 | train loss: 0.6838 bal_acc: 0.50 acc: 0.56 | val loss: 0.6734 bal_acc: 0.50 acc: 0.60
+Gradient check epoch 010:
+  features.0.weight: 0.00061691
+  features.1.weight: 0.00000090
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01260996
+  features.3.weight: 0.00869607
+  features.3.bias: 0.00643834
+  features.7.weight: 0.01958321
+  features.8.weight: 0.01162116
+  features.9.weight: 0.00957198
+  features.9.bias: 0.01157493
+  classifier.weight: 0.04038294
+  classifier.bias: 0.08272599
+Optimizer check epoch 010 classifier.weight delta: 0.00018112
+epoch 010 | train loss: 0.6535 bal_acc: 0.62 acc: 0.62 | val loss: 0.7095 bal_acc: 0.54 acc: 0.54
+Gradient check epoch 020:
+  features.0.weight: 0.00062228
+  features.1.weight: 0.00000252
+  features.1.bias: 0.00000000
+  features.2.weight: 0.05687788
+  features.3.weight: 0.01292549
+  features.3.bias: 0.00459090
+  features.7.weight: 0.01811093
+  features.8.weight: 0.01511134
+  features.9.weight: 0.01056348
+  features.9.bias: 0.03450865
+  classifier.weight: 0.03827081
+  classifier.bias: 0.18394984
+Optimizer check epoch 020 classifier.weight delta: 0.00016630
+epoch 020 | train loss: 0.5923 bal_acc: 0.70 acc: 0.70 | val loss: 0.7322 bal_acc: 0.57 acc: 0.59
+Gradient check epoch 030:
+  features.0.weight: 0.00043142
+  features.1.weight: 0.00000079
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03975618
+  features.3.weight: 0.01735109
+  features.3.bias: 0.00789784
+  features.7.weight: 0.02248523
+  features.8.weight: 0.02268015
+  features.9.weight: 0.00881206
+  features.9.bias: 0.04245919
+  classifier.weight: 0.04658870
+  classifier.bias: 0.21889126
+Optimizer check epoch 030 classifier.weight delta: 0.00007858
+epoch 030 | train loss: 0.5787 bal_acc: 0.69 acc: 0.69 | val loss: 0.7544 bal_acc: 0.59 acc: 0.59
+Gradient check epoch 040:
+  features.0.weight: 0.00067497
+  features.1.weight: 0.00000083
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03905341
+  features.3.weight: 0.01134629
+  features.3.bias: 0.00868523
+  features.7.weight: 0.01351614
+  features.8.weight: 0.01814196
+  features.9.weight: 0.01191559
+  features.9.bias: 0.03353756
+  classifier.weight: 0.05248436
+  classifier.bias: 0.15883392
+Optimizer check epoch 040 classifier.weight delta: 0.00027098
+epoch 040 | train loss: 0.5300 bal_acc: 0.73 acc: 0.73 | val loss: 0.7586 bal_acc: 0.56 acc: 0.56
+Gradient check epoch 050:
+  features.0.weight: 0.00063885
+  features.1.weight: 0.00000089
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03189124
+  features.3.weight: 0.01148151
+  features.3.bias: 0.00646462
+  features.7.weight: 0.01142116
+  features.8.weight: 0.01188784
+  features.9.weight: 0.01319016
+  features.9.bias: 0.04640517
+  classifier.weight: 0.03600961
+  classifier.bias: 0.16157010
+Optimizer check epoch 050 classifier.weight delta: 0.00031541
+epoch 050 | train loss: 0.5161 bal_acc: 0.75 acc: 0.74 | val loss: 0.8445 bal_acc: 0.57 acc: 0.58
+Gradient check epoch 060:
+  features.0.weight: 0.00114822
+  features.1.weight: 0.00000079
+  features.1.bias: 0.00000001
+  features.2.weight: 0.02763759
+  features.3.weight: 0.01346094
+  features.3.bias: 0.00990588
+  features.7.weight: 0.01292892
+  features.8.weight: 0.01341926
+  features.9.weight: 0.00827386
+  features.9.bias: 0.01063048
+  classifier.weight: 0.02524530
+  classifier.bias: 0.03793380
+Optimizer check epoch 060 classifier.weight delta: 0.00018645
+epoch 060 | train loss: 0.5218 bal_acc: 0.73 acc: 0.73 | val loss: 0.8143 bal_acc: 0.58 acc: 0.59
+Gradient check epoch 070:
+  features.0.weight: 0.00135963
+  features.1.weight: 0.00000175
+  features.1.bias: 0.00000001
+  features.2.weight: 0.07305224
+  features.3.weight: 0.02501139
+  features.3.bias: 0.01643140
+  features.7.weight: 0.02301744
+  features.8.weight: 0.02529899
+  features.9.weight: 0.01414331
+  features.9.bias: 0.03243264
+  classifier.weight: 0.03264408
+  classifier.bias: 0.10667946
+Optimizer check epoch 070 classifier.weight delta: 0.00022093
+epoch 070 | train loss: 0.4567 bal_acc: 0.78 acc: 0.78 | val loss: 0.9131 bal_acc: 0.52 acc: 0.55
+Gradient check epoch 080:
+  features.0.weight: 0.00139414
+  features.1.weight: 0.00000173
+  features.1.bias: 0.00000001
+  features.2.weight: 0.06161364
+  features.3.weight: 0.01691096
+  features.3.bias: 0.00940027
+  features.7.weight: 0.01527817
+  features.8.weight: 0.01738274
+  features.9.weight: 0.00895274
+  features.9.bias: 0.01828155
+  classifier.weight: 0.02327837
+  classifier.bias: 0.06449245
+Optimizer check epoch 080 classifier.weight delta: 0.00019903
+epoch 080 | train loss: 0.4905 bal_acc: 0.76 acc: 0.76 | val loss: 0.8850 bal_acc: 0.52 acc: 0.53
+Gradient check epoch 090:
+  features.0.weight: 0.00107389
+  features.1.weight: 0.00000331
+  features.1.bias: 0.00000000
+  features.2.weight: 0.06944796
+  features.3.weight: 0.02792310
+  features.3.bias: 0.01293502
+  features.7.weight: 0.02297732
+  features.8.weight: 0.02570547
+  features.9.weight: 0.01558004
+  features.9.bias: 0.02470686
+  classifier.weight: 0.05240200
+  classifier.bias: 0.09994210
+Optimizer check epoch 090 classifier.weight delta: 0.00019802
+epoch 090 | train loss: 0.4880 bal_acc: 0.75 acc: 0.75 | val loss: 0.9046 bal_acc: 0.54 acc: 0.57
+Gradient check epoch 100:
+  features.0.weight: 0.00077583
+  features.1.weight: 0.00000093
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04846780
+  features.3.weight: 0.01628489
+  features.3.bias: 0.00901358
+  features.7.weight: 0.01354978
+  features.8.weight: 0.02235192
+  features.9.weight: 0.01424735
+  features.9.bias: 0.03541606
+  classifier.weight: 0.03039626
+  classifier.bias: 0.09139324
+Optimizer check epoch 100 classifier.weight delta: 0.00012699
+epoch 100 | train loss: 0.4307 bal_acc: 0.81 acc: 0.81 | val loss: 0.9257 bal_acc: 0.52 acc: 0.55
+best epoch=3 | val loss: 0.6599 bal_acc: 0.65 acc: 0.68 | test loss: 0.6880 bal_acc: 0.51 acc: 0.55
+test confusion matrix rows=true cols=pred
+[[13, 27], [18, 42]]
+
+=== y_02 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00427461
+  features.1.weight: 0.00000010
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00357948
+  features.3.weight: 0.00194461
+  features.3.bias: 0.00125660
+  features.7.weight: 0.00877905
+  features.8.weight: 0.00594467
+  features.9.weight: 0.00254319
+  features.9.bias: 0.00303336
+  classifier.weight: 0.02415323
+  classifier.bias: 0.02503428
+Optimizer check epoch 001 classifier.weight delta: 0.00100000
+epoch 001 | train loss: 0.7001 bal_acc: 0.49 acc: 0.49 | val loss: 0.6762 bal_acc: 0.50 acc: 0.59
+Gradient check epoch 010:
+  features.0.weight: 0.00170085
+  features.1.weight: 0.00000040
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01014238
+  features.3.weight: 0.00362064
+  features.3.bias: 0.00122291
+  features.7.weight: 0.00591397
+  features.8.weight: 0.00471412
+  features.9.weight: 0.00358236
+  features.9.bias: 0.00740339
+  classifier.weight: 0.02005919
+  classifier.bias: 0.04921347
+Optimizer check epoch 010 classifier.weight delta: 0.00014369
+epoch 010 | train loss: 0.6109 bal_acc: 0.70 acc: 0.70 | val loss: 0.7024 bal_acc: 0.55 acc: 0.56
+Gradient check epoch 020:
+  features.0.weight: 0.00325088
+  features.1.weight: 0.00000046
+  features.1.bias: 0.00000000
+  features.2.weight: 0.05443493
+  features.3.weight: 0.01075226
+  features.3.bias: 0.00434403
+  features.7.weight: 0.01892679
+  features.8.weight: 0.01385561
+  features.9.weight: 0.00733414
+  features.9.bias: 0.00761070
+  classifier.weight: 0.03870995
+  classifier.bias: 0.06090707
+Optimizer check epoch 020 classifier.weight delta: 0.00027886
+epoch 020 | train loss: 0.6088 bal_acc: 0.71 acc: 0.70 | val loss: 0.7369 bal_acc: 0.54 acc: 0.55
+Gradient check epoch 030:
+  features.0.weight: 0.00195025
+  features.1.weight: 0.00000447
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03824038
+  features.3.weight: 0.01367899
+  features.3.bias: 0.00727556
+  features.7.weight: 0.01800521
+  features.8.weight: 0.01359343
+  features.9.weight: 0.00706158
+  features.9.bias: 0.02560211
+  classifier.weight: 0.03743534
+  classifier.bias: 0.13728163
+Optimizer check epoch 030 classifier.weight delta: 0.00019092
+epoch 030 | train loss: 0.5838 bal_acc: 0.67 acc: 0.67 | val loss: 0.8174 bal_acc: 0.52 acc: 0.53
+Gradient check epoch 040:
+  features.0.weight: 0.00584484
+  features.1.weight: 0.00000270
+  features.1.bias: 0.00000002
+  features.2.weight: 0.06561111
+  features.3.weight: 0.01632406
+  features.3.bias: 0.00801397
+  features.7.weight: 0.02100460
+  features.8.weight: 0.01581901
+  features.9.weight: 0.01065783
+  features.9.bias: 0.01777594
+  classifier.weight: 0.03446912
+  classifier.bias: 0.09044173
+Optimizer check epoch 040 classifier.weight delta: 0.00014686
+epoch 040 | train loss: 0.5282 bal_acc: 0.73 acc: 0.73 | val loss: 0.7995 bal_acc: 0.55 acc: 0.57
+Gradient check epoch 050:
+  features.0.weight: 0.00485684
+  features.1.weight: 0.00000234
+  features.1.bias: 0.00000001
+  features.2.weight: 0.06340936
+  features.3.weight: 0.01914911
+  features.3.bias: 0.00830559
+  features.7.weight: 0.02243503
+  features.8.weight: 0.02020831
+  features.9.weight: 0.00694528
+  features.9.bias: 0.01187417
+  classifier.weight: 0.03075895
+  classifier.bias: 0.05819500
+Optimizer check epoch 050 classifier.weight delta: 0.00028058
+epoch 050 | train loss: 0.4990 bal_acc: 0.76 acc: 0.76 | val loss: 0.7838 bal_acc: 0.51 acc: 0.52
+Gradient check epoch 060:
+  features.0.weight: 0.00241032
+  features.1.weight: 0.00000167
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03494519
+  features.3.weight: 0.01163549
+  features.3.bias: 0.00396448
+  features.7.weight: 0.01023557
+  features.8.weight: 0.00975479
+  features.9.weight: 0.01689739
+  features.9.bias: 0.04804078
+  classifier.weight: 0.03840937
+  classifier.bias: 0.18244064
+Optimizer check epoch 060 classifier.weight delta: 0.00015649
+epoch 060 | train loss: 0.4883 bal_acc: 0.80 acc: 0.80 | val loss: 0.8015 bal_acc: 0.52 acc: 0.52
+Gradient check epoch 070:
+  features.0.weight: 0.00536427
+  features.1.weight: 0.00000333
+  features.1.bias: 0.00000001
+  features.2.weight: 0.06689340
+  features.3.weight: 0.01668341
+  features.3.bias: 0.01025559
+  features.7.weight: 0.01412936
+  features.8.weight: 0.01713099
+  features.9.weight: 0.00782079
+  features.9.bias: 0.03153871
+  classifier.weight: 0.02578086
+  classifier.bias: 0.11367100
+Optimizer check epoch 070 classifier.weight delta: 0.00015978
+epoch 070 | train loss: 0.4368 bal_acc: 0.80 acc: 0.79 | val loss: 0.8326 bal_acc: 0.51 acc: 0.53
+Gradient check epoch 080:
+  features.0.weight: 0.00177939
+  features.1.weight: 0.00000079
+  features.1.bias: 0.00000001
+  features.2.weight: 0.06906448
+  features.3.weight: 0.01245376
+  features.3.bias: 0.00984348
+  features.7.weight: 0.01258384
+  features.8.weight: 0.01341246
+  features.9.weight: 0.01718435
+  features.9.bias: 0.03912031
+  classifier.weight: 0.03293421
+  classifier.bias: 0.12210179
+Optimizer check epoch 080 classifier.weight delta: 0.00022913
+epoch 080 | train loss: 0.4814 bal_acc: 0.77 acc: 0.77 | val loss: 0.7928 bal_acc: 0.58 acc: 0.60
+Gradient check epoch 090:
+  features.0.weight: 0.00598545
+  features.1.weight: 0.00000108
+  features.1.bias: 0.00000001
+  features.2.weight: 0.11747637
+  features.3.weight: 0.03402563
+  features.3.bias: 0.01165271
+  features.7.weight: 0.03277024
+  features.8.weight: 0.03854936
+  features.9.weight: 0.01481453
+  features.9.bias: 0.03272493
+  classifier.weight: 0.04849001
+  classifier.bias: 0.06296644
+Optimizer check epoch 090 classifier.weight delta: 0.00016630
+epoch 090 | train loss: 0.4562 bal_acc: 0.79 acc: 0.79 | val loss: 0.9001 bal_acc: 0.46 acc: 0.47
+Gradient check epoch 100:
+  features.0.weight: 0.00377621
+  features.1.weight: 0.00000237
+  features.1.bias: 0.00000001
+  features.2.weight: 0.07948107
+  features.3.weight: 0.02768307
+  features.3.bias: 0.01186382
+  features.7.weight: 0.02226515
+  features.8.weight: 0.02165334
+  features.9.weight: 0.01865280
+  features.9.bias: 0.00941255
+  classifier.weight: 0.03759304
+  classifier.bias: 0.00045512
+Optimizer check epoch 100 classifier.weight delta: 0.00020449
+epoch 100 | train loss: 0.4027 bal_acc: 0.81 acc: 0.81 | val loss: 0.8365 bal_acc: 0.53 acc: 0.56
+best epoch=1 | val loss: 0.6762 bal_acc: 0.50 acc: 0.59 | test loss: 0.6814 bal_acc: 0.51 acc: 0.60
+test confusion matrix rows=true cols=pred
+[[2, 38], [2, 58]]
+
+=== y_03 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00580683
+  features.1.weight: 0.00000006
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00320378
+  features.3.weight: 0.00203865
+  features.3.bias: 0.00131718
+  features.7.weight: 0.00741307
+  features.8.weight: 0.00489020
+  features.9.weight: 0.00636446
+  features.9.bias: 0.01101843
+  classifier.weight: 0.02653755
+  classifier.bias: 0.09662670
+Optimizer check epoch 001 classifier.weight delta: 0.00100000
+epoch 001 | train loss: 0.6947 bal_acc: 0.52 acc: 0.52 | val loss: 0.6742 bal_acc: 0.55 acc: 0.61
+Gradient check epoch 010:
+  features.0.weight: 0.00205280
+  features.1.weight: 0.00000157
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03619058
+  features.3.weight: 0.00938409
+  features.3.bias: 0.00357622
+  features.7.weight: 0.01890408
+  features.8.weight: 0.01670823
+  features.9.weight: 0.00727359
+  features.9.bias: 0.00397676
+  classifier.weight: 0.05348470
+  classifier.bias: 0.00349074
+Optimizer check epoch 010 classifier.weight delta: 0.00024812
+epoch 010 | train loss: 0.6342 bal_acc: 0.64 acc: 0.64 | val loss: 0.7930 bal_acc: 0.50 acc: 0.50
+Gradient check epoch 020:
+  features.0.weight: 0.00067185
+  features.1.weight: 0.00000020
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01561091
+  features.3.weight: 0.00385684
+  features.3.bias: 0.00213006
+  features.7.weight: 0.00530648
+  features.8.weight: 0.00588686
+  features.9.weight: 0.00658469
+  features.9.bias: 0.00207836
+  classifier.weight: 0.02916331
+  classifier.bias: 0.00310709
+Optimizer check epoch 020 classifier.weight delta: 0.00021096
+epoch 020 | train loss: 0.5845 bal_acc: 0.69 acc: 0.69 | val loss: 0.7483 bal_acc: 0.62 acc: 0.61
+Gradient check epoch 030:
+  features.0.weight: 0.00094712
+  features.1.weight: 0.00000089
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04550370
+  features.3.weight: 0.01219318
+  features.3.bias: 0.00690671
+  features.7.weight: 0.01410633
+  features.8.weight: 0.01497709
+  features.9.weight: 0.00821525
+  features.9.bias: 0.03670326
+  classifier.weight: 0.02988498
+  classifier.bias: 0.16999383
+Optimizer check epoch 030 classifier.weight delta: 0.00011031
+epoch 030 | train loss: 0.5642 bal_acc: 0.69 acc: 0.69 | val loss: 0.8413 bal_acc: 0.55 acc: 0.53
+Gradient check epoch 040:
+  features.0.weight: 0.00168831
+  features.1.weight: 0.00000159
+  features.1.bias: 0.00000000
+  features.2.weight: 0.02496480
+  features.3.weight: 0.01653587
+  features.3.bias: 0.00798317
+  features.7.weight: 0.01577198
+  features.8.weight: 0.01720499
+  features.9.weight: 0.01799882
+  features.9.bias: 0.06746098
+  classifier.weight: 0.05326834
+  classifier.bias: 0.26014721
+Optimizer check epoch 040 classifier.weight delta: 0.00022038
+epoch 040 | train loss: 0.5495 bal_acc: 0.71 acc: 0.71 | val loss: 0.8793 bal_acc: 0.55 acc: 0.56
+Gradient check epoch 050:
+  features.0.weight: 0.00094174
+  features.1.weight: 0.00000043
+  features.1.bias: 0.00000001
+  features.2.weight: 0.02888807
+  features.3.weight: 0.00752901
+  features.3.bias: 0.01040483
+  features.7.weight: 0.00633118
+  features.8.weight: 0.01103402
+  features.9.weight: 0.00484346
+  features.9.bias: 0.01747645
+  classifier.weight: 0.01734380
+  classifier.bias: 0.05815183
+Optimizer check epoch 050 classifier.weight delta: 0.00013071
+epoch 050 | train loss: 0.4922 bal_acc: 0.78 acc: 0.78 | val loss: 0.8662 bal_acc: 0.58 acc: 0.59
+Gradient check epoch 060:
+  features.0.weight: 0.00198501
+  features.1.weight: 0.00000311
+  features.1.bias: 0.00000001
+  features.2.weight: 0.08516978
+  features.3.weight: 0.04975326
+  features.3.bias: 0.02756797
+  features.7.weight: 0.04273777
+  features.8.weight: 0.05567168
+  features.9.weight: 0.02537098
+  features.9.bias: 0.02101500
+  classifier.weight: 0.09579238
+  classifier.bias: 0.07760842
+Optimizer check epoch 060 classifier.weight delta: 0.00020183
+epoch 060 | train loss: 0.5136 bal_acc: 0.73 acc: 0.73 | val loss: 0.9489 bal_acc: 0.54 acc: 0.54
+Gradient check epoch 070:
+  features.0.weight: 0.00086387
+  features.1.weight: 0.00000086
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03702398
+  features.3.weight: 0.01827604
+  features.3.bias: 0.01089801
+  features.7.weight: 0.01461492
+  features.8.weight: 0.02350850
+  features.9.weight: 0.00977882
+  features.9.bias: 0.00694540
+  classifier.weight: 0.03626953
+  classifier.bias: 0.01182571
+Optimizer check epoch 070 classifier.weight delta: 0.00028456
+epoch 070 | train loss: 0.4886 bal_acc: 0.76 acc: 0.76 | val loss: 0.9794 bal_acc: 0.58 acc: 0.58
+Gradient check epoch 080:
+  features.0.weight: 0.00146149
+  features.1.weight: 0.00000062
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03019014
+  features.3.weight: 0.00920012
+  features.3.bias: 0.00563965
+  features.7.weight: 0.00739373
+  features.8.weight: 0.01210499
+  features.9.weight: 0.00876077
+  features.9.bias: 0.00897238
+  classifier.weight: 0.02568302
+  classifier.bias: 0.02474466
+Optimizer check epoch 080 classifier.weight delta: 0.00019172
+epoch 080 | train loss: 0.4209 bal_acc: 0.81 acc: 0.81 | val loss: 1.0595 bal_acc: 0.58 acc: 0.58
+Gradient check epoch 090:
+  features.0.weight: 0.00142848
+  features.1.weight: 0.00000145
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04868270
+  features.3.weight: 0.01522371
+  features.3.bias: 0.00976884
+  features.7.weight: 0.01102358
+  features.8.weight: 0.02050409
+  features.9.weight: 0.01394879
+  features.9.bias: 0.03082633
+  classifier.weight: 0.03497141
+  classifier.bias: 0.06838182
+Optimizer check epoch 090 classifier.weight delta: 0.00016759
+epoch 090 | train loss: 0.4309 bal_acc: 0.80 acc: 0.80 | val loss: 1.1744 bal_acc: 0.53 acc: 0.54
+Gradient check epoch 100:
+  features.0.weight: 0.00088431
+  features.1.weight: 0.00000152
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04752512
+  features.3.weight: 0.01929028
+  features.3.bias: 0.01023741
+  features.7.weight: 0.01272477
+  features.8.weight: 0.01751155
+  features.9.weight: 0.01248401
+  features.9.bias: 0.04501467
+  classifier.weight: 0.02067498
+  classifier.bias: 0.09590765
+Optimizer check epoch 100 classifier.weight delta: 0.00020208
+epoch 100 | train loss: 0.3816 bal_acc: 0.83 acc: 0.83 | val loss: 1.2505 bal_acc: 0.52 acc: 0.53
+best epoch=2 | val loss: 0.6687 bal_acc: 0.51 acc: 0.57 | test loss: 0.7002 bal_acc: 0.45 acc: 0.52
+test confusion matrix rows=true cols=pred
+[[5, 35], [13, 47]]
+
+=== y_04 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00600454
+  features.1.weight: 0.00000008
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00327195
+  features.3.weight: 0.00220842
+  features.3.bias: 0.00112666
+  features.7.weight: 0.00877155
+  features.8.weight: 0.00506537
+  features.9.weight: 0.00253177
+  features.9.bias: 0.00432326
+  classifier.weight: 0.01559916
+  classifier.bias: 0.03719587
+Optimizer check epoch 001 classifier.weight delta: 0.00100001
+epoch 001 | train loss: 0.6969 bal_acc: 0.49 acc: 0.51 | val loss: 0.6823 bal_acc: 0.50 acc: 0.60
+Gradient check epoch 010:
+  features.0.weight: 0.00080988
+  features.1.weight: 0.00000141
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03230358
+  features.3.weight: 0.00641044
+  features.3.bias: 0.00322217
+  features.7.weight: 0.01133888
+  features.8.weight: 0.00893326
+  features.9.weight: 0.00262024
+  features.9.bias: 0.01170296
+  classifier.weight: 0.01732651
+  classifier.bias: 0.07302489
+Optimizer check epoch 010 classifier.weight delta: 0.00028442
+epoch 010 | train loss: 0.6139 bal_acc: 0.67 acc: 0.67 | val loss: 0.7097 bal_acc: 0.55 acc: 0.56
+Gradient check epoch 020:
+  features.0.weight: 0.00090388
+  features.1.weight: 0.00000074
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01416621
+  features.3.weight: 0.00405769
+  features.3.bias: 0.00221664
+  features.7.weight: 0.00510765
+  features.8.weight: 0.00631861
+  features.9.weight: 0.00572495
+  features.9.bias: 0.00875675
+  classifier.weight: 0.03123704
+  classifier.bias: 0.06013618
+Optimizer check epoch 020 classifier.weight delta: 0.00023089
+epoch 020 | train loss: 0.5955 bal_acc: 0.67 acc: 0.67 | val loss: 0.7559 bal_acc: 0.59 acc: 0.60
+Gradient check epoch 030:
+  features.0.weight: 0.00111469
+  features.1.weight: 0.00000261
+  features.1.bias: 0.00000001
+  features.2.weight: 0.05387918
+  features.3.weight: 0.01721487
+  features.3.bias: 0.00799568
+  features.7.weight: 0.02374990
+  features.8.weight: 0.02012474
+  features.9.weight: 0.00549204
+  features.9.bias: 0.00847747
+  classifier.weight: 0.02424971
+  classifier.bias: 0.05102674
+Optimizer check epoch 030 classifier.weight delta: 0.00018767
+epoch 030 | train loss: 0.5143 bal_acc: 0.71 acc: 0.71 | val loss: 0.8473 bal_acc: 0.51 acc: 0.52
+Gradient check epoch 040:
+  features.0.weight: 0.00107338
+  features.1.weight: 0.00000277
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04519199
+  features.3.weight: 0.02786432
+  features.3.bias: 0.01310795
+  features.7.weight: 0.02954598
+  features.8.weight: 0.02866216
+  features.9.weight: 0.01488410
+  features.9.bias: 0.02095304
+  classifier.weight: 0.05808778
+  classifier.bias: 0.08603638
+Optimizer check epoch 040 classifier.weight delta: 0.00021338
+epoch 040 | train loss: 0.5566 bal_acc: 0.73 acc: 0.73 | val loss: 0.8525 bal_acc: 0.47 acc: 0.48
+Gradient check epoch 050:
+  features.0.weight: 0.00092137
+  features.1.weight: 0.00000205
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03666930
+  features.3.weight: 0.01265482
+  features.3.bias: 0.00621054
+  features.7.weight: 0.01157642
+  features.8.weight: 0.01264389
+  features.9.weight: 0.00708529
+  features.9.bias: 0.01860044
+  classifier.weight: 0.02193817
+  classifier.bias: 0.06170527
+Optimizer check epoch 050 classifier.weight delta: 0.00018199
+epoch 050 | train loss: 0.5198 bal_acc: 0.75 acc: 0.75 | val loss: 0.8592 bal_acc: 0.50 acc: 0.51
+Gradient check epoch 060:
+  features.0.weight: 0.00085824
+  features.1.weight: 0.00000196
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03903242
+  features.3.weight: 0.01265929
+  features.3.bias: 0.00616388
+  features.7.weight: 0.01073836
+  features.8.weight: 0.01342043
+  features.9.weight: 0.01347031
+  features.9.bias: 0.03619870
+  classifier.weight: 0.03560065
+  classifier.bias: 0.11859524
+Optimizer check epoch 060 classifier.weight delta: 0.00016231
+epoch 060 | train loss: 0.4847 bal_acc: 0.78 acc: 0.78 | val loss: 0.8688 bal_acc: 0.51 acc: 0.52
+Gradient check epoch 070:
+  features.0.weight: 0.00097823
+  features.1.weight: 0.00000325
+  features.1.bias: 0.00000001
+  features.2.weight: 0.05795784
+  features.3.weight: 0.03167188
+  features.3.bias: 0.01475149
+  features.7.weight: 0.02644369
+  features.8.weight: 0.02810498
+  features.9.weight: 0.00977948
+  features.9.bias: 0.00476155
+  classifier.weight: 0.03336756
+  classifier.bias: 0.01412099
+Optimizer check epoch 070 classifier.weight delta: 0.00018699
+epoch 070 | train loss: 0.4480 bal_acc: 0.80 acc: 0.80 | val loss: 0.9570 bal_acc: 0.48 acc: 0.49
+Gradient check epoch 080:
+  features.0.weight: 0.00076993
+  features.1.weight: 0.00000354
+  features.1.bias: 0.00000001
+  features.2.weight: 0.10523263
+  features.3.weight: 0.02705641
+  features.3.bias: 0.01544403
+  features.7.weight: 0.02471288
+  features.8.weight: 0.03282609
+  features.9.weight: 0.00901307
+  features.9.bias: 0.02885152
+  classifier.weight: 0.03573421
+  classifier.bias: 0.09718828
+Optimizer check epoch 080 classifier.weight delta: 0.00024423
+epoch 080 | train loss: 0.4147 bal_acc: 0.80 acc: 0.80 | val loss: 0.8981 bal_acc: 0.52 acc: 0.55
+Gradient check epoch 090:
+  features.0.weight: 0.00078141
+  features.1.weight: 0.00000351
+  features.1.bias: 0.00000001
+  features.2.weight: 0.06039568
+  features.3.weight: 0.03073035
+  features.3.bias: 0.01184790
+  features.7.weight: 0.02281489
+  features.8.weight: 0.03002676
+  features.9.weight: 0.01195365
+  features.9.bias: 0.04655697
+  classifier.weight: 0.02733796
+  classifier.bias: 0.13392982
+Optimizer check epoch 090 classifier.weight delta: 0.00008701
+epoch 090 | train loss: 0.3909 bal_acc: 0.81 acc: 0.80 | val loss: 0.9306 bal_acc: 0.52 acc: 0.55
+Gradient check epoch 100:
+  features.0.weight: 0.00236023
+  features.1.weight: 0.00000429
+  features.1.bias: 0.00000001
+  features.2.weight: 0.07608910
+  features.3.weight: 0.04855637
+  features.3.bias: 0.02027891
+  features.7.weight: 0.03420441
+  features.8.weight: 0.03778794
+  features.9.weight: 0.03921185
+  features.9.bias: 0.10493740
+  classifier.weight: 0.06424525
+  classifier.bias: 0.26162028
+Optimizer check epoch 100 classifier.weight delta: 0.00026595
+epoch 100 | train loss: 0.4154 bal_acc: 0.81 acc: 0.81 | val loss: 1.0395 bal_acc: 0.55 acc: 0.55
+best epoch=1 | val loss: 0.6823 bal_acc: 0.50 acc: 0.60 | test loss: 0.6797 bal_acc: 0.52 acc: 0.61
+test confusion matrix rows=true cols=pred
+[[2, 38], [1, 59]]
+
+=== y_12 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00164079
+  features.1.weight: 0.00000005
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00269861
+  features.3.weight: 0.00102593
+  features.3.bias: 0.00083611
+  features.7.weight: 0.00484567
+  features.8.weight: 0.00336325
+  features.9.weight: 0.00410675
+  features.9.bias: 0.01082142
+  classifier.weight: 0.01493422
+  classifier.bias: 0.08792706
+Optimizer check epoch 001 classifier.weight delta: 0.00100001
+epoch 001 | train loss: 0.6823 bal_acc: 0.51 acc: 0.57 | val loss: 0.6695 bal_acc: 0.49 acc: 0.59
+Gradient check epoch 010:
+  features.0.weight: 0.00068379
+  features.1.weight: 0.00000061
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01982199
+  features.3.weight: 0.00688489
+  features.3.bias: 0.00216730
+  features.7.weight: 0.01259795
+  features.8.weight: 0.01004151
+  features.9.weight: 0.00782377
+  features.9.bias: 0.02108314
+  classifier.weight: 0.03991600
+  classifier.bias: 0.13337898
+Optimizer check epoch 010 classifier.weight delta: 0.00037939
+epoch 010 | train loss: 0.5844 bal_acc: 0.66 acc: 0.66 | val loss: 0.6623 bal_acc: 0.62 acc: 0.63
+Gradient check epoch 020:
+  features.0.weight: 0.00097178
+  features.1.weight: 0.00000181
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04801923
+  features.3.weight: 0.01049456
+  features.3.bias: 0.00445479
+  features.7.weight: 0.01521866
+  features.8.weight: 0.01327161
+  features.9.weight: 0.00812265
+  features.9.bias: 0.02199216
+  classifier.weight: 0.03137692
+  classifier.bias: 0.12475167
+Optimizer check epoch 020 classifier.weight delta: 0.00016936
+epoch 020 | train loss: 0.5572 bal_acc: 0.69 acc: 0.68 | val loss: 0.7282 bal_acc: 0.58 acc: 0.58
+Gradient check epoch 030:
+  features.0.weight: 0.00135907
+  features.1.weight: 0.00000167
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04947666
+  features.3.weight: 0.01514611
+  features.3.bias: 0.00725728
+  features.7.weight: 0.01745750
+  features.8.weight: 0.01578318
+  features.9.weight: 0.01419910
+  features.9.bias: 0.02502804
+  classifier.weight: 0.04875191
+  classifier.bias: 0.12045250
+Optimizer check epoch 030 classifier.weight delta: 0.00021388
+epoch 030 | train loss: 0.4967 bal_acc: 0.78 acc: 0.78 | val loss: 0.7059 bal_acc: 0.59 acc: 0.61
+Gradient check epoch 040:
+  features.0.weight: 0.00183581
+  features.1.weight: 0.00000109
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04380607
+  features.3.weight: 0.01813491
+  features.3.bias: 0.01190292
+  features.7.weight: 0.02100280
+  features.8.weight: 0.02363057
+  features.9.weight: 0.01319807
+  features.9.bias: 0.04219387
+  classifier.weight: 0.04550958
+  classifier.bias: 0.18427530
+Optimizer check epoch 040 classifier.weight delta: 0.00016662
+epoch 040 | train loss: 0.4821 bal_acc: 0.76 acc: 0.76 | val loss: 0.7664 bal_acc: 0.56 acc: 0.57
+Gradient check epoch 050:
+  features.0.weight: 0.00131587
+  features.1.weight: 0.00000353
+  features.1.bias: 0.00000001
+  features.2.weight: 0.06723841
+  features.3.weight: 0.03130111
+  features.3.bias: 0.01909807
+  features.7.weight: 0.02941686
+  features.8.weight: 0.03389266
+  features.9.weight: 0.01330947
+  features.9.bias: 0.02352975
+  classifier.weight: 0.05442163
+  classifier.bias: 0.10026959
+Optimizer check epoch 050 classifier.weight delta: 0.00027367
+epoch 050 | train loss: 0.4893 bal_acc: 0.74 acc: 0.74 | val loss: 0.9513 bal_acc: 0.52 acc: 0.54
+Gradient check epoch 060:
+  features.0.weight: 0.00093482
+  features.1.weight: 0.00000151
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03034025
+  features.3.weight: 0.01434514
+  features.3.bias: 0.00847812
+  features.7.weight: 0.01307299
+  features.8.weight: 0.01626291
+  features.9.weight: 0.01529586
+  features.9.bias: 0.05553119
+  classifier.weight: 0.02801665
+  classifier.bias: 0.19736281
+Optimizer check epoch 060 classifier.weight delta: 0.00024976
+epoch 060 | train loss: 0.4510 bal_acc: 0.78 acc: 0.78 | val loss: 0.8792 bal_acc: 0.54 acc: 0.55
+Gradient check epoch 070:
+  features.0.weight: 0.00150141
+  features.1.weight: 0.00000319
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04295263
+  features.3.weight: 0.03534668
+  features.3.bias: 0.01970652
+  features.7.weight: 0.03130243
+  features.8.weight: 0.03357876
+  features.9.weight: 0.02061892
+  features.9.bias: 0.04432318
+  classifier.weight: 0.05762530
+  classifier.bias: 0.13211410
+Optimizer check epoch 070 classifier.weight delta: 0.00012971
+epoch 070 | train loss: 0.4448 bal_acc: 0.80 acc: 0.80 | val loss: 0.8700 bal_acc: 0.59 acc: 0.61
+Gradient check epoch 080:
+  features.0.weight: 0.00113728
+  features.1.weight: 0.00000272
+  features.1.bias: 0.00000000
+  features.2.weight: 0.09376942
+  features.3.weight: 0.02938775
+  features.3.bias: 0.01440369
+  features.7.weight: 0.02602324
+  features.8.weight: 0.02664358
+  features.9.weight: 0.01946344
+  features.9.bias: 0.06245794
+  classifier.weight: 0.03310398
+  classifier.bias: 0.17996633
+Optimizer check epoch 080 classifier.weight delta: 0.00022465
+epoch 080 | train loss: 0.4090 bal_acc: 0.80 acc: 0.80 | val loss: 0.9160 bal_acc: 0.59 acc: 0.58
+Gradient check epoch 090:
+  features.0.weight: 0.00082267
+  features.1.weight: 0.00000268
+  features.1.bias: 0.00000001
+  features.2.weight: 0.07646514
+  features.3.weight: 0.02473512
+  features.3.bias: 0.01377280
+  features.7.weight: 0.02050783
+  features.8.weight: 0.02462930
+  features.9.weight: 0.01246522
+  features.9.bias: 0.03480425
+  classifier.weight: 0.03016225
+  classifier.bias: 0.08675308
+Optimizer check epoch 090 classifier.weight delta: 0.00018226
+epoch 090 | train loss: 0.4238 bal_acc: 0.80 acc: 0.80 | val loss: 0.8526 bal_acc: 0.55 acc: 0.57
+Gradient check epoch 100:
+  features.0.weight: 0.00106350
+  features.1.weight: 0.00000106
+  features.1.bias: 0.00000001
+  features.2.weight: 0.05143096
+  features.3.weight: 0.01639742
+  features.3.bias: 0.00748067
+  features.7.weight: 0.01351300
+  features.8.weight: 0.01772202
+  features.9.weight: 0.01366159
+  features.9.bias: 0.03675597
+  classifier.weight: 0.02860774
+  classifier.bias: 0.08881196
+Optimizer check epoch 100 classifier.weight delta: 0.00015407
+epoch 100 | train loss: 0.3841 bal_acc: 0.83 acc: 0.83 | val loss: 1.0447 bal_acc: 0.52 acc: 0.54
+best epoch=3 | val loss: 0.6459 bal_acc: 0.59 acc: 0.62 | test loss: 0.7112 bal_acc: 0.55 acc: 0.57
+test confusion matrix rows=true cols=pred
+[[18, 22], [21, 39]]
+
+=== y_13 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00875239
+  features.1.weight: 0.00000008
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00297340
+  features.3.weight: 0.00164402
+  features.3.bias: 0.00087600
+  features.7.weight: 0.00642952
+  features.8.weight: 0.00568460
+  features.9.weight: 0.00707183
+  features.9.bias: 0.02045052
+  classifier.weight: 0.02678779
+  classifier.bias: 0.15991083
+Optimizer check epoch 001 classifier.weight delta: 0.00100001
+epoch 001 | train loss: 0.6967 bal_acc: 0.53 acc: 0.52 | val loss: 0.6851 bal_acc: 0.53 acc: 0.60
+Gradient check epoch 010:
+  features.0.weight: 0.00187685
+  features.1.weight: 0.00000040
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00555088
+  features.3.weight: 0.00485922
+  features.3.bias: 0.00265242
+  features.7.weight: 0.00662847
+  features.8.weight: 0.00640811
+  features.9.weight: 0.00738343
+  features.9.bias: 0.00363051
+  classifier.weight: 0.04530779
+  classifier.bias: 0.00403747
+Optimizer check epoch 010 classifier.weight delta: 0.00018484
+epoch 010 | train loss: 0.6407 bal_acc: 0.64 acc: 0.64 | val loss: 0.7900 bal_acc: 0.43 acc: 0.46
+Gradient check epoch 020:
+  features.0.weight: 0.00093781
+  features.1.weight: 0.00000045
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01803967
+  features.3.weight: 0.00486707
+  features.3.bias: 0.00349882
+  features.7.weight: 0.00838449
+  features.8.weight: 0.01122920
+  features.9.weight: 0.01155932
+  features.9.bias: 0.02389674
+  classifier.weight: 0.04453468
+  classifier.bias: 0.12700440
+Optimizer check epoch 020 classifier.weight delta: 0.00028892
+epoch 020 | train loss: 0.6392 bal_acc: 0.62 acc: 0.62 | val loss: 0.8097 bal_acc: 0.44 acc: 0.45
+Gradient check epoch 030:
+  features.0.weight: 0.00200645
+  features.1.weight: 0.00000099
+  features.1.bias: 0.00000000
+  features.2.weight: 0.05645975
+  features.3.weight: 0.01198245
+  features.3.bias: 0.00475480
+  features.7.weight: 0.01869063
+  features.8.weight: 0.02077696
+  features.9.weight: 0.01334124
+  features.9.bias: 0.02384564
+  classifier.weight: 0.05745142
+  classifier.bias: 0.11947532
+Optimizer check epoch 030 classifier.weight delta: 0.00016528
+epoch 030 | train loss: 0.5781 bal_acc: 0.70 acc: 0.70 | val loss: 0.9119 bal_acc: 0.44 acc: 0.45
+Gradient check epoch 040:
+  features.0.weight: 0.00166836
+  features.1.weight: 0.00000061
+  features.1.bias: 0.00000000
+  features.2.weight: 0.02858367
+  features.3.weight: 0.01003435
+  features.3.bias: 0.00579239
+  features.7.weight: 0.01136378
+  features.8.weight: 0.01301799
+  features.9.weight: 0.01569377
+  features.9.bias: 0.04784803
+  classifier.weight: 0.04228970
+  classifier.bias: 0.23750922
+Optimizer check epoch 040 classifier.weight delta: 0.00031368
+epoch 040 | train loss: 0.5892 bal_acc: 0.69 acc: 0.69 | val loss: 0.8469 bal_acc: 0.43 acc: 0.45
+Gradient check epoch 050:
+  features.0.weight: 0.00088016
+  features.1.weight: 0.00000106
+  features.1.bias: 0.00000000
+  features.2.weight: 0.02521768
+  features.3.weight: 0.00886287
+  features.3.bias: 0.00619982
+  features.7.weight: 0.00889474
+  features.8.weight: 0.01418685
+  features.9.weight: 0.00859775
+  features.9.bias: 0.03135719
+  classifier.weight: 0.02656277
+  classifier.bias: 0.12479280
+Optimizer check epoch 050 classifier.weight delta: 0.00015416
+epoch 050 | train loss: 0.5357 bal_acc: 0.71 acc: 0.71 | val loss: 0.9632 bal_acc: 0.43 acc: 0.44
+Gradient check epoch 060:
+  features.0.weight: 0.00159466
+  features.1.weight: 0.00000052
+  features.1.bias: 0.00000000
+  features.2.weight: 0.02696411
+  features.3.weight: 0.01074003
+  features.3.bias: 0.00938322
+  features.7.weight: 0.01047697
+  features.8.weight: 0.01575440
+  features.9.weight: 0.01415756
+  features.9.bias: 0.03340006
+  classifier.weight: 0.03886662
+  classifier.bias: 0.12553155
+Optimizer check epoch 060 classifier.weight delta: 0.00021799
+epoch 060 | train loss: 0.5012 bal_acc: 0.76 acc: 0.76 | val loss: 1.0120 bal_acc: 0.47 acc: 0.47
+Gradient check epoch 070:
+  features.0.weight: 0.00234821
+  features.1.weight: 0.00000085
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04566534
+  features.3.weight: 0.01033641
+  features.3.bias: 0.00803074
+  features.7.weight: 0.00951540
+  features.8.weight: 0.02360808
+  features.9.weight: 0.01541360
+  features.9.bias: 0.02052807
+  classifier.weight: 0.04186414
+  classifier.bias: 0.06214855
+Optimizer check epoch 070 classifier.weight delta: 0.00019581
+epoch 070 | train loss: 0.5223 bal_acc: 0.74 acc: 0.74 | val loss: 0.9551 bal_acc: 0.42 acc: 0.43
+Gradient check epoch 080:
+  features.0.weight: 0.00354089
+  features.1.weight: 0.00000221
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03018607
+  features.3.weight: 0.02215917
+  features.3.bias: 0.00697978
+  features.7.weight: 0.01578575
+  features.8.weight: 0.02025875
+  features.9.weight: 0.01636122
+  features.9.bias: 0.06027000
+  classifier.weight: 0.02837406
+  classifier.bias: 0.18218219
+Optimizer check epoch 080 classifier.weight delta: 0.00019187
+epoch 080 | train loss: 0.4773 bal_acc: 0.77 acc: 0.77 | val loss: 0.9820 bal_acc: 0.43 acc: 0.43
+Gradient check epoch 090:
+  features.0.weight: 0.00520520
+  features.1.weight: 0.00000297
+  features.1.bias: 0.00000001
+  features.2.weight: 0.10535070
+  features.3.weight: 0.05346745
+  features.3.bias: 0.02585556
+  features.7.weight: 0.04180906
+  features.8.weight: 0.05465473
+  features.9.weight: 0.03002486
+  features.9.bias: 0.07435789
+  classifier.weight: 0.07872972
+  classifier.bias: 0.19579813
+Optimizer check epoch 090 classifier.weight delta: 0.00016703
+epoch 090 | train loss: 0.4934 bal_acc: 0.75 acc: 0.75 | val loss: 1.0489 bal_acc: 0.49 acc: 0.48
+Gradient check epoch 100:
+  features.0.weight: 0.00167514
+  features.1.weight: 0.00000136
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04876509
+  features.3.weight: 0.02620854
+  features.3.bias: 0.01374587
+  features.7.weight: 0.01892293
+  features.8.weight: 0.02433157
+  features.9.weight: 0.03185303
+  features.9.bias: 0.07843465
+  classifier.weight: 0.04787950
+  classifier.bias: 0.21497878
+Optimizer check epoch 100 classifier.weight delta: 0.00030680
+epoch 100 | train loss: 0.4497 bal_acc: 0.79 acc: 0.79 | val loss: 0.9168 bal_acc: 0.44 acc: 0.45
+best epoch=1 | val loss: 0.6851 bal_acc: 0.53 acc: 0.60 | test loss: 0.6865 bal_acc: 0.48 acc: 0.54
+test confusion matrix rows=true cols=pred
+[[7, 33], [13, 47]]
+
+=== y_14 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00618932
+  features.1.weight: 0.00000011
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00282704
+  features.3.weight: 0.00231836
+  features.3.bias: 0.00096800
+  features.7.weight: 0.00578103
+  features.8.weight: 0.00434674
+  features.9.weight: 0.00543102
+  features.9.bias: 0.01102200
+  classifier.weight: 0.02602827
+  classifier.bias: 0.09168379
+Optimizer check epoch 001 classifier.weight delta: 0.00099998
+epoch 001 | train loss: 0.6982 bal_acc: 0.51 acc: 0.47 | val loss: 0.6829 bal_acc: 0.48 acc: 0.57
+Gradient check epoch 010:
+  features.0.weight: 0.00068353
+  features.1.weight: 0.00000073
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01643145
+  features.3.weight: 0.00928428
+  features.3.bias: 0.00318723
+  features.7.weight: 0.01519656
+  features.8.weight: 0.01131902
+  features.9.weight: 0.01057544
+  features.9.bias: 0.02210486
+  classifier.weight: 0.05841137
+  classifier.bias: 0.13504314
+Optimizer check epoch 010 classifier.weight delta: 0.00023484
+epoch 010 | train loss: 0.6425 bal_acc: 0.63 acc: 0.63 | val loss: 0.7200 bal_acc: 0.57 acc: 0.56
+Gradient check epoch 020:
+  features.0.weight: 0.00064009
+  features.1.weight: 0.00000116
+  features.1.bias: 0.00000001
+  features.2.weight: 0.02501309
+  features.3.weight: 0.01015635
+  features.3.bias: 0.00454270
+  features.7.weight: 0.01601875
+  features.8.weight: 0.01167061
+  features.9.weight: 0.00701664
+  features.9.bias: 0.01906589
+  classifier.weight: 0.02812791
+  classifier.bias: 0.09876786
+Optimizer check epoch 020 classifier.weight delta: 0.00028784
+epoch 020 | train loss: 0.5786 bal_acc: 0.70 acc: 0.69 | val loss: 0.8868 bal_acc: 0.50 acc: 0.50
+Gradient check epoch 030:
+  features.0.weight: 0.00082572
+  features.1.weight: 0.00000173
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03930950
+  features.3.weight: 0.01474649
+  features.3.bias: 0.00681505
+  features.7.weight: 0.01756792
+  features.8.weight: 0.01411941
+  features.9.weight: 0.00749307
+  features.9.bias: 0.00816762
+  classifier.weight: 0.03039091
+  classifier.bias: 0.04539727
+Optimizer check epoch 030 classifier.weight delta: 0.00017132
+epoch 030 | train loss: 0.5486 bal_acc: 0.72 acc: 0.72 | val loss: 0.9585 bal_acc: 0.54 acc: 0.57
+Gradient check epoch 040:
+  features.0.weight: 0.00085912
+  features.1.weight: 0.00000090
+  features.1.bias: 0.00000001
+  features.2.weight: 0.02911245
+  features.3.weight: 0.00931966
+  features.3.bias: 0.00577877
+  features.7.weight: 0.00972563
+  features.8.weight: 0.00973443
+  features.9.weight: 0.00579838
+  features.9.bias: 0.01340959
+  classifier.weight: 0.02078161
+  classifier.bias: 0.06132503
+Optimizer check epoch 040 classifier.weight delta: 0.00020056
+epoch 040 | train loss: 0.4827 bal_acc: 0.79 acc: 0.79 | val loss: 0.9908 bal_acc: 0.50 acc: 0.51
+Gradient check epoch 050:
+  features.0.weight: 0.00098701
+  features.1.weight: 0.00000124
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03717308
+  features.3.weight: 0.01371420
+  features.3.bias: 0.00487347
+  features.7.weight: 0.01146002
+  features.8.weight: 0.01320062
+  features.9.weight: 0.02564116
+  features.9.bias: 0.06580422
+  classifier.weight: 0.05569303
+  classifier.bias: 0.24997221
+Optimizer check epoch 050 classifier.weight delta: 0.00017766
+epoch 050 | train loss: 0.4745 bal_acc: 0.81 acc: 0.81 | val loss: 1.0365 bal_acc: 0.50 acc: 0.50
+Gradient check epoch 060:
+  features.0.weight: 0.00223618
+  features.1.weight: 0.00000131
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04738900
+  features.3.weight: 0.02077946
+  features.3.bias: 0.01173949
+  features.7.weight: 0.02268538
+  features.8.weight: 0.02241483
+  features.9.weight: 0.01213934
+  features.9.bias: 0.00864643
+  classifier.weight: 0.04904175
+  classifier.bias: 0.00697723
+Optimizer check epoch 060 classifier.weight delta: 0.00016871
+epoch 060 | train loss: 0.4851 bal_acc: 0.79 acc: 0.79 | val loss: 1.0640 bal_acc: 0.50 acc: 0.49
+Gradient check epoch 070:
+  features.0.weight: 0.00108371
+  features.1.weight: 0.00000327
+  features.1.bias: 0.00000001
+  features.2.weight: 0.05649277
+  features.3.weight: 0.01998041
+  features.3.bias: 0.01092914
+  features.7.weight: 0.01934053
+  features.8.weight: 0.02185585
+  features.9.weight: 0.01607858
+  features.9.bias: 0.02637754
+  classifier.weight: 0.05024981
+  classifier.bias: 0.09670392
+Optimizer check epoch 070 classifier.weight delta: 0.00025846
+epoch 070 | train loss: 0.4112 bal_acc: 0.83 acc: 0.83 | val loss: 1.3144 bal_acc: 0.52 acc: 0.51
+Gradient check epoch 080:
+  features.0.weight: 0.00104116
+  features.1.weight: 0.00000390
+  features.1.bias: 0.00000001
+  features.2.weight: 0.14518850
+  features.3.weight: 0.04073721
+  features.3.bias: 0.02092816
+  features.7.weight: 0.03328072
+  features.8.weight: 0.04484578
+  features.9.weight: 0.03184515
+  features.9.bias: 0.01557052
+  classifier.weight: 0.10277444
+  classifier.bias: 0.02136568
+Optimizer check epoch 080 classifier.weight delta: 0.00015780
+epoch 080 | train loss: 0.4552 bal_acc: 0.81 acc: 0.81 | val loss: 1.0566 bal_acc: 0.51 acc: 0.51
+Gradient check epoch 090:
+  features.0.weight: 0.00095774
+  features.1.weight: 0.00000128
+  features.1.bias: 0.00000001
+  features.2.weight: 0.05702629
+  features.3.weight: 0.01679849
+  features.3.bias: 0.00778128
+  features.7.weight: 0.01458075
+  features.8.weight: 0.01469076
+  features.9.weight: 0.01261830
+  features.9.bias: 0.03045268
+  classifier.weight: 0.02679510
+  classifier.bias: 0.08292556
+Optimizer check epoch 090 classifier.weight delta: 0.00015960
+epoch 090 | train loss: 0.4053 bal_acc: 0.82 acc: 0.82 | val loss: 1.5524 bal_acc: 0.48 acc: 0.49
+Gradient check epoch 100:
+  features.0.weight: 0.00201170
+  features.1.weight: 0.00000239
+  features.1.bias: 0.00000001
+  features.2.weight: 0.11176379
+  features.3.weight: 0.02860116
+  features.3.bias: 0.01959968
+  features.7.weight: 0.02459068
+  features.8.weight: 0.04355154
+  features.9.weight: 0.03951604
+  features.9.bias: 0.06431885
+  classifier.weight: 0.07619224
+  classifier.bias: 0.15404025
+Optimizer check epoch 100 classifier.weight delta: 0.00017700
+epoch 100 | train loss: 0.4308 bal_acc: 0.81 acc: 0.81 | val loss: 1.2725 bal_acc: 0.48 acc: 0.50
+best epoch=2 | val loss: 0.6828 bal_acc: 0.50 acc: 0.53 | test loss: 0.6916 bal_acc: 0.45 acc: 0.48
+test confusion matrix rows=true cols=pred
+[[11, 29], [23, 37]]
+
+=== y_23 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00575370
+  features.1.weight: 0.00000014
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00350842
+  features.3.weight: 0.00330055
+  features.3.bias: 0.00176423
+  features.7.weight: 0.00733614
+  features.8.weight: 0.00925965
+  features.9.weight: 0.00558051
+  features.9.bias: 0.00476835
+  classifier.weight: 0.04196688
+  classifier.bias: 0.02658548
+Optimizer check epoch 001 classifier.weight delta: 0.00099999
+epoch 001 | train loss: 0.6788 bal_acc: 0.58 acc: 0.58 | val loss: 0.6641 bal_acc: 0.53 acc: 0.59
+Gradient check epoch 010:
+  features.0.weight: 0.00073672
+  features.1.weight: 0.00000095
+  features.1.bias: 0.00000000
+  features.2.weight: 0.02518061
+  features.3.weight: 0.00957419
+  features.3.bias: 0.00511486
+  features.7.weight: 0.01688941
+  features.8.weight: 0.01180834
+  features.9.weight: 0.00834647
+  features.9.bias: 0.01787836
+  classifier.weight: 0.04134894
+  classifier.bias: 0.09154123
+Optimizer check epoch 010 classifier.weight delta: 0.00031393
+epoch 010 | train loss: 0.6368 bal_acc: 0.63 acc: 0.63 | val loss: 0.7944 bal_acc: 0.55 acc: 0.55
+Gradient check epoch 020:
+  features.0.weight: 0.00070117
+  features.1.weight: 0.00000037
+  features.1.bias: 0.00000000
+  features.2.weight: 0.02221537
+  features.3.weight: 0.00472830
+  features.3.bias: 0.00222590
+  features.7.weight: 0.00763889
+  features.8.weight: 0.00690710
+  features.9.weight: 0.01179629
+  features.9.bias: 0.03317130
+  classifier.weight: 0.03573417
+  classifier.bias: 0.17373268
+Optimizer check epoch 020 classifier.weight delta: 0.00015517
+epoch 020 | train loss: 0.5390 bal_acc: 0.75 acc: 0.75 | val loss: 0.8180 bal_acc: 0.54 acc: 0.56
+Gradient check epoch 030:
+  features.0.weight: 0.00071975
+  features.1.weight: 0.00000070
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03968241
+  features.3.weight: 0.01275928
+  features.3.bias: 0.00734781
+  features.7.weight: 0.01318121
+  features.8.weight: 0.01291307
+  features.9.weight: 0.00616811
+  features.9.bias: 0.00408202
+  classifier.weight: 0.02562464
+  classifier.bias: 0.00138385
+Optimizer check epoch 030 classifier.weight delta: 0.00021207
+epoch 030 | train loss: 0.4803 bal_acc: 0.77 acc: 0.77 | val loss: 1.0130 bal_acc: 0.55 acc: 0.54
+Gradient check epoch 040:
+  features.0.weight: 0.00133301
+  features.1.weight: 0.00000126
+  features.1.bias: 0.00000000
+  features.2.weight: 0.08331008
+  features.3.weight: 0.02620948
+  features.3.bias: 0.01241794
+  features.7.weight: 0.02916780
+  features.8.weight: 0.02810579
+  features.9.weight: 0.01528166
+  features.9.bias: 0.02336063
+  classifier.weight: 0.05649616
+  classifier.bias: 0.09460788
+Optimizer check epoch 040 classifier.weight delta: 0.00020484
+epoch 040 | train loss: 0.4987 bal_acc: 0.78 acc: 0.78 | val loss: 0.8831 bal_acc: 0.57 acc: 0.58
+Gradient check epoch 050:
+  features.0.weight: 0.00078196
+  features.1.weight: 0.00000076
+  features.1.bias: 0.00000001
+  features.2.weight: 0.08012644
+  features.3.weight: 0.01645898
+  features.3.bias: 0.00891234
+  features.7.weight: 0.01931125
+  features.8.weight: 0.01984664
+  features.9.weight: 0.02404454
+  features.9.bias: 0.05325031
+  classifier.weight: 0.05820006
+  classifier.bias: 0.19657637
+Optimizer check epoch 050 classifier.weight delta: 0.00020194
+epoch 050 | train loss: 0.4821 bal_acc: 0.77 acc: 0.77 | val loss: 0.9983 bal_acc: 0.53 acc: 0.54
+Gradient check epoch 060:
+  features.0.weight: 0.00095350
+  features.1.weight: 0.00000115
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03375373
+  features.3.weight: 0.01242167
+  features.3.bias: 0.00474371
+  features.7.weight: 0.00899813
+  features.8.weight: 0.01066524
+  features.9.weight: 0.00690011
+  features.9.bias: 0.03456642
+  classifier.weight: 0.00994679
+  classifier.bias: 0.12050255
+Optimizer check epoch 060 classifier.weight delta: 0.00015521
+epoch 060 | train loss: 0.4401 bal_acc: 0.81 acc: 0.81 | val loss: 0.9964 bal_acc: 0.58 acc: 0.57
+Gradient check epoch 070:
+  features.0.weight: 0.00175084
+  features.1.weight: 0.00000320
+  features.1.bias: 0.00000001
+  features.2.weight: 0.07127225
+  features.3.weight: 0.03724243
+  features.3.bias: 0.01657177
+  features.7.weight: 0.02928511
+  features.8.weight: 0.03139247
+  features.9.weight: 0.01760984
+  features.9.bias: 0.02049551
+  classifier.weight: 0.04897384
+  classifier.bias: 0.05644441
+Optimizer check epoch 070 classifier.weight delta: 0.00012959
+epoch 070 | train loss: 0.4382 bal_acc: 0.78 acc: 0.77 | val loss: 1.1042 bal_acc: 0.55 acc: 0.55
+Gradient check epoch 080:
+  features.0.weight: 0.00121813
+  features.1.weight: 0.00000105
+  features.1.bias: 0.00000001
+  features.2.weight: 0.05850281
+  features.3.weight: 0.01490156
+  features.3.bias: 0.00943541
+  features.7.weight: 0.01226051
+  features.8.weight: 0.02009834
+  features.9.weight: 0.01123814
+  features.9.bias: 0.03715076
+  classifier.weight: 0.02441973
+  classifier.bias: 0.11029515
+Optimizer check epoch 080 classifier.weight delta: 0.00029845
+epoch 080 | train loss: 0.4263 bal_acc: 0.80 acc: 0.80 | val loss: 0.9139 bal_acc: 0.59 acc: 0.60
+Gradient check epoch 090:
+  features.0.weight: 0.00130555
+  features.1.weight: 0.00000193
+  features.1.bias: 0.00000000
+  features.2.weight: 0.07571885
+  features.3.weight: 0.01756351
+  features.3.bias: 0.00911361
+  features.7.weight: 0.01450355
+  features.8.weight: 0.01978493
+  features.9.weight: 0.02777724
+  features.9.bias: 0.08595686
+  classifier.weight: 0.04384695
+  classifier.bias: 0.22437102
+Optimizer check epoch 090 classifier.weight delta: 0.00029167
+epoch 090 | train loss: 0.3952 bal_acc: 0.82 acc: 0.82 | val loss: 1.1208 bal_acc: 0.60 acc: 0.60
+Gradient check epoch 100:
+  features.0.weight: 0.00137710
+  features.1.weight: 0.00000097
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04373325
+  features.3.weight: 0.01486728
+  features.3.bias: 0.00598129
+  features.7.weight: 0.01123169
+  features.8.weight: 0.01831765
+  features.9.weight: 0.01651296
+  features.9.bias: 0.03972255
+  classifier.weight: 0.03424754
+  classifier.bias: 0.09048127
+Optimizer check epoch 100 classifier.weight delta: 0.00020749
+epoch 100 | train loss: 0.3475 bal_acc: 0.85 acc: 0.85 | val loss: 1.2155 bal_acc: 0.59 acc: 0.60
+best epoch=1 | val loss: 0.6641 bal_acc: 0.53 acc: 0.59 | test loss: 0.6955 bal_acc: 0.48 acc: 0.53
+test confusion matrix rows=true cols=pred
+[[10, 30], [17, 43]]
+
+=== y_24 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00183651
+  features.1.weight: 0.00000003
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00233074
+  features.3.weight: 0.00078007
+  features.3.bias: 0.00051894
+  features.7.weight: 0.00435460
+  features.8.weight: 0.00331937
+  features.9.weight: 0.01074226
+  features.9.bias: 0.02923086
+  classifier.weight: 0.03915068
+  classifier.bias: 0.22350344
+Optimizer check epoch 001 classifier.weight delta: 0.00099999
+epoch 001 | train loss: 0.6942 bal_acc: 0.48 acc: 0.48 | val loss: 0.6875 bal_acc: 0.49 acc: 0.58
+Gradient check epoch 010:
+  features.0.weight: 0.00053670
+  features.1.weight: 0.00000034
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01068556
+  features.3.weight: 0.00555440
+  features.3.bias: 0.00330436
+  features.7.weight: 0.01209385
+  features.8.weight: 0.00881808
+  features.9.weight: 0.00440034
+  features.9.bias: 0.00156980
+  classifier.weight: 0.03097238
+  classifier.bias: 0.00336147
+Optimizer check epoch 010 classifier.weight delta: 0.00018261
+epoch 010 | train loss: 0.6317 bal_acc: 0.64 acc: 0.64 | val loss: 0.7606 bal_acc: 0.52 acc: 0.54
+Gradient check epoch 020:
+  features.0.weight: 0.00054552
+  features.1.weight: 0.00000036
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01674073
+  features.3.weight: 0.00608809
+  features.3.bias: 0.00353778
+  features.7.weight: 0.00970928
+  features.8.weight: 0.00786555
+  features.9.weight: 0.00579593
+  features.9.bias: 0.00988757
+  classifier.weight: 0.02827179
+  classifier.bias: 0.06808449
+Optimizer check epoch 020 classifier.weight delta: 0.00020556
+epoch 020 | train loss: 0.6203 bal_acc: 0.64 acc: 0.64 | val loss: 0.7532 bal_acc: 0.52 acc: 0.56
+Gradient check epoch 030:
+  features.0.weight: 0.00076242
+  features.1.weight: 0.00000077
+  features.1.bias: 0.00000000
+  features.2.weight: 0.02574687
+  features.3.weight: 0.00787332
+  features.3.bias: 0.00636441
+  features.7.weight: 0.01085217
+  features.8.weight: 0.01034477
+  features.9.weight: 0.00902286
+  features.9.bias: 0.02257218
+  classifier.weight: 0.05277286
+  classifier.bias: 0.15038326
+Optimizer check epoch 030 classifier.weight delta: 0.00020264
+epoch 030 | train loss: 0.6309 bal_acc: 0.63 acc: 0.64 | val loss: 0.7835 bal_acc: 0.55 acc: 0.58
+Gradient check epoch 040:
+  features.0.weight: 0.00088454
+  features.1.weight: 0.00000062
+  features.1.bias: 0.00000001
+  features.2.weight: 0.02757878
+  features.3.weight: 0.00839477
+  features.3.bias: 0.00434384
+  features.7.weight: 0.01014948
+  features.8.weight: 0.01001027
+  features.9.weight: 0.01183067
+  features.9.bias: 0.04759054
+  classifier.weight: 0.03100922
+  classifier.bias: 0.25468025
+Optimizer check epoch 040 classifier.weight delta: 0.00033507
+epoch 040 | train loss: 0.5765 bal_acc: 0.72 acc: 0.72 | val loss: 0.8222 bal_acc: 0.55 acc: 0.56
+Gradient check epoch 050:
+  features.0.weight: 0.00106911
+  features.1.weight: 0.00000122
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04905866
+  features.3.weight: 0.01866447
+  features.3.bias: 0.01077816
+  features.7.weight: 0.02266082
+  features.8.weight: 0.02057316
+  features.9.weight: 0.00872816
+  features.9.bias: 0.00538155
+  classifier.weight: 0.03221996
+  classifier.bias: 0.00832592
+Optimizer check epoch 050 classifier.weight delta: 0.00021884
+epoch 050 | train loss: 0.5444 bal_acc: 0.76 acc: 0.76 | val loss: 0.9083 bal_acc: 0.46 acc: 0.49
+Gradient check epoch 060:
+  features.0.weight: 0.00094094
+  features.1.weight: 0.00000030
+  features.1.bias: 0.00000000
+  features.2.weight: 0.02316890
+  features.3.weight: 0.01295022
+  features.3.bias: 0.00651466
+  features.7.weight: 0.01330384
+  features.8.weight: 0.01282048
+  features.9.weight: 0.01015084
+  features.9.bias: 0.03823052
+  classifier.weight: 0.02542949
+  classifier.bias: 0.17530379
+Optimizer check epoch 060 classifier.weight delta: 0.00020761
+epoch 060 | train loss: 0.5727 bal_acc: 0.69 acc: 0.69 | val loss: 0.9043 bal_acc: 0.41 acc: 0.46
+Gradient check epoch 070:
+  features.0.weight: 0.00083589
+  features.1.weight: 0.00000114
+  features.1.bias: 0.00000001
+  features.2.weight: 0.05640368
+  features.3.weight: 0.02379517
+  features.3.bias: 0.01042743
+  features.7.weight: 0.01964806
+  features.8.weight: 0.02385957
+  features.9.weight: 0.01832532
+  features.9.bias: 0.04295382
+  classifier.weight: 0.04975322
+  classifier.bias: 0.17953581
+Optimizer check epoch 070 classifier.weight delta: 0.00019444
+epoch 070 | train loss: 0.5178 bal_acc: 0.75 acc: 0.75 | val loss: 0.9375 bal_acc: 0.54 acc: 0.55
+Gradient check epoch 080:
+  features.0.weight: 0.00074706
+  features.1.weight: 0.00000188
+  features.1.bias: 0.00000001
+  features.2.weight: 0.03740558
+  features.3.weight: 0.01799931
+  features.3.bias: 0.01067165
+  features.7.weight: 0.01478822
+  features.8.weight: 0.01905168
+  features.9.weight: 0.00945812
+  features.9.bias: 0.03176036
+  classifier.weight: 0.02489161
+  classifier.bias: 0.11847446
+Optimizer check epoch 080 classifier.weight delta: 0.00016471
+epoch 080 | train loss: 0.4770 bal_acc: 0.76 acc: 0.76 | val loss: 0.9238 bal_acc: 0.48 acc: 0.53
+Gradient check epoch 090:
+  features.0.weight: 0.00070572
+  features.1.weight: 0.00000078
+  features.1.bias: 0.00000000
+  features.2.weight: 0.04819599
+  features.3.weight: 0.02170499
+  features.3.bias: 0.01048291
+  features.7.weight: 0.01795228
+  features.8.weight: 0.02417601
+  features.9.weight: 0.00934481
+  features.9.bias: 0.03728512
+  classifier.weight: 0.02851561
+  classifier.bias: 0.13817209
+Optimizer check epoch 090 classifier.weight delta: 0.00011093
+epoch 090 | train loss: 0.5319 bal_acc: 0.71 acc: 0.71 | val loss: 0.9578 bal_acc: 0.49 acc: 0.52
+Gradient check epoch 100:
+  features.0.weight: 0.00089594
+  features.1.weight: 0.00000111
+  features.1.bias: 0.00000001
+  features.2.weight: 0.08505064
+  features.3.weight: 0.03593593
+  features.3.bias: 0.01783538
+  features.7.weight: 0.03181880
+  features.8.weight: 0.04608918
+  features.9.weight: 0.02060504
+  features.9.bias: 0.04100604
+  classifier.weight: 0.06934229
+  classifier.bias: 0.13406751
+Optimizer check epoch 100 classifier.weight delta: 0.00037307
+epoch 100 | train loss: 0.5137 bal_acc: 0.73 acc: 0.73 | val loss: 0.9176 bal_acc: 0.47 acc: 0.48
+best epoch=1 | val loss: 0.6875 bal_acc: 0.49 acc: 0.58 | test loss: 0.6834 bal_acc: 0.46 acc: 0.55
+test confusion matrix rows=true cols=pred
+[[0, 40], [5, 55]]
+
+=== y_34 ===
+Binary label distribution:
+  train: class0=120 class1=180 total=300
+  val:   class0=40 class1=60 total=100
+  test:  class0=40 class1=60 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+Gradient check epoch 001:
+  features.0.weight: 0.00198653
+  features.1.weight: 0.00000010
+  features.1.bias: 0.00000000
+  features.2.weight: 0.00293747
+  features.3.weight: 0.00209323
+  features.3.bias: 0.00095535
+  features.7.weight: 0.00528224
+  features.8.weight: 0.00419282
+  features.9.weight: 0.00361273
+  features.9.bias: 0.01454477
+  classifier.weight: 0.01839118
+  classifier.bias: 0.09696165
+Optimizer check epoch 001 classifier.weight delta: 0.00099998
+epoch 001 | train loss: 0.6878 bal_acc: 0.53 acc: 0.55 | val loss: 0.6705 bal_acc: 0.58 acc: 0.64
+Gradient check epoch 010:
+  features.0.weight: 0.01145570
+  features.1.weight: 0.00000032
+  features.1.bias: 0.00000000
+  features.2.weight: 0.01014048
+  features.3.weight: 0.00576709
+  features.3.bias: 0.00164552
+  features.7.weight: 0.00836473
+  features.8.weight: 0.00681920
+  features.9.weight: 0.00363568
+  features.9.bias: 0.02477583
+  classifier.weight: 0.02716811
+  classifier.bias: 0.16945618
+Optimizer check epoch 010 classifier.weight delta: 0.00012647
+epoch 010 | train loss: 0.6227 bal_acc: 0.66 acc: 0.66 | val loss: 0.6583 bal_acc: 0.63 acc: 0.64
+Gradient check epoch 020:
+  features.0.weight: 0.00205839
+  features.1.weight: 0.00000037
+  features.1.bias: 0.00000000
+  features.2.weight: 0.02601721
+  features.3.weight: 0.00866550
+  features.3.bias: 0.00258761
+  features.7.weight: 0.00816832
+  features.8.weight: 0.00778636
+  features.9.weight: 0.01549303
+  features.9.bias: 0.05834366
+  classifier.weight: 0.04529285
+  classifier.bias: 0.30747175
+Optimizer check epoch 020 classifier.weight delta: 0.00022341
+epoch 020 | train loss: 0.5844 bal_acc: 0.70 acc: 0.69 | val loss: 0.7189 bal_acc: 0.62 acc: 0.62
+Gradient check epoch 030:
+  features.0.weight: 0.00299968
+  features.1.weight: 0.00000057
+  features.1.bias: 0.00000001
+  features.2.weight: 0.02723653
+  features.3.weight: 0.00821536
+  features.3.bias: 0.00653217
+  features.7.weight: 0.00956257
+  features.8.weight: 0.00935212
+  features.9.weight: 0.00716936
+  features.9.bias: 0.00332406
+  classifier.weight: 0.02584687
+  classifier.bias: 0.00987353
+Optimizer check epoch 030 classifier.weight delta: 0.00012449
+epoch 030 | train loss: 0.5283 bal_acc: 0.74 acc: 0.74 | val loss: 0.7596 bal_acc: 0.55 acc: 0.55
+Gradient check epoch 040:
+  features.0.weight: 0.00366581
+  features.1.weight: 0.00000061
+  features.1.bias: 0.00000000
+  features.2.weight: 0.04339552
+  features.3.weight: 0.01120446
+  features.3.bias: 0.00641420
+  features.7.weight: 0.01261561
+  features.8.weight: 0.01211384
+  features.9.weight: 0.00958775
+  features.9.bias: 0.00413657
+  classifier.weight: 0.04027700
+  classifier.bias: 0.01047413
+Optimizer check epoch 040 classifier.weight delta: 0.00026696
+epoch 040 | train loss: 0.5033 bal_acc: 0.73 acc: 0.73 | val loss: 0.7709 bal_acc: 0.60 acc: 0.59
+Gradient check epoch 050:
+  features.0.weight: 0.00175229
+  features.1.weight: 0.00000094
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03706623
+  features.3.weight: 0.01180262
+  features.3.bias: 0.00566987
+  features.7.weight: 0.01185771
+  features.8.weight: 0.01116704
+  features.9.weight: 0.01825754
+  features.9.bias: 0.05034747
+  classifier.weight: 0.03669143
+  classifier.bias: 0.20289950
+Optimizer check epoch 050 classifier.weight delta: 0.00023420
+epoch 050 | train loss: 0.5771 bal_acc: 0.68 acc: 0.68 | val loss: 0.7770 bal_acc: 0.62 acc: 0.61
+Gradient check epoch 060:
+  features.0.weight: 0.00435622
+  features.1.weight: 0.00000151
+  features.1.bias: 0.00000000
+  features.2.weight: 0.05833355
+  features.3.weight: 0.02119649
+  features.3.bias: 0.00912648
+  features.7.weight: 0.01849719
+  features.8.weight: 0.01700250
+  features.9.weight: 0.00711328
+  features.9.bias: 0.01413767
+  classifier.weight: 0.02351686
+  classifier.bias: 0.03584982
+Optimizer check epoch 060 classifier.weight delta: 0.00014415
+epoch 060 | train loss: 0.5294 bal_acc: 0.73 acc: 0.73 | val loss: 0.7879 bal_acc: 0.62 acc: 0.61
+Gradient check epoch 070:
+  features.0.weight: 0.01207720
+  features.1.weight: 0.00000099
+  features.1.bias: 0.00000000
+  features.2.weight: 0.10354299
+  features.3.weight: 0.02638564
+  features.3.bias: 0.01105753
+  features.7.weight: 0.02216024
+  features.8.weight: 0.02494561
+  features.9.weight: 0.01232932
+  features.9.bias: 0.00848784
+  classifier.weight: 0.03478943
+  classifier.bias: 0.01873797
+Optimizer check epoch 070 classifier.weight delta: 0.00016549
+epoch 070 | train loss: 0.4104 bal_acc: 0.83 acc: 0.83 | val loss: 0.9305 bal_acc: 0.52 acc: 0.52
+Gradient check epoch 080:
+  features.0.weight: 0.00150191
+  features.1.weight: 0.00000092
+  features.1.bias: 0.00000000
+  features.2.weight: 0.03890690
+  features.3.weight: 0.01957989
+  features.3.bias: 0.00818645
+  features.7.weight: 0.01566871
+  features.8.weight: 0.01719754
+  features.9.weight: 0.00641563
+  features.9.bias: 0.01849880
+  classifier.weight: 0.01597375
+  classifier.bias: 0.07505606
+Optimizer check epoch 080 classifier.weight delta: 0.00017620
+epoch 080 | train loss: 0.4179 bal_acc: 0.81 acc: 0.81 | val loss: 0.8066 bal_acc: 0.59 acc: 0.59
+Gradient check epoch 090:
+  features.0.weight: 0.00725204
+  features.1.weight: 0.00000222
+  features.1.bias: 0.00000000
+  features.2.weight: 0.04987741
+  features.3.weight: 0.02916882
+  features.3.bias: 0.01083409
+  features.7.weight: 0.02115803
+  features.8.weight: 0.01872825
+  features.9.weight: 0.01528776
+  features.9.bias: 0.04560633
+  classifier.weight: 0.04458340
+  classifier.bias: 0.11395272
+Optimizer check epoch 090 classifier.weight delta: 0.00013090
+epoch 090 | train loss: 0.4394 bal_acc: 0.78 acc: 0.78 | val loss: 0.8916 bal_acc: 0.60 acc: 0.59
+Gradient check epoch 100:
+  features.0.weight: 0.00896267
+  features.1.weight: 0.00000243
+  features.1.bias: 0.00000001
+  features.2.weight: 0.07873179
+  features.3.weight: 0.04384600
+  features.3.bias: 0.01856709
+  features.7.weight: 0.03441769
+  features.8.weight: 0.03087638
+  features.9.weight: 0.01015578
+  features.9.bias: 0.04861412
+  classifier.weight: 0.02710838
+  classifier.bias: 0.12432817
+Optimizer check epoch 100 classifier.weight delta: 0.00024398
+epoch 100 | train loss: 0.3658 bal_acc: 0.85 acc: 0.85 | val loss: 0.9772 bal_acc: 0.58 acc: 0.57
+Gradient check epoch 110:
+  features.0.weight: 0.00239168
+  features.1.weight: 0.00000080
+  features.1.bias: 0.00000001
+  features.2.weight: 0.04162122
+  features.3.weight: 0.01608490
+  features.3.bias: 0.01264769
+  features.7.weight: 0.01235058
+  features.8.weight: 0.01559122
+  features.9.weight: 0.00955187
+  features.9.bias: 0.02162641
+  classifier.weight: 0.02374606
+  classifier.bias: 0.04516045
+Optimizer check epoch 110 classifier.weight delta: 0.00014679
+epoch 110 | train loss: 0.3931 bal_acc: 0.81 acc: 0.81 | val loss: 1.0542 bal_acc: 0.54 acc: 0.55
+best epoch=14 | val loss: 0.6441 bal_acc: 0.60 acc: 0.61 | test loss: 0.7252 bal_acc: 0.51 acc: 0.53
+test confusion matrix rows=true cols=pred
+[[17, 23], [24, 36]]
+
+Test balanced accuracy
+y_01: 0.512
+y_02: 0.508
+y_03: 0.454
+y_04: 0.517
+y_12: 0.550
+y_13: 0.479
+y_14: 0.446
+y_23: 0.483
+y_24: 0.458
+y_34: 0.513
+
+Saved to: ./checkpoints_eegnet_randomsplit/20260623_143116
