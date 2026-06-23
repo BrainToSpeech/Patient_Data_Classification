@@ -245,13 +245,6 @@ tasks.
 ## Recommended Command
 
 ```bash
-cd /home/bts/jihoon/Demo_binary
-python train_10_binary_eegnet_randomsplit.py
-```
-
-Common optional arguments:
-
-```bash
 python train_10_binary_eegnet_randomsplit.py --config train_config.json
 ```
 
