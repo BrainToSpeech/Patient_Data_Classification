@@ -6,6 +6,9 @@ from datetime import datetime
 from pathlib import Path
 
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 
@@ -32,7 +35,7 @@ class EEGDataset(Dataset):
 
 
 class EEGNet(nn.Module):
-    def __init__(self, n_channels):
+    def __init__(self, n_channels, dropout):
         super().__init__()
         self.features = nn.Sequential(
             nn.Conv2d(1, 8, (1, 65), padding="same", bias=False),
@@ -41,13 +44,13 @@ class EEGNet(nn.Module):
             nn.BatchNorm2d(16),
             nn.ELU(),
             nn.AvgPool2d((1, 4)),
-            nn.Dropout(0.25),
+            nn.Dropout(dropout),
             nn.Conv2d(16, 16, (1, 17), padding="same", groups=16, bias=False),
             nn.Conv2d(16, 16, (1, 1), bias=False),
             nn.BatchNorm2d(16),
             nn.ELU(),
             nn.AvgPool2d((1, 8)),
-            nn.Dropout(0.25),
+            nn.Dropout(dropout),
             nn.AdaptiveAvgPool2d((1, 1)),
         )
         self.classifier = nn.Linear(16, 2)
@@ -61,10 +64,13 @@ def evaluate(model, loader, criterion, device):
     model.eval()
     total_loss = correct = total = 0
     class_correct, class_total = torch.zeros(2, device=device), torch.zeros(2, device=device)
+    confusion = torch.zeros((2, 2), dtype=torch.int64, device=device)
     for X, y in loader:
         X, y = X.to(device), y.to(device)
         logits = model(X)
         pred = logits.argmax(1)
+        for true, predicted in zip(y, pred):
+            confusion[true, predicted] += 1
         total_loss += criterion(logits, y).item() * len(y)
         correct += (pred == y).sum().item()
         total += len(y)
@@ -72,7 +78,7 @@ def evaluate(model, loader, criterion, device):
         class_correct += torch.bincount(y[pred == y], minlength=2)
     balanced_acc = (class_correct / class_total).mean().item()
     accuracy = correct / total
-    return total_loss / total, balanced_acc, accuracy
+    return total_loss / total, balanced_acc, accuracy, confusion.cpu().tolist()
 
 
 def format_class_counts(y, indices):
@@ -123,6 +129,24 @@ def load_config(config_path):
     return argparse.Namespace(**config)
 
 
+def save_confusion_matrices(results, save_path):
+    fig, axes = plt.subplots(2, 5, figsize=(12, 5))
+    for ax, label_name in zip(axes.ravel(), LABEL_NAMES):
+        cm = np.array(results[label_name]["test_confusion_matrix"])
+        ax.imshow(cm, cmap="Blues")
+        ax.set_title(f"y_{label_name}")
+        ax.set_xlabel("Pred")
+        ax.set_ylabel("True")
+        ax.set_xticks([0, 1])
+        ax.set_yticks([0, 1])
+        for i in range(2):
+            for j in range(2):
+                ax.text(j, i, str(cm[i, j]), ha="center", va="center")
+    fig.tight_layout()
+    fig.savefig(save_path, dpi=150)
+    plt.close(fig)
+
+
 def main():
     # 학습 설정은 train_config.json에서 수정
     parser = argparse.ArgumentParser()
@@ -144,6 +168,7 @@ def main():
     write_log(log_path, f"  checkpoint_root={display_path(args.checkpoint_root)}")
     write_log(log_path, f"  epochs={args.epochs}")
     write_log(log_path, f"  batch_size={args.batch_size}")
+    write_log(log_path, f"  dropout={args.dropout}")
     write_log(log_path, f"  lr={args.lr}")
     write_log(log_path, f"  weight_decay={args.weight_decay}")
     write_log(log_path, f"  patience={args.patience}")
@@ -274,7 +299,7 @@ def main():
         )
 
         torch.manual_seed(args.seed)
-        model = EEGNet(n_channels).to(device)
+        model = EEGNet(n_channels, args.dropout).to(device)
         criterion = nn.CrossEntropyLoss()
         optimizer = torch.optim.AdamW(
             model.parameters(),
@@ -317,7 +342,7 @@ def main():
             train_loss /= len(task_train_idx)
             train_bal_acc = (train_class_correct / train_class_total).mean().item()
             train_acc = (train_class_correct.sum() / train_class_total.sum()).item()
-            val_loss, val_bal_acc, val_acc = evaluate(model, val_loader, criterion, device)
+            val_loss, val_bal_acc, val_acc, _ = evaluate(model, val_loader, criterion, device)
             if epoch == 1 or epoch % 10 == 0:
                 write_log(log_path, f"epoch {epoch:03d} | "
                     f"train loss: {train_loss:.4f} bal_acc: {train_bal_acc:.2f} acc: {train_acc:.2f} | "
@@ -335,7 +360,7 @@ def main():
 
         state = torch.load(checkpoint, map_location=device, weights_only=True)
         model.load_state_dict(state)
-        test_loss, test_bal_acc, test_acc = evaluate(model, test_loader, criterion, device)
+        test_loss, test_bal_acc, test_acc, test_confusion = evaluate(model, test_loader, criterion, device)
         results[label_name] = {
             "best_epoch": best_epoch,
             "best_val_loss": best_val_loss,
@@ -344,6 +369,7 @@ def main():
             "test_loss": test_loss,
             "test_bal_acc": test_bal_acc,
             "test_acc": test_acc,
+            "test_confusion_matrix": test_confusion,
         }
         write_log(
             log_path,
@@ -351,12 +377,15 @@ def main():
             f"val loss: {best_val_loss:.4f} bal_acc: {best_val_bal_acc:.2f} acc: {best_val_acc:.2f} | "
             f"test loss: {test_loss:.4f} bal_acc: {test_bal_acc:.2f} acc: {test_acc:.2f}"
         )
+        write_log(log_path, "test confusion matrix rows=true cols=pred")
+        write_log(log_path, str(test_confusion))
 
         del model, optimizer, train_loader, val_loader, test_loader, sampler
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
     (run_dir / "results.json").write_text(json.dumps(results, indent=2))
+    save_confusion_matrices(results, run_dir / "confusion_matrices.png")
 
     write_log(log_path, "\nTest balanced accuracy")
     for name, result in results.items():
