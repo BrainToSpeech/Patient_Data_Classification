@@ -150,6 +150,7 @@ def main():
     write_log(log_path, f"  seed={args.seed}")
     write_log(log_path, f"  val_test_ratio={args.val_test_ratio}")
     write_log(log_path, f"  weighted_sampler={args.weighted_sampler}")
+    write_log(log_path, f"  debug_gradient_optimizer={args.debug_gradient_optimizer}")
 
     write_log(log_path, f"\nLoading {args.input_file}...")
     X = np.load(args.data_dir / args.input_file, mmap_mode="r")
@@ -288,14 +289,26 @@ def main():
             model.train()
             train_loss = 0
             train_class_correct, train_class_total = torch.zeros(2, device=device), torch.zeros(2, device=device)
-            for X_batch, y_batch in train_loader:
+            for batch_i, (X_batch, y_batch) in enumerate(train_loader):
                 X_batch, y_batch = X_batch.to(device), y_batch.to(device)
                 optimizer.zero_grad(set_to_none=True)
                 logits = model(X_batch)
                 pred = logits.argmax(1)
                 loss = criterion(logits, y_batch)
+                debug_step = args.debug_gradient_optimizer and batch_i == 0 and (epoch == 1 or epoch % 10 == 0)
+                if debug_step:
+                    before = model.classifier.weight.detach().clone()
                 loss.backward()
+                if debug_step:
+                    write_log(log_path, f"Gradient check epoch {epoch:03d}:")
+                    for name, p in model.named_parameters():
+                        if p.grad is not None:
+                            write_log(log_path, f"  {name}: {p.grad.abs().mean().item():.8f}")
                 optimizer.step()
+                if debug_step:
+                    after = model.classifier.weight.detach().clone()
+                    delta = (after - before).abs().mean().item()
+                    write_log(log_path, f"Optimizer check epoch {epoch:03d} classifier.weight delta: {delta:.8f}")
 
                 train_loss += loss.item() * len(y_batch)
                 train_class_total += torch.bincount(y_batch, minlength=2)
