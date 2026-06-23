@@ -1,0 +1,28 @@
+{
+  "args": {
+    "data_dir": "./data/processed/260602_sub1_hjlee_raw",
+    "input_file": "X_eeg_raw.npy",
+    "checkpoint_root": "./checkpoints_eegnet_randomsplit",
+    "epochs": 2000,
+    "batch_size": 16,
+    "dropout": 0.5,
+    "lr": 0.0003,
+    "weight_decay": 0.001,
+    "patience": 100,
+    "seed": 42,
+    "val_test_ratio": 0.2,
+    "weighted_sampler": true,
+    "debug_gradient_optimizer": true,
+    "config": "./train_config.json"
+  },
+  "input_shape": [
+    500,
+    64,
+    4000
+  ],
+  "split_sizes": [
+    300,
+    100,
+    100
+  ]
+}
