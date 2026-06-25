@@ -1,0 +1,36 @@
+EXPERIMENTAL SETUP
+
+Item                 Setting
+-------------------  ----------------------------------------
+Input                64 channels x 4,000 samples
+Labels               Original labels from y.npy (["그만","네","도와주세요","아니요","화장실"] -> 1,2,3,4,5 -> 0,1,2,3,4)
+Validation           Stratified 5-fold cross-validation
+Split per fold       Train 60% / Validation 20% / Test 20%
+Normalization        Channel-wise, training fold only
+Model                EEGNet
+Optimizer            AdamW
+Learning rate        1e-4
+Weight decay         1e-4
+Batch size           16
+Maximum epochs       100
+Dropout(EEGNet)      0.5
+Sampling             Weighted sampler
+Model selection      Validation balanced accuracy
+Test metrics         Loss, balanced accuracy, accuracy
+
+TASKS
+
+- Five one-vs-rest classifiers
+- Label 1 vs. label 3
+- Label 1 MIL (MIL=Multiple Instance Learning) vs. rest
+
+MIL SETUP
+
+Window size          256 samples
+Window stride        128 samples
+Pooling              Maximum over window logits
+
+REPORTING
+
+- Per-fold test metrics
+- Five-fold mean +/- standard deviation
