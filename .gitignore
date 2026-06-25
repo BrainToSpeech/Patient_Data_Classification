@@ -8,6 +8,19 @@
 # Training outputs
 __pycache__/
 *.pt
+Demo_binary/checkpoints_eegnet_randomsplit/20260623_112519
+Demo_binary/checkpoints_eegnet_randomsplit/20260623_113248
+Demo_binary/checkpoints_eegnet_randomsplit/20260623_133309
+Demo_binary/checkpoints_eegnet_randomsplit/20260623_134152
+Demo_binary/checkpoints_eegnet_randomsplit/20260623_134345
+Demo_binary/checkpoints_eegnet_randomsplit/20260624_102731
+Demo_binary/checkpoints_eegnet_randomsplit/20260624_111822
+Demo_binary/checkpoints_eegnet_randomsplit/20260625_101045
+Demo_binary/checkpoints_eegnet_randomsplit/20260625_103002
+Demo_binary/checkpoints_eegnet_randomsplit/20260625_110233
+
+
+
 
 backup/
 scripts/
