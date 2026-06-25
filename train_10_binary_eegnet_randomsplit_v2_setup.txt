@@ -4,7 +4,7 @@ Item                 Setting
 -------------------  ----------------------------------------
 Input                64 channels x 4,000 samples
 Labels               Original labels from y.npy (["그만","네","도와주세요","아니요","화장실"] -> 1,2,3,4,5 -> 0,1,2,3,4)
-Validation           Stratified 5-fold cross-validation
+Evaluation mode      Stratified 5-fold cross-validation only
 Split per fold       Train 60% / Validation 20% / Test 20%
 Normalization        Channel-wise, training fold only
 Model                EEGNet
@@ -14,21 +14,17 @@ Weight decay         1e-4
 Batch size           16
 Maximum epochs       100
 Dropout(EEGNet)      0.5
-Sampling             Weighted sampler
+Early stopping       Patience 100
+Training sampler     Weighted sampler
+OVR class balance    Target : combined rest = 1 : 1
 Model selection      Validation balanced accuracy
-Test metrics         Loss, balanced accuracy, accuracy
+Test metrics         Loss, balanced loss, balanced accuracy, accuracy
 
 TASKS
 
-- Five one-vs-rest classifiers
+- Label 0 vs. rest
 - Label 1 vs. label 3
-- Label 1 MIL (MIL=Multiple Instance Learning) vs. rest
-
-MIL SETUP
-
-Window size          256 samples
-Window stride        128 samples
-Pooling              Maximum over window logits
+- Label 2 vs. rest
 
 REPORTING
 

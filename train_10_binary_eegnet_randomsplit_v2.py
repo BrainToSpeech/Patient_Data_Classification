@@ -733,7 +733,24 @@ def main():
                     label_dir = fold_dir / f"y_{label_name}"
                     label_dir.mkdir()
 
-                    write_log(log_path, f"fold={fold} label={label_name}")
+                    write_log(log_path, f"\nfold={fold} label={label_name}")
+                    write_log(log_path, "Binary label distribution:")
+                    write_log(log_path, f"  train: {format_class_counts(y, task_train_idx)}")
+                    write_log(log_path, f"  val:   {format_class_counts(y, task_val_idx)}")
+                    write_log(log_path, f"  test:  {format_class_counts(y, task_test_idx)}")
+                    write_log(log_path, "Original labels in this split:")
+                    write_log(
+                        log_path,
+                        f"  train: {format_original_label_counts(original_y, task_train_idx)}",
+                    )
+                    write_log(
+                        log_path,
+                        f"  val:   {format_original_label_counts(original_y, task_val_idx)}",
+                    )
+                    write_log(
+                        log_path,
+                        f"  test:  {format_original_label_counts(original_y, task_test_idx)}",
+                    )
                     result = train_task(
                         fold_X,
                         y,
@@ -768,6 +785,25 @@ def main():
                 pair_test_idx = pair_indices(original_y, fold_test_idx, 1, 3)
                 pair_dir = fold_dir / "y_1_vs_3"
                 pair_dir.mkdir()
+                write_log(log_path, f"\nfold={fold} label=1_vs_3")
+                write_log(log_path, "Binary labels: class0=label1 class1=label3")
+                write_log(log_path, "Binary label distribution:")
+                write_log(log_path, f"  train: {format_class_counts(pair_y, pair_train_idx)}")
+                write_log(log_path, f"  val:   {format_class_counts(pair_y, pair_val_idx)}")
+                write_log(log_path, f"  test:  {format_class_counts(pair_y, pair_test_idx)}")
+                write_log(log_path, "Original labels in this split:")
+                write_log(
+                    log_path,
+                    f"  train: {format_original_label_counts(original_y, pair_train_idx)}",
+                )
+                write_log(
+                    log_path,
+                    f"  val:   {format_original_label_counts(original_y, pair_val_idx)}",
+                )
+                write_log(
+                    log_path,
+                    f"  test:  {format_original_label_counts(original_y, pair_test_idx)}",
+                )
                 pair_result = train_task(
                     fold_X,
                     pair_y,

@@ -9,11 +9,11 @@
   "patience": 100,
   "seed": 42,
   "val_test_ratio": 0.2,
-  "weighted_sampler": true,
+  "weighted_sampler": false,
   "window_size": 256,
   "window_stride": 128,
   "run_window_diagnostic": false,
-  "balance_rest_to_target": false,
+  "balance_rest_to_target": true,
   "run_5fold_cross_validation": true,
   "selection_metric": "balanced_accuracy"
 }
