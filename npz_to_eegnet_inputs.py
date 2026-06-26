@@ -7,8 +7,8 @@ import numpy as np
 BASE_DIR = Path(__file__).resolve().parent
 
 # 입력/출력 경로만 필요하면 여기만 수정
-NPZ_PATH = BASE_DIR / "data" / "260602_sub1_hjlee.npz"
-OUT_DIR = BASE_DIR / "data" / "processed" / "260602_sub1_hjlee_raw"
+NPZ_PATH = BASE_DIR / "data" / "260623_sub2_yjkim.npz" # 260602_sub1_hjlee.npz, 260623_sub2_yjkim.npz
+OUT_DIR = BASE_DIR / "data" / "processed" / "260623_sub2_yjkim_raw" # 260602_sub1_hjlee_raw, 260623_sub2_yjkim_raw
 
 # 원본 label이 1..5이면 1, 이미 0..4이면 0으로 설정
 LABEL_OFFSET = 1

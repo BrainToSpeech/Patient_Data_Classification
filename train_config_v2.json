@@ -1,19 +1,19 @@
 {
-  "data_dir": "data/processed/260602_sub1_hjlee_raw",
+  "data_dir": "data/processed/260623_sub2_yjkim_raw", 
   "input_file": "X_eeg_raw.npy",
-  "checkpoint_root": "checkpoints_eegnet_randomsplit",
+  "checkpoint_root": "checkpoints_eegnet_randomsplit/yjkim",
   "epochs": 100,
   "batch_size": 16,
-  "lr": 0.0001,
+  "lr": 1e-4,
   "weight_decay": 0.0001,
-  "patience": 100,
+  "patience": 30,
   "seed": 42,
   "val_test_ratio": 0.2,
-  "weighted_sampler": false,
+  "weighted_sampler": true,
   "window_size": 256,
   "window_stride": 128,
   "run_window_diagnostic": false,
-  "balance_rest_to_target": true,
+  "balance_rest_to_target": false,
   "run_5fold_cross_validation": true,
-  "selection_metric": "balanced_accuracy"
+  "selection_metric": "balanced_loss"
 }

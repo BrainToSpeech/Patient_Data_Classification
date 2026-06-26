@@ -454,14 +454,14 @@ def main():
             original_y,
             val_idx,
             label,
-            args.balance_rest_to_target,
+            False,
             task_seed + 1,
         )
         task_test_idx = task_split_indices(
             original_y,
             test_idx,
             label,
-            args.balance_rest_to_target,
+            False,
             task_seed + 2,
         )
 
@@ -590,14 +590,14 @@ def main():
                     original_y,
                     val_idx,
                     label,
-                    args.balance_rest_to_target,
+                    False,
                     task_seed + 1,
                 )
                 task_test_idx = task_split_indices(
                     original_y,
                     test_idx,
                     label,
-                    args.balance_rest_to_target,
+                    False,
                     task_seed + 2,
                 )
                 for window_start in window_starts:
@@ -720,14 +720,14 @@ def main():
                         original_y,
                         fold_val_idx,
                         label,
-                        args.balance_rest_to_target,
+                        False,
                         task_seed + 1,
                     )
                     task_test_idx = task_split_indices(
                         original_y,
                         fold_test_idx,
                         label,
-                        args.balance_rest_to_target,
+                        False,
                         task_seed + 2,
                     )
                     label_dir = fold_dir / f"y_{label_name}"

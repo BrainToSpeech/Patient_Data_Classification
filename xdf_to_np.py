@@ -144,7 +144,9 @@ root_dir = os.path.dirname(os.path.abspath(__file__))  # root directory
 target_dir = os.path.join('EEG')  # save preprocessed data
 os.makedirs(os.path.join(root_dir, target_dir), exist_ok=True)
 
-select_epoch = ['1', '2', '3', '4', '5']
+select_epoch = ['1', '2', '3', '4', '5'] 
+# hjlee ["그만","네","도와주세요","아니요","화장실"]
+# yjkim ["그만","네","도와주세요","아니요","화장실","감사합니다","물","배고파요","아파요","안녕하세요"]
 
 channels = list(range(1, 65))
 upper_bound_freq = 100
