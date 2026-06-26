@@ -1,7 +1,7 @@
 {
   "data_dir": "data/processed/260623_sub2_yjkim_raw", 
   "input_file": "X_eeg_raw.npy",
-  "checkpoint_root": "checkpoints_eegnet_randomsplit/sub2_yjkim",
+  "checkpoint_root": "checkpoints_eegnet_randomsplit/sub2_yjkim_nogit",
   "epochs": 200,
   "batch_size": 16,
   "lr": 3e-5,

@@ -13,31 +13,7 @@ changes.md
 # Training outputs
 __pycache__/
 *.pt
-checkpoints_eegnet_randomsplit/
-
-!checkpoints_eegnet_randomsplit/sub1_hjlee/non_weighted/
-!checkpoints_eegnet_randomsplit/sub1_hjlee/non_weighted/**
-!checkpoints_eegnet_randomsplit/sub1_hjlee/weighted/
-!checkpoints_eegnet_randomsplit/sub1_hjlee/weighted/**
-!checkpoints_eegnet_randomsplit/sub1_hjlee/weighted_lr1e-3_drop0.5/
-!checkpoints_eegnet_randomsplit/sub1_hjlee/weighted_lr1e-3_drop0.5/**
-!checkpoints_eegnet_randomsplit/sub1_hjlee/weighted_lr3e-4_drop0.5/
-!checkpoints_eegnet_randomsplit/sub1_hjlee/weighted_lr3e-4_drop0.5/**
-
-!checkpoints_eegnet_randomsplit/sub1_hjlee/bal_acc_100_100/
-!checkpoints_eegnet_randomsplit/sub1_hjlee/bal_acc_100_100/**
-!checkpoints_eegnet_randomsplit/sub1_hjlee/bal_acc_100_400/
-!checkpoints_eegnet_randomsplit/sub1_hjlee/bal_acc_100_400/**
-!checkpoints_eegnet_randomsplit/sub1_hjlee/bal_loss_100_100/
-!checkpoints_eegnet_randomsplit/sub1_hjlee/bal_loss_100_100/**
-!checkpoints_eegnet_randomsplit/sub1_hjlee/bal_loss_100_400/
-!checkpoints_eegnet_randomsplit/sub1_hjlee/bal_loss_100_400/**
-
-!checkpoints_eegnet_randomsplit/sub2_yjkim/20260626_104115/
-!checkpoints_eegnet_randomsplit/sub2_yjkim/20260626_104115/**
-!checkpoints_eegnet_randomsplit/sub2_yjkim/20260626_112117/
-!checkpoints_eegnet_randomsplit/sub2_yjkim/20260626_112117/**
-!checkpoints_eegnet_randomsplit/sub2_yjkim/20260626_112320/
-!checkpoints_eegnet_randomsplit/sub2_yjkim/20260626_112320/**
+checkpoints_eegnet_randomsplit/sub1_hjlee_nogit
+checkpoints_eegnet_randomsplit/sub2_yjkim_nogit
 
 
