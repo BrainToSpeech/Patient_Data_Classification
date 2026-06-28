@@ -13,7 +13,7 @@ changes.md
 # Training outputs
 __pycache__/
 *.pt
-checkpoints_eegnet_randomsplit/sub1_hjlee_nogit
-checkpoints_eegnet_randomsplit/sub2_yjkim_nogit
+checkpoints/sub1_hjlee_nogit
+checkpoints/sub2_yjkim_nogit
 
 
