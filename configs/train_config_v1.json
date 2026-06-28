@@ -1,0 +1,13 @@
+{
+  "input_file": "X_eeg.npy",
+  "epochs": 2000,
+  "batch_size": 16,
+  "dropout": 0.5,
+  "lr": 1e-3,
+  "weight_decay": 1e-3,
+  "patience": 100,
+  "seed": 42,
+  "val_test_ratio": 0.2,
+  "weighted_sampler": true,
+  "debug_gradient_optimizer": true
+}
