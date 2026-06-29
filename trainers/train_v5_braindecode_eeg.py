@@ -1,4 +1,4 @@
-"""Train and test one-vs-rest EEGNet models with one shared stratified split."""
+"""Train and test one-vs-rest EEGNet models across all days for one patient."""
 
 import argparse
 import csv
@@ -19,10 +19,12 @@ BASE_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = BASE_DIR.parent
 CONFIG_DIR = PROJECT_ROOT / "configs"
 
+# python3 trainers/train_v5_braindecode_eeg.py   --patient sub2_yjkim   --model eegnet
+# python3 trainers/train_v5_braindecode_eeg.py   --patient sub2_yjkim   --model shallownet
 
 def add_patient_day_args(parser):
     parser.add_argument("--patient", required=True)
-    parser.add_argument("--day", required=True)
+    parser.add_argument("--day", default="all_days")
     parser.add_argument("--input-file", default=None)
     parser.add_argument("--data-root", type=Path, default=PROJECT_ROOT / "data" / "processed")
     parser.add_argument("--checkpoint-root", type=Path, default=PROJECT_ROOT / "checkpoints")
@@ -37,7 +39,7 @@ def resolve_project_path(path):
 def apply_patient_day_paths(args, cli_args):
     args.patient = cli_args.patient
     args.day = cli_args.day
-    args.data_dir = resolve_project_path(cli_args.data_root) / cli_args.patient / cli_args.day
+    args.data_dir = resolve_project_path(cli_args.data_root) / cli_args.patient
     args.input_file = cli_args.input_file or getattr(args, "input_file", "X_eeg.npy")
     args.checkpoint_root = (
         resolve_project_path(cli_args.checkpoint_root)
@@ -45,6 +47,7 @@ def apply_patient_day_paths(args, cli_args):
     )
     if cli_args.run_name:
         args.checkpoint_root = args.checkpoint_root / cli_args.run_name
+
 
 class EEGDataset(Dataset):
     def __init__(self, X, y, indices):
@@ -74,71 +77,6 @@ def build_model(model_name, n_channels, n_times):
             final_conv_length="auto",
         )
     raise ValueError(f"Unknown model: {model_name}")
-
-
-def _feature_hook_module(model):
-    param_leaves = [
-        module
-        for module in model.modules()
-        if module is not model
-        and not any(module.children())
-        and any(True for _ in module.parameters(recurse=False))
-    ]
-    if param_leaves:
-        return param_leaves[-1]
-
-    leaves = [
-        module
-        for module in model.modules()
-        if module is not model and not any(module.children())
-    ]
-    if not leaves:
-        raise ValueError("Cannot find a leaf module in the EEG model.")
-    return leaves[-1]
-
-
-def attach_eeg_feature_hook(model):
-    model._eeg_feature = None
-
-    def capture_feature(module, inputs):
-        model._eeg_feature = inputs[0].flatten(1)
-
-    _feature_hook_module(model).register_forward_pre_hook(capture_feature)
-
-
-def initialize_model_and_log_shapes(model, sample_batch, device, log_path, should_log):
-    shape_lines = []
-    hooks = []
-
-    if should_log:
-        shape_lines.append(f"EEG input: {tuple(sample_batch.shape)}")
-
-        def make_hook(name):
-            def hook(module, inputs, output):
-                if isinstance(output, torch.Tensor):
-                    shape = tuple(output.shape)
-                else:
-                    shape = [tuple(item.shape) for item in output if isinstance(item, torch.Tensor)]
-                shape_lines.append(f"EEG layer {name}: {shape}")
-            return hook
-
-        for name, module in model.named_modules():
-            if name and not any(module.children()):
-                hooks.append(module.register_forward_hook(make_hook(name)))
-
-    model.eval()
-    with torch.no_grad():
-        _ = model(sample_batch.to(device))
-
-    for hook in hooks:
-        hook.remove()
-
-    if should_log:
-        if getattr(model, "_eeg_feature", None) is not None:
-            shape_lines.append(f"EEG feature vector: {tuple(model._eeg_feature.shape)}")
-        write_log(log_path, "\nModel shape diagnostic")
-        for line in shape_lines:
-            write_log(log_path, f"  {line}")
 
 
 @torch.no_grad()
@@ -174,6 +112,93 @@ def format_original_label_counts(y, indices):
     counts = np.bincount(y[indices], minlength=5)
     labels = " ".join(f"label{i}={count}" for i, count in enumerate(counts))
     return f"{labels} total={counts.sum()}"
+
+
+def format_day_counts(day_ids, day_names, indices):
+    counts = np.bincount(day_ids[indices], minlength=len(day_names))
+    days = " ".join(f"{day}={counts[i]}" for i, day in enumerate(day_names))
+    return f"{days} total={counts.sum()}"
+
+
+def day_label_stratify_key(day_ids, original_y):
+    return np.array([f"{day_id}_{label}" for day_id, label in zip(day_ids, original_y)])
+
+
+def load_all_patient_days(args):
+    patient_dir = args.data_dir
+    if not patient_dir.exists():
+        raise FileNotFoundError(f"Patient data directory not found: {patient_dir}")
+
+    day_dirs = [
+        day_dir
+        for day_dir in sorted(patient_dir.iterdir())
+        if day_dir.is_dir()
+        and (day_dir / args.input_file).exists()
+        and (day_dir / "y.npy").exists()
+    ]
+    if not day_dirs:
+        raise FileNotFoundError(
+            f"No day folders with {args.input_file} and y.npy found under {patient_dir}"
+        )
+
+    X_parts, y_parts, day_id_parts, day_names = [], [], [], []
+    expected_shape = None
+    for day_id, day_dir in enumerate(day_dirs):
+        X_day = np.load(day_dir / args.input_file).astype(np.float32)
+        y_day = np.load(day_dir / "y.npy").astype(np.int64)
+        if len(y_day) != X_day.shape[0]:
+            raise ValueError(
+                f"{day_dir.name}: X and y.npy trial counts do not match: "
+                f"{X_day.shape[0]} != {len(y_day)}"
+            )
+        if expected_shape is None:
+            expected_shape = X_day.shape[1:]
+        elif X_day.shape[1:] != expected_shape:
+            raise ValueError(
+                f"{day_dir.name}: expected input shape (*, {expected_shape}), "
+                f"got {X_day.shape}"
+            )
+        X_parts.append(X_day)
+        y_parts.append(y_day)
+        day_id_parts.append(np.full(len(y_day), day_id, dtype=np.int64))
+        day_names.append(day_dir.name)
+
+    return (
+        np.concatenate(X_parts, axis=0),
+        np.concatenate(y_parts, axis=0),
+        np.concatenate(day_id_parts, axis=0),
+        day_names,
+    )
+
+
+def split_train_val_test_by_day(original_y, day_ids, day_names, val_test_ratio, seed):
+    train_parts, val_parts, test_parts = [], [], []
+    for day_id, day_name in enumerate(day_names):
+        day_idx = np.flatnonzero(day_ids == day_id)
+        day_train_idx, day_remaining_idx = train_test_split(
+            day_idx,
+            test_size=2 * val_test_ratio,
+            stratify=original_y[day_idx],
+            random_state=seed,
+        )
+        day_val_idx, day_test_idx = train_test_split(
+            day_remaining_idx,
+            test_size=0.5,
+            stratify=original_y[day_remaining_idx],
+            random_state=seed,
+        )
+        train_parts.append(day_train_idx)
+        val_parts.append(day_val_idx)
+        test_parts.append(day_test_idx)
+
+    rng = np.random.default_rng(seed)
+    train_idx = np.concatenate(train_parts)
+    val_idx = np.concatenate(val_parts)
+    test_idx = np.concatenate(test_parts)
+    rng.shuffle(train_idx)
+    rng.shuffle(val_idx)
+    rng.shuffle(test_idx)
+    return train_idx, val_idx, test_idx
 
 
 def one_vs_rest_labels(original_y, label):
@@ -247,8 +272,6 @@ def load_config(config_path):
     config.setdefault("balance_rest_to_target", False)
     config.setdefault("run_5fold_cross_validation", False)
     config.setdefault("selection_metric", "balanced_accuracy")
-    config.setdefault("print_layer_shapes", True)
-    config.setdefault("max_folds", 5)
 
     if config["selection_metric"] not in {"balanced_accuracy", "balanced_loss"}:
         raise ValueError("selection_metric must be 'balanced_accuracy' or 'balanced_loss'.")
@@ -317,16 +340,6 @@ def train_task(
 
     torch.manual_seed(args.seed)
     model = build_model(args.model, n_channels, X.shape[-1]).to(device)
-    attach_eeg_feature_hook(model)
-    sample_batch, _ = next(iter(train_loader))
-    initialize_model_and_log_shapes(
-        model,
-        sample_batch,
-        device,
-        log_path,
-        args.print_layer_shapes and not getattr(args, "_printed_layer_shapes", False),
-    )
-    args._printed_layer_shapes = True
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(
         model.parameters(),
@@ -426,19 +439,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=CONFIG_DIR / "train_config_v3.json")
     parser.add_argument("--model", choices=["eegnet", "shallownet"], default="eegnet")
-    parser.add_argument("--max-folds", type=int, default=None)
-    parser.add_argument("--no-print-layer-shapes", action="store_true")
     add_patient_day_args(parser)
     cli_args = parser.parse_args()
     args = load_config(cli_args.config)
     args.config = cli_args.config
     args.model = cli_args.model
     apply_patient_day_paths(args, cli_args)
-    if cli_args.max_folds is not None:
-        args.max_folds = cli_args.max_folds
-    if args.max_folds < 1 or args.max_folds > 5:
-        raise ValueError("--max-folds must be between 1 and 5.")
-    args.print_layer_shapes = bool(args.print_layer_shapes and not cli_args.no_print_layer_shapes)
 
     torch.manual_seed(args.seed)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -451,9 +457,7 @@ def main():
     write_log(log_path, f"  model={args.model}")
     write_log(log_path, f"  patient={args.patient}")
     write_log(log_path, f"  day={args.day}")
-    write_log(log_path, f"  max_folds={args.max_folds}")
-    write_log(log_path, f"  print_layer_shapes={args.print_layer_shapes}")
-    write_log(log_path, f"  data_dir={display_path(args.data_dir)}")
+    write_log(log_path, f"  patient_dir={display_path(args.data_dir)}")
     write_log(log_path, f"  input_file={args.input_file}")
     write_log(log_path, f"  checkpoint_root={display_path(args.checkpoint_root)}")
     write_log(log_path, f"  epochs={args.epochs}")
@@ -475,18 +479,18 @@ def main():
     ###### 2. Data Loading ######
     #############################
 
-    write_log(log_path, f"\nLoading {args.input_file}...")
-    X = np.load(args.data_dir / args.input_file, mmap_mode="r")
+    write_log(log_path, f"\nLoading all days from {display_path(args.data_dir)}...")
+    X, original_y, day_ids, day_names = load_all_patient_days(args)
     if X.shape[-1] < 32:
         raise ValueError("Input time dimension is too short for EEGNet pooling.")
 
+    write_log(log_path, f"Loaded days: {', '.join(day_names)}")
     write_log(log_path, f"Device: {device} | X: {X.shape} | run: {display_path(run_dir)}")
 
     if not 0 < args.val_test_ratio < 0.5:
         raise ValueError("--val_test_ratio must be between 0 and 0.5.")
 
     n_trials, n_channels, _ = X.shape
-    original_y = np.load(args.data_dir / "y.npy").astype(np.int64)
     if len(original_y) != n_trials:
         raise ValueError(f"X and y.npy trial counts do not match: {n_trials} != {len(original_y)}")
     task_labels = np.unique(original_y)
@@ -502,22 +506,19 @@ def main():
     ############################################
 
     all_idx = np.arange(n_trials)
-
-    train_idx, remaining_idx = train_test_split(
-        all_idx,
-        test_size=2 * args.val_test_ratio,
-        stratify=original_y,
-        random_state=args.seed,
-    )
-
-    val_idx, test_idx = train_test_split(
-        remaining_idx,
-        test_size=0.5,
-        stratify=original_y[remaining_idx],
-        random_state=args.seed,
+    train_idx, val_idx, test_idx = split_train_val_test_by_day(
+        original_y,
+        day_ids,
+        day_names,
+        args.val_test_ratio,
+        args.seed,
     )
     split_sizes = [len(train_idx), len(val_idx), len(test_idx)]
     write_log(log_path, f"Data split: train={split_sizes[0]} val={split_sizes[1]} test={split_sizes[2]}")
+    write_log(log_path, "Day distribution:")
+    write_log(log_path, f"  train: {format_day_counts(day_ids, day_names, train_idx)}")
+    write_log(log_path, f"  val:   {format_day_counts(day_ids, day_names, val_idx)}")
+    write_log(log_path, f"  test:  {format_day_counts(day_ids, day_names, test_idx)}")
     write_log(log_path, "Original label distribution:")
     write_log(log_path, f"  train: {format_original_label_counts(original_y, train_idx)}")
     write_log(log_path, f"  val:   {format_original_label_counts(original_y, val_idx)}")
@@ -531,7 +532,13 @@ def main():
     run_config = {
         "args": config_args,
         "input_shape": list(X.shape),
+        "days": day_names,
         "split_sizes": split_sizes,
+        "split_day_counts": {
+            "train": np.bincount(day_ids[train_idx], minlength=len(day_names)).tolist(),
+            "val": np.bincount(day_ids[val_idx], minlength=len(day_names)).tolist(),
+            "test": np.bincount(day_ids[test_idx], minlength=len(day_names)).tolist(),
+        },
         "tasks": ["0_vs_rest", "1_vs_3", "2_vs_rest"],
     }
     (run_dir / "run_config.json").write_text(json.dumps(run_config, indent=2))
@@ -771,7 +778,7 @@ def main():
         if not 0 < inner_val_ratio < 1:
             raise ValueError("val_test_ratio is incompatible with 5-fold cross-validation.")
 
-        write_log(log_path, f"\n=== 5-fold cross-validation (running {args.max_folds} fold(s)) ===")
+        write_log(log_path, "\n=== 5-fold cross-validation ===")
         cv_dir = run_dir / "cross_validation"
         cv_dir.mkdir()
         cv_csv_path = run_dir / "cross_validation.csv"
@@ -787,8 +794,8 @@ def main():
             "test_acc",
         ]
         cv_results = {}
-        del X
-        cv_source = np.load(args.data_dir / args.input_file, mmap_mode="r")
+        cv_source = X
+        cv_stratify_key = day_label_stratify_key(day_ids, original_y)
         splitter = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=args.seed)
 
         with cv_csv_path.open("w", newline="", encoding="utf-8") as csv_file:
@@ -796,15 +803,13 @@ def main():
             writer.writeheader()
 
             for fold, (remaining_idx, fold_test_idx) in enumerate(
-                splitter.split(all_idx, original_y),
+                splitter.split(all_idx, cv_stratify_key),
                 start=1,
             ):
-                if fold > args.max_folds:
-                    break
                 fold_train_idx, fold_val_idx = train_test_split(
                     remaining_idx,
                     test_size=inner_val_ratio,
-                    stratify=original_y[remaining_idx],
+                    stratify=cv_stratify_key[remaining_idx],
                     random_state=args.seed + fold,
                 )
                 fold_dir = cv_dir / f"fold_{fold}"
@@ -817,6 +822,10 @@ def main():
                     f"train={len(fold_train_idx)} val={len(fold_val_idx)} "
                     f"test={len(fold_test_idx)} ---",
                 )
+                write_log(log_path, "Day distribution:")
+                write_log(log_path, f"  train: {format_day_counts(day_ids, day_names, fold_train_idx)}")
+                write_log(log_path, f"  val:   {format_day_counts(day_ids, day_names, fold_val_idx)}")
+                write_log(log_path, f"  test:  {format_day_counts(day_ids, day_names, fold_test_idx)}")
                 fold_mean = cv_source[fold_train_idx].mean(axis=(0, 2))[:, None].astype(np.float32)
                 fold_std = cv_source[fold_train_idx].std(axis=(0, 2))[:, None].astype(np.float32)
                 fold_std = np.maximum(fold_std, 1e-6)
@@ -955,10 +964,9 @@ def main():
                 del fold_X
 
         cv_task_names = ["0", "2", "1_vs_3"]
-        run_folds = range(1, args.max_folds + 1)
         cv_summary = {}
         for label_name in cv_task_names:
-            label_results = [cv_results[str(fold)][label_name] for fold in run_folds]
+            label_results = [cv_results[str(fold)][label_name] for fold in range(1, n_folds + 1)]
             cv_summary[label_name] = {
                 "mean_test_bal_loss": float(np.mean([result["test_bal_loss"] for result in label_results])),
                 "std_test_bal_loss": float(np.std([result["test_bal_loss"] for result in label_results])),
@@ -971,7 +979,7 @@ def main():
         (run_dir / "cross_validation_results.json").write_text(
             json.dumps({"folds": cv_results, "summary": cv_summary}, indent=2)
         )
-        write_log(log_path, f"\nCross-validation summary ({args.max_folds} fold(s) run)")
+        write_log(log_path, "\n5-fold cross-validation summary")
         for label_name, summary in cv_summary.items():
             write_log(
                 log_path,

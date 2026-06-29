@@ -85,11 +85,11 @@ class EEGEMGFusionModel(nn.Module):
         attach_eeg_feature_hook(self.eeg_model)
         self.emg_mlp = nn.Sequential(
             nn.Flatten(),
-            nn.LazyLinear(128),
-            nn.ELU(),
+            nn.Linear(2*n_times, 128), # nn.LazyLinear(128)
+            nn.ReLU(),
             nn.Dropout(0.3),
             nn.Linear(128, emg_feature_dim),
-            nn.ELU(),
+            nn.ReLU(),
         )
         self.classifier = nn.LazyLinear(2)
         self._emg_feature = None

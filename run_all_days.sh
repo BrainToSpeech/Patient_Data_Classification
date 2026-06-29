@@ -2,12 +2,13 @@
 set -euo pipefail
 
 PATIENT="sub1_hjlee" # sub1_hjlee    sub2_yjkim
-MODEL="eegnet"
-RUN_NAME="v3_sub1_eegnet_all_days"
+MODEL="eegnet" # eegnet shallownet
+RUN_NAME="v4_sub1_eegnet_all_days"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DATA_ROOT="$ROOT_DIR/data/processed/$PATIENT"
-TRAIN_SCRIPT="$ROOT_DIR/trainers/train_v3_braindecode_eeg.py"
+#TRAIN_SCRIPT="$ROOT_DIR/trainers/train_v3_braindecode_eeg.py"
+TRAIN_SCRIPT="$ROOT_DIR/trainers/train_v4.py"
 
 if [[ ! -f "$TRAIN_SCRIPT" ]]; then
   echo "Error: train script not found: $TRAIN_SCRIPT" >&2
@@ -29,7 +30,7 @@ for day_dir in "$DATA_ROOT"/*; do
   fi
 
   echo "=================================================="
-  echo "Running v3: patient=$PATIENT day=$day model=$MODEL run_name=$RUN_NAME"
+  echo "Running: patient=$PATIENT day=$day model=$MODEL run_name=$RUN_NAME"
 
   python3 "$TRAIN_SCRIPT" \
     --patient "$PATIENT" \
