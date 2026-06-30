@@ -1,0 +1,4 @@
+run_index,session,patient,model,label,folds,mean_bal_acc,std_bal_acc
+20260629_130837,all_days,sub2_yjkim,shallownet,0,5,0.856627345085144,0.0424550673126143
+20260629_130837,all_days,sub2_yjkim,shallownet,1_vs_3,5,0.9308557391166687,0.029462550037331864
+20260629_130837,all_days,sub2_yjkim,shallownet,2,5,0.8572855234146118,0.02543674699130095

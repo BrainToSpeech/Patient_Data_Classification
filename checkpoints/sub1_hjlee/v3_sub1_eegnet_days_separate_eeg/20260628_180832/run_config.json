@@ -1,0 +1,40 @@
+{
+  "args": {
+    "input_file": "X_eeg.npy",
+    "epochs": 200,
+    "batch_size": 16,
+    "lr": 3e-05,
+    "weight_decay": 0.0001,
+    "patience": 50,
+    "seed": 42,
+    "val_test_ratio": 0.2,
+    "weighted_sampler": true,
+    "window_size": 256,
+    "window_stride": 128,
+    "run_window_diagnostic": false,
+    "balance_rest_to_target": false,
+    "run_5fold_cross_validation": true,
+    "selection_metric": "balanced_loss",
+    "config": "./configs/train_config_v3.json",
+    "model": "eegnet",
+    "patient": "sub1_hjlee",
+    "day": "260506",
+    "data_dir": "./data/processed/sub1_hjlee/260506",
+    "checkpoint_root": "./checkpoints/sub1_hjlee_nogit/v3_sub1_eegnet_all_days"
+  },
+  "input_shape": [
+    500,
+    64,
+    1000
+  ],
+  "split_sizes": [
+    300,
+    100,
+    100
+  ],
+  "tasks": [
+    "0_vs_rest",
+    "1_vs_3",
+    "2_vs_rest"
+  ]
+}

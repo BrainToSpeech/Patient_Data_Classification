@@ -1,0 +1,406 @@
+Training configuration
+  config=./configs/train_config_v3.json
+  model=shallownet
+  patient=sub2_yjkim
+  day=260623
+  data_dir=./data/processed/sub2_yjkim/260623
+  input_file=X_eeg.npy
+  checkpoint_root=./checkpoints/sub2_yjkim_nogit/v3_sub2_shallownet_all_days
+  epochs=200
+  batch_size=16
+  lr=3e-05
+  weight_decay=0.0001
+  patience=50
+  seed=42
+  val_test_ratio=0.2
+  weighted_sampler=True
+  run_window_diagnostic=False
+  window_size=256
+  window_stride=128
+  balance_rest_to_target=False
+  run_5fold_cross_validation=True
+  selection_metric=balanced_loss
+
+Loading X_eeg.npy...
+Device: cuda | X: (500, 64, 1000) | run: ./checkpoints/sub2_yjkim_nogit/v3_sub2_shallownet_all_days/20260628_162916
+Data split: train=300 val=100 test=100
+Original label distribution:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+
+=== 5-fold cross-validation ===
+
+--- fold 1/5: train=300 val=100 test=100 ---
+
+fold=1 label=0
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=1 label=0 | epoch 001 | train loss: 1.4834 bal_acc: 0.50 acc: 0.51 | val loss: 0.8889 bal_loss: 1.0739 bal_acc: 0.46 acc: 0.55
+fold=1 label=0 | epoch 010 | train loss: 0.8947 bal_acc: 0.64 acc: 0.64 | val loss: 0.5205 bal_loss: 0.6269 bal_acc: 0.64 acc: 0.72
+fold=1 label=0 | epoch 020 | train loss: 0.5592 bal_acc: 0.77 acc: 0.76 | val loss: 0.4025 bal_loss: 0.5389 bal_acc: 0.76 acc: 0.82
+fold=1 label=0 | epoch 030 | train loss: 0.2731 bal_acc: 0.88 acc: 0.89 | val loss: 0.3305 bal_loss: 0.4499 bal_acc: 0.74 acc: 0.82
+fold=1 label=0 | epoch 040 | train loss: 0.2175 bal_acc: 0.90 acc: 0.91 | val loss: 0.3401 bal_loss: 0.5334 bal_acc: 0.74 acc: 0.83
+fold=1 label=0 | epoch 050 | train loss: 0.2646 bal_acc: 0.91 acc: 0.91 | val loss: 0.3021 bal_loss: 0.4460 bal_acc: 0.77 acc: 0.84
+fold=1 label=0 | epoch 060 | train loss: 0.2053 bal_acc: 0.92 acc: 0.93 | val loss: 0.3094 bal_loss: 0.4603 bal_acc: 0.81 acc: 0.87
+fold=1 label=0 | epoch 070 | train loss: 0.1086 bal_acc: 0.96 acc: 0.96 | val loss: 0.2952 bal_loss: 0.5780 bal_acc: 0.75 acc: 0.87
+fold=1 label=0 | epoch 080 | train loss: 0.1323 bal_acc: 0.95 acc: 0.95 | val loss: 0.3175 bal_loss: 0.6144 bal_acc: 0.76 acc: 0.88
+fold=1 label=0 | epoch 090 | train loss: 0.0746 bal_acc: 0.98 acc: 0.98 | val loss: 0.2929 bal_loss: 0.5496 bal_acc: 0.80 acc: 0.89
+fold=1 label=0 | epoch 100 | train loss: 0.0679 bal_acc: 0.98 acc: 0.98 | val loss: 0.2359 bal_loss: 0.4393 bal_acc: 0.77 acc: 0.88
+fold=1 label=0 | epoch 110 | train loss: 0.0594 bal_acc: 0.97 acc: 0.97 | val loss: 0.2502 bal_loss: 0.4811 bal_acc: 0.75 acc: 0.87
+
+fold=1 label=2
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=1 label=2 | epoch 001 | train loss: 1.5166 bal_acc: 0.54 acc: 0.54 | val loss: 0.8147 bal_loss: 0.7270 bal_acc: 0.60 acc: 0.60
+fold=1 label=2 | epoch 010 | train loss: 0.8259 bal_acc: 0.71 acc: 0.71 | val loss: 0.4131 bal_loss: 0.5492 bal_acc: 0.74 acc: 0.80
+fold=1 label=2 | epoch 020 | train loss: 0.4007 bal_acc: 0.84 acc: 0.84 | val loss: 0.3637 bal_loss: 0.5364 bal_acc: 0.77 acc: 0.85
+fold=1 label=2 | epoch 030 | train loss: 0.3345 bal_acc: 0.85 acc: 0.85 | val loss: 0.3308 bal_loss: 0.4492 bal_acc: 0.81 acc: 0.84
+fold=1 label=2 | epoch 040 | train loss: 0.2049 bal_acc: 0.91 acc: 0.92 | val loss: 0.3008 bal_loss: 0.5202 bal_acc: 0.82 acc: 0.89
+fold=1 label=2 | epoch 050 | train loss: 0.1880 bal_acc: 0.92 acc: 0.92 | val loss: 0.2674 bal_loss: 0.4663 bal_acc: 0.81 acc: 0.88
+fold=1 label=2 | epoch 060 | train loss: 0.1403 bal_acc: 0.95 acc: 0.95 | val loss: 0.2733 bal_loss: 0.4936 bal_acc: 0.83 acc: 0.91
+fold=1 label=2 | epoch 070 | train loss: 0.1154 bal_acc: 0.95 acc: 0.95 | val loss: 0.2893 bal_loss: 0.5604 bal_acc: 0.86 acc: 0.92
+fold=1 label=2 | epoch 080 | train loss: 0.1358 bal_acc: 0.96 acc: 0.96 | val loss: 0.2544 bal_loss: 0.4954 bal_acc: 0.86 acc: 0.93
+
+fold=1 label=1_vs_3
+Binary labels: class0=label1 class1=label3
+Binary label distribution:
+  train: class0=60 class1=60 total=120
+  val:   class0=20 class1=20 total=40
+  test:  class0=20 class1=20 total=40
+Original labels in this split:
+  train: label0=0 label1=60 label2=0 label3=60 label4=0 total=120
+  val:   label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+  test:  label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+fold=1 label=1_vs_3 | epoch 001 | train loss: 1.9341 bal_acc: 0.46 acc: 0.46 | val loss: 1.2126 bal_loss: 1.2126 bal_acc: 0.50 acc: 0.50
+fold=1 label=1_vs_3 | epoch 010 | train loss: 0.8058 bal_acc: 0.75 acc: 0.74 | val loss: 0.8060 bal_loss: 0.8060 bal_acc: 0.68 acc: 0.68
+fold=1 label=1_vs_3 | epoch 020 | train loss: 0.7156 bal_acc: 0.72 acc: 0.73 | val loss: 0.6137 bal_loss: 0.6137 bal_acc: 0.68 acc: 0.68
+fold=1 label=1_vs_3 | epoch 030 | train loss: 0.6930 bal_acc: 0.76 acc: 0.76 | val loss: 0.4053 bal_loss: 0.4053 bal_acc: 0.77 acc: 0.78
+fold=1 label=1_vs_3 | epoch 040 | train loss: 0.1512 bal_acc: 0.97 acc: 0.97 | val loss: 0.3521 bal_loss: 0.3521 bal_acc: 0.85 acc: 0.85
+fold=1 label=1_vs_3 | epoch 050 | train loss: 0.2451 bal_acc: 0.88 acc: 0.88 | val loss: 0.3560 bal_loss: 0.3560 bal_acc: 0.83 acc: 0.82
+fold=1 label=1_vs_3 | epoch 060 | train loss: 0.1556 bal_acc: 0.95 acc: 0.95 | val loss: 0.3312 bal_loss: 0.3312 bal_acc: 0.88 acc: 0.88
+fold=1 label=1_vs_3 | epoch 070 | train loss: 0.1449 bal_acc: 0.93 acc: 0.93 | val loss: 0.2311 bal_loss: 0.2311 bal_acc: 0.88 acc: 0.88
+fold=1 label=1_vs_3 | epoch 080 | train loss: 0.1250 bal_acc: 0.94 acc: 0.94 | val loss: 0.2769 bal_loss: 0.2769 bal_acc: 0.83 acc: 0.82
+fold=1 label=1_vs_3 | epoch 090 | train loss: 0.1382 bal_acc: 0.92 acc: 0.92 | val loss: 0.2623 bal_loss: 0.2623 bal_acc: 0.90 acc: 0.90
+fold=1 label=1_vs_3 | epoch 100 | train loss: 0.0396 bal_acc: 0.99 acc: 0.99 | val loss: 0.2720 bal_loss: 0.2720 bal_acc: 0.90 acc: 0.90
+fold=1 label=1_vs_3 | epoch 110 | train loss: 0.1272 bal_acc: 0.96 acc: 0.96 | val loss: 0.2354 bal_loss: 0.2354 bal_acc: 0.88 acc: 0.88
+fold=1 label=1_vs_3 | epoch 120 | train loss: 0.1126 bal_acc: 0.95 acc: 0.95 | val loss: 0.2377 bal_loss: 0.2377 bal_acc: 0.90 acc: 0.90
+fold=1 label=1_vs_3 | epoch 130 | train loss: 0.0553 bal_acc: 0.98 acc: 0.98 | val loss: 0.1889 bal_loss: 0.1889 bal_acc: 0.92 acc: 0.93
+fold=1 label=1_vs_3 | epoch 140 | train loss: 0.0311 bal_acc: 1.00 acc: 1.00 | val loss: 0.1892 bal_loss: 0.1892 bal_acc: 0.92 acc: 0.93
+fold=1 label=1_vs_3 | epoch 150 | train loss: 0.0484 bal_acc: 0.99 acc: 0.99 | val loss: 0.1506 bal_loss: 0.1506 bal_acc: 0.92 acc: 0.93
+fold=1 label=1_vs_3 | epoch 160 | train loss: 0.0858 bal_acc: 0.96 acc: 0.96 | val loss: 0.2176 bal_loss: 0.2176 bal_acc: 0.90 acc: 0.90
+fold=1 label=1_vs_3 | epoch 170 | train loss: 0.0430 bal_acc: 0.99 acc: 0.99 | val loss: 0.1984 bal_loss: 0.1984 bal_acc: 0.92 acc: 0.93
+fold=1 label=1_vs_3 | epoch 180 | train loss: 0.0608 bal_acc: 0.98 acc: 0.98 | val loss: 0.1838 bal_loss: 0.1838 bal_acc: 0.95 acc: 0.95
+fold=1 label=1_vs_3 | epoch 190 | train loss: 0.0271 bal_acc: 0.99 acc: 0.99 | val loss: 0.1660 bal_loss: 0.1660 bal_acc: 0.92 acc: 0.93
+fold=1 label=1_vs_3 | epoch 200 | train loss: 0.0097 bal_acc: 1.00 acc: 1.00 | val loss: 0.2095 bal_loss: 0.2095 bal_acc: 0.92 acc: 0.93
+
+--- fold 2/5: train=300 val=100 test=100 ---
+
+fold=2 label=0
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=2 label=0 | epoch 001 | train loss: 1.5556 bal_acc: 0.50 acc: 0.50 | val loss: 0.7969 bal_loss: 0.9185 bal_acc: 0.61 acc: 0.65
+fold=2 label=0 | epoch 010 | train loss: 0.7801 bal_acc: 0.71 acc: 0.71 | val loss: 0.8623 bal_loss: 0.8055 bal_acc: 0.62 acc: 0.60
+fold=2 label=0 | epoch 020 | train loss: 0.4246 bal_acc: 0.80 acc: 0.80 | val loss: 0.5026 bal_loss: 0.6954 bal_acc: 0.67 acc: 0.80
+fold=2 label=0 | epoch 030 | train loss: 0.3172 bal_acc: 0.88 acc: 0.88 | val loss: 0.4750 bal_loss: 0.6075 bal_acc: 0.74 acc: 0.80
+fold=2 label=0 | epoch 040 | train loss: 0.2366 bal_acc: 0.90 acc: 0.90 | val loss: 0.4368 bal_loss: 0.6291 bal_acc: 0.73 acc: 0.81
+fold=2 label=0 | epoch 050 | train loss: 0.2509 bal_acc: 0.91 acc: 0.91 | val loss: 0.4862 bal_loss: 0.6092 bal_acc: 0.76 acc: 0.82
+fold=2 label=0 | epoch 060 | train loss: 0.1592 bal_acc: 0.94 acc: 0.94 | val loss: 0.4220 bal_loss: 0.5856 bal_acc: 0.78 acc: 0.86
+fold=2 label=0 | epoch 070 | train loss: 0.1331 bal_acc: 0.95 acc: 0.95 | val loss: 0.4754 bal_loss: 0.7806 bal_acc: 0.76 acc: 0.85
+fold=2 label=0 | epoch 080 | train loss: 0.0708 bal_acc: 0.98 acc: 0.98 | val loss: 0.4893 bal_loss: 0.6705 bal_acc: 0.79 acc: 0.84
+fold=2 label=0 | epoch 090 | train loss: 0.0550 bal_acc: 0.98 acc: 0.98 | val loss: 0.4177 bal_loss: 0.6831 bal_acc: 0.77 acc: 0.87
+fold=2 label=0 | epoch 100 | train loss: 0.0794 bal_acc: 0.96 acc: 0.96 | val loss: 0.3481 bal_loss: 0.5197 bal_acc: 0.82 acc: 0.90
+
+fold=2 label=2
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=2 label=2 | epoch 001 | train loss: 1.3050 bal_acc: 0.59 acc: 0.59 | val loss: 0.8590 bal_loss: 0.9630 bal_acc: 0.56 acc: 0.60
+fold=2 label=2 | epoch 010 | train loss: 0.7029 bal_acc: 0.75 acc: 0.75 | val loss: 0.6056 bal_loss: 0.8167 bal_acc: 0.65 acc: 0.74
+fold=2 label=2 | epoch 020 | train loss: 0.4018 bal_acc: 0.84 acc: 0.84 | val loss: 0.5854 bal_loss: 0.8737 bal_acc: 0.66 acc: 0.79
+fold=2 label=2 | epoch 030 | train loss: 0.3370 bal_acc: 0.87 acc: 0.87 | val loss: 0.4689 bal_loss: 0.7377 bal_acc: 0.72 acc: 0.82
+fold=2 label=2 | epoch 040 | train loss: 0.2159 bal_acc: 0.91 acc: 0.91 | val loss: 0.4745 bal_loss: 0.7029 bal_acc: 0.72 acc: 0.82
+fold=2 label=2 | epoch 050 | train loss: 0.1493 bal_acc: 0.95 acc: 0.95 | val loss: 0.4553 bal_loss: 0.7367 bal_acc: 0.77 acc: 0.85
+fold=2 label=2 | epoch 060 | train loss: 0.1761 bal_acc: 0.96 acc: 0.96 | val loss: 0.5651 bal_loss: 0.9760 bal_acc: 0.71 acc: 0.83
+fold=2 label=2 | epoch 070 | train loss: 0.1435 bal_acc: 0.95 acc: 0.95 | val loss: 0.4750 bal_loss: 0.9236 bal_acc: 0.66 acc: 0.82
+
+fold=2 label=1_vs_3
+Binary labels: class0=label1 class1=label3
+Binary label distribution:
+  train: class0=60 class1=60 total=120
+  val:   class0=20 class1=20 total=40
+  test:  class0=20 class1=20 total=40
+Original labels in this split:
+  train: label0=0 label1=60 label2=0 label3=60 label4=0 total=120
+  val:   label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+  test:  label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+fold=2 label=1_vs_3 | epoch 001 | train loss: 1.6016 bal_acc: 0.52 acc: 0.52 | val loss: 1.5892 bal_loss: 1.5892 bal_acc: 0.53 acc: 0.53
+fold=2 label=1_vs_3 | epoch 010 | train loss: 0.8040 bal_acc: 0.71 acc: 0.71 | val loss: 0.8100 bal_loss: 0.8100 bal_acc: 0.62 acc: 0.62
+fold=2 label=1_vs_3 | epoch 020 | train loss: 0.3498 bal_acc: 0.85 acc: 0.85 | val loss: 0.5332 bal_loss: 0.5332 bal_acc: 0.73 acc: 0.72
+fold=2 label=1_vs_3 | epoch 030 | train loss: 0.2607 bal_acc: 0.90 acc: 0.90 | val loss: 0.3764 bal_loss: 0.3764 bal_acc: 0.80 acc: 0.80
+fold=2 label=1_vs_3 | epoch 040 | train loss: 0.1910 bal_acc: 0.91 acc: 0.91 | val loss: 0.3408 bal_loss: 0.3408 bal_acc: 0.82 acc: 0.82
+fold=2 label=1_vs_3 | epoch 050 | train loss: 0.1740 bal_acc: 0.95 acc: 0.94 | val loss: 0.3734 bal_loss: 0.3734 bal_acc: 0.82 acc: 0.82
+fold=2 label=1_vs_3 | epoch 060 | train loss: 0.1079 bal_acc: 0.97 acc: 0.97 | val loss: 0.3202 bal_loss: 0.3202 bal_acc: 0.80 acc: 0.80
+fold=2 label=1_vs_3 | epoch 070 | train loss: 0.1455 bal_acc: 0.93 acc: 0.93 | val loss: 0.2784 bal_loss: 0.2784 bal_acc: 0.82 acc: 0.82
+fold=2 label=1_vs_3 | epoch 080 | train loss: 0.1008 bal_acc: 0.96 acc: 0.96 | val loss: 0.2820 bal_loss: 0.2820 bal_acc: 0.85 acc: 0.85
+fold=2 label=1_vs_3 | epoch 090 | train loss: 0.0729 bal_acc: 0.98 acc: 0.98 | val loss: 0.2590 bal_loss: 0.2590 bal_acc: 0.88 acc: 0.88
+fold=2 label=1_vs_3 | epoch 100 | train loss: 0.0920 bal_acc: 0.98 acc: 0.98 | val loss: 0.2220 bal_loss: 0.2220 bal_acc: 0.88 acc: 0.88
+fold=2 label=1_vs_3 | epoch 110 | train loss: 0.0839 bal_acc: 0.97 acc: 0.98 | val loss: 0.2184 bal_loss: 0.2184 bal_acc: 0.90 acc: 0.90
+fold=2 label=1_vs_3 | epoch 120 | train loss: 0.0558 bal_acc: 0.98 acc: 0.98 | val loss: 0.2088 bal_loss: 0.2088 bal_acc: 0.92 acc: 0.93
+fold=2 label=1_vs_3 | epoch 130 | train loss: 0.0281 bal_acc: 1.00 acc: 1.00 | val loss: 0.2120 bal_loss: 0.2120 bal_acc: 0.92 acc: 0.93
+fold=2 label=1_vs_3 | epoch 140 | train loss: 0.0402 bal_acc: 0.99 acc: 0.99 | val loss: 0.2081 bal_loss: 0.2081 bal_acc: 0.92 acc: 0.93
+fold=2 label=1_vs_3 | epoch 150 | train loss: 0.0473 bal_acc: 0.98 acc: 0.98 | val loss: 0.1997 bal_loss: 0.1997 bal_acc: 0.90 acc: 0.90
+fold=2 label=1_vs_3 | epoch 160 | train loss: 0.0312 bal_acc: 0.99 acc: 0.99 | val loss: 0.1729 bal_loss: 0.1729 bal_acc: 0.92 acc: 0.93
+fold=2 label=1_vs_3 | epoch 170 | train loss: 0.0189 bal_acc: 1.00 acc: 1.00 | val loss: 0.2375 bal_loss: 0.2375 bal_acc: 0.88 acc: 0.88
+fold=2 label=1_vs_3 | epoch 180 | train loss: 0.0333 bal_acc: 0.99 acc: 0.99 | val loss: 0.1886 bal_loss: 0.1886 bal_acc: 0.95 acc: 0.95
+fold=2 label=1_vs_3 | epoch 190 | train loss: 0.0293 bal_acc: 0.99 acc: 0.99 | val loss: 0.1990 bal_loss: 0.1990 bal_acc: 0.92 acc: 0.93
+fold=2 label=1_vs_3 | epoch 200 | train loss: 0.0075 bal_acc: 1.00 acc: 1.00 | val loss: 0.2319 bal_loss: 0.2319 bal_acc: 0.88 acc: 0.88
+
+--- fold 3/5: train=300 val=100 test=100 ---
+
+fold=3 label=0
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=3 label=0 | epoch 001 | train loss: 1.6155 bal_acc: 0.50 acc: 0.50 | val loss: 0.9795 bal_loss: 0.8887 bal_acc: 0.55 acc: 0.52
+fold=3 label=0 | epoch 010 | train loss: 0.7578 bal_acc: 0.66 acc: 0.66 | val loss: 0.6346 bal_loss: 0.7346 bal_acc: 0.62 acc: 0.69
+fold=3 label=0 | epoch 020 | train loss: 0.4162 bal_acc: 0.84 acc: 0.84 | val loss: 0.4932 bal_loss: 0.6425 bal_acc: 0.66 acc: 0.76
+fold=3 label=0 | epoch 030 | train loss: 0.4128 bal_acc: 0.85 acc: 0.85 | val loss: 0.4596 bal_loss: 0.6854 bal_acc: 0.70 acc: 0.82
+fold=3 label=0 | epoch 040 | train loss: 0.2718 bal_acc: 0.88 acc: 0.88 | val loss: 0.3957 bal_loss: 0.6453 bal_acc: 0.68 acc: 0.82
+fold=3 label=0 | epoch 050 | train loss: 0.2104 bal_acc: 0.93 acc: 0.92 | val loss: 0.3589 bal_loss: 0.4966 bal_acc: 0.77 acc: 0.85
+fold=3 label=0 | epoch 060 | train loss: 0.1857 bal_acc: 0.91 acc: 0.91 | val loss: 0.3365 bal_loss: 0.5086 bal_acc: 0.74 acc: 0.83
+fold=3 label=0 | epoch 070 | train loss: 0.1286 bal_acc: 0.96 acc: 0.95 | val loss: 0.3116 bal_loss: 0.4796 bal_acc: 0.79 acc: 0.87
+fold=3 label=0 | epoch 080 | train loss: 0.0910 bal_acc: 0.97 acc: 0.97 | val loss: 0.3200 bal_loss: 0.5216 bal_acc: 0.77 acc: 0.87
+fold=3 label=0 | epoch 090 | train loss: 0.0994 bal_acc: 0.97 acc: 0.97 | val loss: 0.2789 bal_loss: 0.4847 bal_acc: 0.73 acc: 0.86
+fold=3 label=0 | epoch 100 | train loss: 0.0465 bal_acc: 0.99 acc: 0.99 | val loss: 0.2753 bal_loss: 0.4514 bal_acc: 0.79 acc: 0.87
+fold=3 label=0 | epoch 110 | train loss: 0.0678 bal_acc: 0.99 acc: 0.99 | val loss: 0.2897 bal_loss: 0.5040 bal_acc: 0.77 acc: 0.85
+fold=3 label=0 | epoch 120 | train loss: 0.0388 bal_acc: 0.99 acc: 0.99 | val loss: 0.3126 bal_loss: 0.6605 bal_acc: 0.70 acc: 0.85
+
+fold=3 label=2
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=3 label=2 | epoch 001 | train loss: 1.4344 bal_acc: 0.57 acc: 0.57 | val loss: 0.9892 bal_loss: 0.9395 bal_acc: 0.61 acc: 0.62
+fold=3 label=2 | epoch 010 | train loss: 0.7569 bal_acc: 0.74 acc: 0.74 | val loss: 0.7552 bal_loss: 0.8602 bal_acc: 0.75 acc: 0.75
+fold=3 label=2 | epoch 020 | train loss: 0.4130 bal_acc: 0.83 acc: 0.83 | val loss: 0.5982 bal_loss: 0.7882 bal_acc: 0.73 acc: 0.77
+fold=3 label=2 | epoch 030 | train loss: 0.2733 bal_acc: 0.90 acc: 0.90 | val loss: 0.5969 bal_loss: 0.7053 bal_acc: 0.76 acc: 0.80
+fold=3 label=2 | epoch 040 | train loss: 0.1967 bal_acc: 0.91 acc: 0.91 | val loss: 0.4768 bal_loss: 0.5967 bal_acc: 0.77 acc: 0.81
+fold=3 label=2 | epoch 050 | train loss: 0.1749 bal_acc: 0.92 acc: 0.92 | val loss: 0.4050 bal_loss: 0.6130 bal_acc: 0.82 acc: 0.86
+fold=3 label=2 | epoch 060 | train loss: 0.1754 bal_acc: 0.91 acc: 0.91 | val loss: 0.4291 bal_loss: 0.6485 bal_acc: 0.77 acc: 0.85
+fold=3 label=2 | epoch 070 | train loss: 0.1355 bal_acc: 0.95 acc: 0.95 | val loss: 0.3772 bal_loss: 0.5922 bal_acc: 0.82 acc: 0.86
+fold=3 label=2 | epoch 080 | train loss: 0.1456 bal_acc: 0.94 acc: 0.94 | val loss: 0.5213 bal_loss: 0.6727 bal_acc: 0.82 acc: 0.83
+fold=3 label=2 | epoch 090 | train loss: 0.1127 bal_acc: 0.97 acc: 0.97 | val loss: 0.4048 bal_loss: 0.6582 bal_acc: 0.77 acc: 0.84
+
+fold=3 label=1_vs_3
+Binary labels: class0=label1 class1=label3
+Binary label distribution:
+  train: class0=60 class1=60 total=120
+  val:   class0=20 class1=20 total=40
+  test:  class0=20 class1=20 total=40
+Original labels in this split:
+  train: label0=0 label1=60 label2=0 label3=60 label4=0 total=120
+  val:   label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+  test:  label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+fold=3 label=1_vs_3 | epoch 001 | train loss: 2.0000 bal_acc: 0.45 acc: 0.45 | val loss: 1.0137 bal_loss: 1.0137 bal_acc: 0.68 acc: 0.68
+fold=3 label=1_vs_3 | epoch 010 | train loss: 0.7834 bal_acc: 0.70 acc: 0.70 | val loss: 0.6397 bal_loss: 0.6397 bal_acc: 0.68 acc: 0.68
+fold=3 label=1_vs_3 | epoch 020 | train loss: 0.6228 bal_acc: 0.78 acc: 0.78 | val loss: 0.6077 bal_loss: 0.6077 bal_acc: 0.77 acc: 0.78
+fold=3 label=1_vs_3 | epoch 030 | train loss: 0.2401 bal_acc: 0.92 acc: 0.92 | val loss: 0.5013 bal_loss: 0.5013 bal_acc: 0.80 acc: 0.80
+fold=3 label=1_vs_3 | epoch 040 | train loss: 0.1568 bal_acc: 0.93 acc: 0.93 | val loss: 0.4915 bal_loss: 0.4915 bal_acc: 0.83 acc: 0.82
+fold=3 label=1_vs_3 | epoch 050 | train loss: 0.1626 bal_acc: 0.93 acc: 0.93 | val loss: 0.4282 bal_loss: 0.4282 bal_acc: 0.85 acc: 0.85
+fold=3 label=1_vs_3 | epoch 060 | train loss: 0.1698 bal_acc: 0.92 acc: 0.93 | val loss: 0.4507 bal_loss: 0.4507 bal_acc: 0.80 acc: 0.80
+fold=3 label=1_vs_3 | epoch 070 | train loss: 0.0824 bal_acc: 0.98 acc: 0.98 | val loss: 0.5025 bal_loss: 0.5025 bal_acc: 0.80 acc: 0.80
+fold=3 label=1_vs_3 | epoch 080 | train loss: 0.1178 bal_acc: 0.92 acc: 0.92 | val loss: 0.4992 bal_loss: 0.4992 bal_acc: 0.80 acc: 0.80
+fold=3 label=1_vs_3 | epoch 090 | train loss: 0.0769 bal_acc: 0.97 acc: 0.97 | val loss: 0.4999 bal_loss: 0.4999 bal_acc: 0.83 acc: 0.82
+
+--- fold 4/5: train=300 val=100 test=100 ---
+
+fold=4 label=0
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=4 label=0 | epoch 001 | train loss: 1.7409 bal_acc: 0.46 acc: 0.46 | val loss: 1.0831 bal_loss: 0.9466 bal_acc: 0.48 acc: 0.41
+fold=4 label=0 | epoch 010 | train loss: 0.6882 bal_acc: 0.67 acc: 0.67 | val loss: 0.6626 bal_loss: 0.6175 bal_acc: 0.65 acc: 0.65
+fold=4 label=0 | epoch 020 | train loss: 0.5578 bal_acc: 0.74 acc: 0.74 | val loss: 0.6086 bal_loss: 0.6431 bal_acc: 0.62 acc: 0.73
+fold=4 label=0 | epoch 030 | train loss: 0.4067 bal_acc: 0.82 acc: 0.82 | val loss: 0.4769 bal_loss: 0.5684 bal_acc: 0.69 acc: 0.78
+fold=4 label=0 | epoch 040 | train loss: 0.2227 bal_acc: 0.89 acc: 0.89 | val loss: 0.4326 bal_loss: 0.6799 bal_acc: 0.67 acc: 0.80
+fold=4 label=0 | epoch 050 | train loss: 0.2110 bal_acc: 0.91 acc: 0.91 | val loss: 0.4006 bal_loss: 0.5916 bal_acc: 0.72 acc: 0.82
+fold=4 label=0 | epoch 060 | train loss: 0.1142 bal_acc: 0.96 acc: 0.96 | val loss: 0.4099 bal_loss: 0.6298 bal_acc: 0.76 acc: 0.85
+fold=4 label=0 | epoch 070 | train loss: 0.1158 bal_acc: 0.95 acc: 0.95 | val loss: 0.3793 bal_loss: 0.5881 bal_acc: 0.80 acc: 0.86
+
+fold=4 label=2
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=4 label=2 | epoch 001 | train loss: 1.2737 bal_acc: 0.61 acc: 0.61 | val loss: 1.0953 bal_loss: 0.9383 bal_acc: 0.61 acc: 0.52
+fold=4 label=2 | epoch 010 | train loss: 0.5378 bal_acc: 0.77 acc: 0.77 | val loss: 0.6535 bal_loss: 0.7282 bal_acc: 0.68 acc: 0.76
+fold=4 label=2 | epoch 020 | train loss: 0.4173 bal_acc: 0.82 acc: 0.82 | val loss: 0.5045 bal_loss: 0.5762 bal_acc: 0.80 acc: 0.83
+fold=4 label=2 | epoch 030 | train loss: 0.2486 bal_acc: 0.91 acc: 0.91 | val loss: 0.3619 bal_loss: 0.5857 bal_acc: 0.74 acc: 0.82
+fold=4 label=2 | epoch 040 | train loss: 0.2841 bal_acc: 0.89 acc: 0.89 | val loss: 0.4049 bal_loss: 0.5134 bal_acc: 0.79 acc: 0.85
+fold=4 label=2 | epoch 050 | train loss: 0.1598 bal_acc: 0.94 acc: 0.94 | val loss: 0.4482 bal_loss: 0.5658 bal_acc: 0.83 acc: 0.88
+fold=4 label=2 | epoch 060 | train loss: 0.1494 bal_acc: 0.94 acc: 0.94 | val loss: 0.3802 bal_loss: 0.5458 bal_acc: 0.83 acc: 0.88
+fold=4 label=2 | epoch 070 | train loss: 0.1383 bal_acc: 0.96 acc: 0.96 | val loss: 0.3301 bal_loss: 0.4384 bal_acc: 0.85 acc: 0.88
+fold=4 label=2 | epoch 080 | train loss: 0.1253 bal_acc: 0.95 acc: 0.95 | val loss: 0.3328 bal_loss: 0.4866 bal_acc: 0.86 acc: 0.89
+fold=4 label=2 | epoch 090 | train loss: 0.0908 bal_acc: 0.97 acc: 0.97 | val loss: 0.3482 bal_loss: 0.4623 bal_acc: 0.85 acc: 0.88
+fold=4 label=2 | epoch 100 | train loss: 0.0899 bal_acc: 0.97 acc: 0.97 | val loss: 0.2544 bal_loss: 0.3547 bal_acc: 0.88 acc: 0.90
+fold=4 label=2 | epoch 110 | train loss: 0.0571 bal_acc: 0.98 acc: 0.98 | val loss: 0.3075 bal_loss: 0.4789 bal_acc: 0.86 acc: 0.90
+fold=4 label=2 | epoch 120 | train loss: 0.0904 bal_acc: 0.97 acc: 0.97 | val loss: 0.4805 bal_loss: 0.5876 bal_acc: 0.84 acc: 0.89
+fold=4 label=2 | epoch 130 | train loss: 0.0669 bal_acc: 0.97 acc: 0.97 | val loss: 0.3193 bal_loss: 0.4233 bal_acc: 0.86 acc: 0.90
+fold=4 label=2 | epoch 140 | train loss: 0.0492 bal_acc: 0.99 acc: 0.99 | val loss: 0.3162 bal_loss: 0.5596 bal_acc: 0.86 acc: 0.92
+fold=4 label=2 | epoch 150 | train loss: 0.0497 bal_acc: 0.98 acc: 0.98 | val loss: 0.4134 bal_loss: 0.5481 bal_acc: 0.86 acc: 0.90
+
+fold=4 label=1_vs_3
+Binary labels: class0=label1 class1=label3
+Binary label distribution:
+  train: class0=60 class1=60 total=120
+  val:   class0=20 class1=20 total=40
+  test:  class0=20 class1=20 total=40
+Original labels in this split:
+  train: label0=0 label1=60 label2=0 label3=60 label4=0 total=120
+  val:   label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+  test:  label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+fold=4 label=1_vs_3 | epoch 001 | train loss: 1.8387 bal_acc: 0.50 acc: 0.51 | val loss: 0.8416 bal_loss: 0.8416 bal_acc: 0.70 acc: 0.70
+fold=4 label=1_vs_3 | epoch 010 | train loss: 0.7720 bal_acc: 0.70 acc: 0.70 | val loss: 0.3275 bal_loss: 0.3275 bal_acc: 0.85 acc: 0.85
+fold=4 label=1_vs_3 | epoch 020 | train loss: 0.6008 bal_acc: 0.81 acc: 0.79 | val loss: 0.2947 bal_loss: 0.2947 bal_acc: 0.82 acc: 0.82
+fold=4 label=1_vs_3 | epoch 030 | train loss: 0.5075 bal_acc: 0.82 acc: 0.82 | val loss: 0.2402 bal_loss: 0.2402 bal_acc: 0.88 acc: 0.88
+fold=4 label=1_vs_3 | epoch 040 | train loss: 0.3411 bal_acc: 0.83 acc: 0.83 | val loss: 0.2091 bal_loss: 0.2091 bal_acc: 0.90 acc: 0.90
+fold=4 label=1_vs_3 | epoch 050 | train loss: 0.1905 bal_acc: 0.91 acc: 0.91 | val loss: 0.1407 bal_loss: 0.1407 bal_acc: 0.98 acc: 0.97
+fold=4 label=1_vs_3 | epoch 060 | train loss: 0.2776 bal_acc: 0.88 acc: 0.88 | val loss: 0.1938 bal_loss: 0.1938 bal_acc: 0.90 acc: 0.90
+fold=4 label=1_vs_3 | epoch 070 | train loss: 0.1967 bal_acc: 0.94 acc: 0.93 | val loss: 0.1668 bal_loss: 0.1668 bal_acc: 0.92 acc: 0.93
+fold=4 label=1_vs_3 | epoch 080 | train loss: 0.1746 bal_acc: 0.94 acc: 0.93 | val loss: 0.1777 bal_loss: 0.1777 bal_acc: 0.88 acc: 0.88
+fold=4 label=1_vs_3 | epoch 090 | train loss: 0.1145 bal_acc: 0.95 acc: 0.95 | val loss: 0.1456 bal_loss: 0.1456 bal_acc: 0.92 acc: 0.93
+fold=4 label=1_vs_3 | epoch 100 | train loss: 0.0519 bal_acc: 0.98 acc: 0.98 | val loss: 0.1826 bal_loss: 0.1826 bal_acc: 0.88 acc: 0.88
+fold=4 label=1_vs_3 | epoch 110 | train loss: 0.0480 bal_acc: 1.00 acc: 1.00 | val loss: 0.1487 bal_loss: 0.1487 bal_acc: 0.90 acc: 0.90
+fold=4 label=1_vs_3 | epoch 120 | train loss: 0.0366 bal_acc: 0.98 acc: 0.98 | val loss: 0.1485 bal_loss: 0.1485 bal_acc: 0.92 acc: 0.93
+fold=4 label=1_vs_3 | epoch 130 | train loss: 0.0959 bal_acc: 0.95 acc: 0.95 | val loss: 0.1368 bal_loss: 0.1368 bal_acc: 1.00 acc: 1.00
+fold=4 label=1_vs_3 | epoch 140 | train loss: 0.0588 bal_acc: 0.98 acc: 0.98 | val loss: 0.1876 bal_loss: 0.1876 bal_acc: 0.88 acc: 0.88
+fold=4 label=1_vs_3 | epoch 150 | train loss: 0.0447 bal_acc: 0.99 acc: 0.99 | val loss: 0.1613 bal_loss: 0.1613 bal_acc: 0.92 acc: 0.93
+fold=4 label=1_vs_3 | epoch 160 | train loss: 0.0591 bal_acc: 0.98 acc: 0.98 | val loss: 0.2049 bal_loss: 0.2049 bal_acc: 0.90 acc: 0.90
+fold=4 label=1_vs_3 | epoch 170 | train loss: 0.0286 bal_acc: 0.99 acc: 0.99 | val loss: 0.2766 bal_loss: 0.2766 bal_acc: 0.90 acc: 0.90
+
+--- fold 5/5: train=300 val=100 test=100 ---
+
+fold=5 label=0
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=5 label=0 | epoch 001 | train loss: 1.7484 bal_acc: 0.48 acc: 0.48 | val loss: 0.8648 bal_loss: 1.1958 bal_acc: 0.46 acc: 0.61
+fold=5 label=0 | epoch 010 | train loss: 0.9075 bal_acc: 0.66 acc: 0.66 | val loss: 0.4807 bal_loss: 0.7512 bal_acc: 0.64 acc: 0.81
+fold=5 label=0 | epoch 020 | train loss: 0.4279 bal_acc: 0.77 acc: 0.78 | val loss: 0.4581 bal_loss: 0.5392 bal_acc: 0.76 acc: 0.80
+fold=5 label=0 | epoch 030 | train loss: 0.3457 bal_acc: 0.85 acc: 0.85 | val loss: 0.4359 bal_loss: 0.4890 bal_acc: 0.76 acc: 0.80
+fold=5 label=0 | epoch 040 | train loss: 0.2681 bal_acc: 0.90 acc: 0.90 | val loss: 0.4399 bal_loss: 0.5444 bal_acc: 0.73 acc: 0.81
+fold=5 label=0 | epoch 050 | train loss: 0.2027 bal_acc: 0.92 acc: 0.92 | val loss: 0.3106 bal_loss: 0.4132 bal_acc: 0.82 acc: 0.87
+fold=5 label=0 | epoch 060 | train loss: 0.2109 bal_acc: 0.93 acc: 0.93 | val loss: 0.3304 bal_loss: 0.4335 bal_acc: 0.84 acc: 0.87
+fold=5 label=0 | epoch 070 | train loss: 0.1489 bal_acc: 0.95 acc: 0.95 | val loss: 0.3119 bal_loss: 0.4304 bal_acc: 0.82 acc: 0.86
+fold=5 label=0 | epoch 080 | train loss: 0.0684 bal_acc: 0.98 acc: 0.98 | val loss: 0.3157 bal_loss: 0.4907 bal_acc: 0.80 acc: 0.86
+fold=5 label=0 | epoch 090 | train loss: 0.0951 bal_acc: 0.96 acc: 0.96 | val loss: 0.2347 bal_loss: 0.4104 bal_acc: 0.82 acc: 0.90
+fold=5 label=0 | epoch 100 | train loss: 0.0747 bal_acc: 0.97 acc: 0.97 | val loss: 0.2327 bal_loss: 0.3855 bal_acc: 0.80 acc: 0.89
+fold=5 label=0 | epoch 110 | train loss: 0.0533 bal_acc: 0.99 acc: 0.99 | val loss: 0.2525 bal_loss: 0.4538 bal_acc: 0.79 acc: 0.87
+fold=5 label=0 | epoch 120 | train loss: 0.0263 bal_acc: 1.00 acc: 1.00 | val loss: 0.2688 bal_loss: 0.4370 bal_acc: 0.78 acc: 0.86
+fold=5 label=0 | epoch 130 | train loss: 0.0443 bal_acc: 0.98 acc: 0.98 | val loss: 0.2614 bal_loss: 0.4023 bal_acc: 0.81 acc: 0.88
+fold=5 label=0 | epoch 140 | train loss: 0.0408 bal_acc: 0.99 acc: 0.99 | val loss: 0.2310 bal_loss: 0.4429 bal_acc: 0.80 acc: 0.89
+
+fold=5 label=2
+Binary label distribution:
+  train: class0=60 class1=240 total=300
+  val:   class0=20 class1=80 total=100
+  test:  class0=20 class1=80 total=100
+Original labels in this split:
+  train: label0=60 label1=60 label2=60 label3=60 label4=60 total=300
+  val:   label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+  test:  label0=20 label1=20 label2=20 label3=20 label4=20 total=100
+fold=5 label=2 | epoch 001 | train loss: 1.4164 bal_acc: 0.54 acc: 0.54 | val loss: 0.9601 bal_loss: 0.6639 bal_acc: 0.74 acc: 0.61
+fold=5 label=2 | epoch 010 | train loss: 0.6690 bal_acc: 0.75 acc: 0.74 | val loss: 0.4610 bal_loss: 0.5030 bal_acc: 0.75 acc: 0.78
+fold=5 label=2 | epoch 020 | train loss: 0.4550 bal_acc: 0.83 acc: 0.83 | val loss: 0.3244 bal_loss: 0.5354 bal_acc: 0.73 acc: 0.84
+fold=5 label=2 | epoch 030 | train loss: 0.3623 bal_acc: 0.86 acc: 0.86 | val loss: 0.3480 bal_loss: 0.5342 bal_acc: 0.79 acc: 0.84
+fold=5 label=2 | epoch 040 | train loss: 0.2164 bal_acc: 0.91 acc: 0.91 | val loss: 0.3377 bal_loss: 0.5071 bal_acc: 0.87 acc: 0.91
+fold=5 label=2 | epoch 050 | train loss: 0.1697 bal_acc: 0.92 acc: 0.92 | val loss: 0.3767 bal_loss: 0.6391 bal_acc: 0.80 acc: 0.89
+fold=5 label=2 | epoch 060 | train loss: 0.1555 bal_acc: 0.93 acc: 0.93 | val loss: 0.3641 bal_loss: 0.5944 bal_acc: 0.84 acc: 0.89
+fold=5 label=2 | epoch 070 | train loss: 0.1669 bal_acc: 0.93 acc: 0.93 | val loss: 0.4283 bal_loss: 0.7620 bal_acc: 0.82 acc: 0.89
+
+fold=5 label=1_vs_3
+Binary labels: class0=label1 class1=label3
+Binary label distribution:
+  train: class0=60 class1=60 total=120
+  val:   class0=20 class1=20 total=40
+  test:  class0=20 class1=20 total=40
+Original labels in this split:
+  train: label0=0 label1=60 label2=0 label3=60 label4=0 total=120
+  val:   label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+  test:  label0=0 label1=20 label2=0 label3=20 label4=0 total=40
+fold=5 label=1_vs_3 | epoch 001 | train loss: 1.6835 bal_acc: 0.50 acc: 0.50 | val loss: 1.1798 bal_loss: 1.1798 bal_acc: 0.55 acc: 0.55
+fold=5 label=1_vs_3 | epoch 010 | train loss: 0.9368 bal_acc: 0.70 acc: 0.70 | val loss: 0.8042 bal_loss: 0.8042 bal_acc: 0.62 acc: 0.62
+fold=5 label=1_vs_3 | epoch 020 | train loss: 0.2416 bal_acc: 0.89 acc: 0.89 | val loss: 0.4575 bal_loss: 0.4575 bal_acc: 0.80 acc: 0.80
+fold=5 label=1_vs_3 | epoch 030 | train loss: 0.3371 bal_acc: 0.86 acc: 0.86 | val loss: 0.3903 bal_loss: 0.3903 bal_acc: 0.83 acc: 0.82
+fold=5 label=1_vs_3 | epoch 040 | train loss: 0.2624 bal_acc: 0.88 acc: 0.88 | val loss: 0.2850 bal_loss: 0.2850 bal_acc: 0.92 acc: 0.93
+fold=5 label=1_vs_3 | epoch 050 | train loss: 0.1889 bal_acc: 0.92 acc: 0.92 | val loss: 0.2851 bal_loss: 0.2851 bal_acc: 0.88 acc: 0.88
+fold=5 label=1_vs_3 | epoch 060 | train loss: 0.1111 bal_acc: 0.96 acc: 0.96 | val loss: 0.2391 bal_loss: 0.2391 bal_acc: 0.95 acc: 0.95
+fold=5 label=1_vs_3 | epoch 070 | train loss: 0.1270 bal_acc: 0.97 acc: 0.97 | val loss: 0.2960 bal_loss: 0.2960 bal_acc: 0.88 acc: 0.88
+fold=5 label=1_vs_3 | epoch 080 | train loss: 0.0546 bal_acc: 0.98 acc: 0.98 | val loss: 0.2510 bal_loss: 0.2510 bal_acc: 0.90 acc: 0.90
+fold=5 label=1_vs_3 | epoch 090 | train loss: 0.0970 bal_acc: 0.96 acc: 0.96 | val loss: 0.2163 bal_loss: 0.2163 bal_acc: 0.90 acc: 0.90
+fold=5 label=1_vs_3 | epoch 100 | train loss: 0.0922 bal_acc: 0.97 acc: 0.97 | val loss: 0.2405 bal_loss: 0.2405 bal_acc: 0.92 acc: 0.93
+fold=5 label=1_vs_3 | epoch 110 | train loss: 0.0596 bal_acc: 0.98 acc: 0.98 | val loss: 0.2159 bal_loss: 0.2159 bal_acc: 0.92 acc: 0.93
+fold=5 label=1_vs_3 | epoch 120 | train loss: 0.0889 bal_acc: 0.97 acc: 0.97 | val loss: 0.1725 bal_loss: 0.1725 bal_acc: 0.95 acc: 0.95
+fold=5 label=1_vs_3 | epoch 130 | train loss: 0.0306 bal_acc: 1.00 acc: 1.00 | val loss: 0.1827 bal_loss: 0.1827 bal_acc: 0.92 acc: 0.93
+fold=5 label=1_vs_3 | epoch 140 | train loss: 0.0256 bal_acc: 1.00 acc: 1.00 | val loss: 0.1853 bal_loss: 0.1853 bal_acc: 0.92 acc: 0.93
+fold=5 label=1_vs_3 | epoch 150 | train loss: 0.0191 bal_acc: 0.99 acc: 0.99 | val loss: 0.1505 bal_loss: 0.1505 bal_acc: 0.95 acc: 0.95
+fold=5 label=1_vs_3 | epoch 160 | train loss: 0.0292 bal_acc: 0.99 acc: 0.99 | val loss: 0.1260 bal_loss: 0.1260 bal_acc: 0.95 acc: 0.95
+fold=5 label=1_vs_3 | epoch 170 | train loss: 0.0301 bal_acc: 1.00 acc: 1.00 | val loss: 0.1960 bal_loss: 0.1960 bal_acc: 0.92 acc: 0.93
+fold=5 label=1_vs_3 | epoch 180 | train loss: 0.0128 bal_acc: 0.99 acc: 0.99 | val loss: 0.1706 bal_loss: 0.1706 bal_acc: 0.95 acc: 0.95
+fold=5 label=1_vs_3 | epoch 190 | train loss: 0.0378 bal_acc: 0.99 acc: 0.98 | val loss: 0.1404 bal_loss: 0.1404 bal_acc: 0.92 acc: 0.93
+fold=5 label=1_vs_3 | epoch 200 | train loss: 0.0193 bal_acc: 1.00 acc: 1.00 | val loss: 0.1646 bal_loss: 0.1646 bal_acc: 0.90 acc: 0.90
+
+5-fold cross-validation summary
+y_0: test bal_loss=0.461 +/- 0.064 | bal_acc=0.779 +/- 0.039 | test acc=0.820 +/- 0.036
+y_2: test bal_loss=0.568 +/- 0.101 | bal_acc=0.790 +/- 0.034 | test acc=0.850 +/- 0.038
+y_1_vs_3: test bal_loss=0.276 +/- 0.089 | bal_acc=0.890 +/- 0.020 | test acc=0.890 +/- 0.020
+Cross-validation CSV: ./checkpoints/sub2_yjkim_nogit/v3_sub2_shallownet_all_days/20260628_162916/cross_validation.csv
+
+Saved to: ./checkpoints/sub2_yjkim_nogit/v3_sub2_shallownet_all_days/20260628_162916

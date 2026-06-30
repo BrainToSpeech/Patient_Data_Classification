@@ -1,0 +1,70 @@
+{
+  "args": {
+    "input_file": "X_eeg.npy",
+    "epochs": 300,
+    "batch_size": 16,
+    "lr": 5e-05,
+    "weight_decay": 0.0001,
+    "patience": 50,
+    "seed": 42,
+    "val_test_ratio": 0.2,
+    "weighted_sampler": true,
+    "window_size": 256,
+    "window_stride": 128,
+    "run_window_diagnostic": false,
+    "balance_rest_to_target": false,
+    "run_5fold_cross_validation": true,
+    "selection_metric": "balanced_loss",
+    "config": "./configs/train_config_v3.json",
+    "model": "shallownet",
+    "patient": "sub2_yjkim",
+    "day": "all_days",
+    "data_dir": "./data/processed/sub2_yjkim",
+    "checkpoint_root": "./checkpoints/sub2_yjkim_nogit/v5_sub2_shallownet_lr_all_days"
+  },
+  "input_shape": [
+    1952,
+    64,
+    1000
+  ],
+  "days": [
+    "260527",
+    "260528",
+    "260601",
+    "260602",
+    "260623"
+  ],
+  "split_sizes": [
+    1171,
+    390,
+    391
+  ],
+  "split_day_counts": {
+    "train": [
+      150,
+      181,
+      300,
+      240,
+      300
+    ],
+    "val": [
+      50,
+      60,
+      100,
+      80,
+      100
+    ],
+    "test": [
+      50,
+      61,
+      100,
+      80,
+      100
+    ]
+  },
+  "tasks": [
+    "0_vs_rest",
+    "1_vs_3",
+    "2_vs_rest"
+  ]
+}

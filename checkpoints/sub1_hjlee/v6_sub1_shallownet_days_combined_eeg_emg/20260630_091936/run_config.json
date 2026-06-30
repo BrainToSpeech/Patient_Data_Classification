@@ -1,0 +1,83 @@
+{
+  "args": {
+    "input_file": "X_eeg.npy",
+    "epochs": 500,
+    "batch_size": 16,
+    "lr": 1e-05,
+    "weight_decay": 0.0001,
+    "patience": 100,
+    "seed": 42,
+    "val_test_ratio": 0.2,
+    "weighted_sampler": true,
+    "window_size": 256,
+    "window_stride": 128,
+    "run_window_diagnostic": false,
+    "balance_rest_to_target": false,
+    "run_5fold_cross_validation": true,
+    "selection_metric": "balanced_loss",
+    "print_layer_shapes": true,
+    "max_folds": 5,
+    "emg_feature_dim": 64,
+    "config": "./configs/train_config_v3.json",
+    "model": "shallownet",
+    "patient": "sub1_hjlee",
+    "day": "all_days",
+    "data_dir": "./data/processed/sub1_hjlee",
+    "emg_file": "X_emg.npy",
+    "checkpoint_root": "./checkpoints/sub1_hjlee_nogit/v6_sub1_shallownet_emg_all_days"
+  },
+  "input_shape": [
+    3000,
+    64,
+    1000
+  ],
+  "emg_input_shape": [
+    3000,
+    2,
+    1000
+  ],
+  "days": [
+    "260408",
+    "260422",
+    "260506",
+    "260520",
+    "260602",
+    "260617"
+  ],
+  "split_sizes": [
+    1800,
+    600,
+    600
+  ],
+  "split_day_counts": {
+    "train": [
+      300,
+      300,
+      300,
+      300,
+      300,
+      300
+    ],
+    "val": [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "test": [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100
+    ]
+  },
+  "tasks": [
+    "0_vs_rest",
+    "1_vs_3",
+    "2_vs_rest"
+  ]
+}
