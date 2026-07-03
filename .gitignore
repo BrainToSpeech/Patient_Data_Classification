@@ -12,7 +12,6 @@ changes.md
 
 # Training outputs
 __pycache__/
-*.pt
 checkpoints/sub1_hjlee_nogit
 checkpoints/sub2_yjkim_nogit
 
