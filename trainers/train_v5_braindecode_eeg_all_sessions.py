@@ -63,13 +63,14 @@ class EEGDataset(Dataset):
         return torch.from_numpy(self.X[idx]), int(self.y[idx])
 
 
-def build_model(model_name, n_channels, n_times):
+def build_model(model_name, n_channels, n_times, sfreq=None):
     if model_name == "eegnet":
         return BraindecodeEEGNet(
             n_chans=n_channels,
             n_outputs=2,
             n_times=n_times,
             final_conv_length="auto",
+            sfreq=sfreq
         )
     if model_name == "shallownet":
         return ShallowFBCSPNet(
@@ -77,12 +78,14 @@ def build_model(model_name, n_channels, n_times):
             n_outputs=2,
             n_times=n_times,
             final_conv_length="auto",
+            sfreq=sfreq
         )
     if model_name == "fbcnet":
         return FBCNet(
             n_chans=n_channels,
             n_outputs=2,
             n_times=n_times,
+            sfreq=sfreq
         )
     raise ValueError(f"Unknown model: {model_name}")
 
@@ -347,7 +350,7 @@ def train_task(
     )
 
     torch.manual_seed(args.seed)
-    model = build_model(args.model, n_channels, X.shape[-1]).to(device)
+    model = build_model(args.model, n_channels, X.shape[-1], args.sfreq).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.AdamW(
         model.parameters(),
@@ -445,7 +448,7 @@ def main():
     ########################
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=Path, default=CONFIG_DIR / "train_config_v3.json")
+    parser.add_argument("--config", type=Path, default=CONFIG_DIR / "train_config_v3-6.json")
     parser.add_argument("--model", choices=["eegnet", "shallownet", "fbcnet"], default="eegnet")
     add_patient_day_args(parser)
     cli_args = parser.parse_args()

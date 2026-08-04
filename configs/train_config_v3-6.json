@@ -1,5 +1,6 @@
 {
   "input_file": "X_eeg.npy",
+  "sfreq": 500,
   "epochs": 500,
   "batch_size": 16,
   "lr": 1e-5,

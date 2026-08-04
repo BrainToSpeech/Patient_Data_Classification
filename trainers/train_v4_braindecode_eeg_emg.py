@@ -61,13 +61,14 @@ class EEGDataset(Dataset):
         return (torch.from_numpy(self.X[idx]), torch.from_numpy(self.X_emg[idx])), int(self.y[idx])
 
 
-def build_eeg_model(model_name, n_channels, n_times):
+def build_eeg_model(model_name, n_channels, n_times, sfreq=None):
     if model_name == "eegnet":
         return BraindecodeEEGNet(
             n_chans=n_channels,
             n_outputs=2,
             n_times=n_times,
             final_conv_length="auto",
+            sfreq=sfreq
         )
     if model_name == "shallownet":
         return ShallowFBCSPNet(
@@ -75,20 +76,22 @@ def build_eeg_model(model_name, n_channels, n_times):
             n_outputs=2,
             n_times=n_times,
             final_conv_length="auto",
+            sfreq=sfreq
         )
     if model_name == "fbcnet":
         return FBCNet(
             n_chans=n_channels,
             n_outputs=2,
             n_times=n_times,
+            sfreq=sfreq
         )
     raise ValueError(f"Unknown model: {model_name}")
 
 
 class EEGEMGFusionModel(nn.Module):
-    def __init__(self, model_name, n_channels, n_times, emg_feature_dim):
+    def __init__(self, model_name, n_channels, n_times, emg_feature_dim, sfreq=None):
         super().__init__()
-        self.eeg_model = build_eeg_model(model_name, n_channels, n_times)
+        self.eeg_model = build_eeg_model(model_name, n_channels, n_times, sfreq=sfreq)
         attach_eeg_feature_hook(self.eeg_model)
         self.emg_mlp = nn.Sequential(
             nn.Flatten(),
@@ -112,8 +115,8 @@ class EEGEMGFusionModel(nn.Module):
         return self.classifier(torch.cat([eeg_feature, emg_feature], dim=1))
 
 
-def build_model(model_name, n_channels, n_times, emg_feature_dim):
-    return EEGEMGFusionModel(model_name, n_channels, n_times, emg_feature_dim)
+def build_model(model_name, n_channels, n_times, emg_feature_dim, sfreq=None):
+    return EEGEMGFusionModel(model_name, n_channels, n_times, emg_feature_dim, sfreq=sfreq)
 
 
 def _feature_hook_module(model):
@@ -364,7 +367,7 @@ def train_task(
     )
 
     torch.manual_seed(args.seed)
-    model = build_model(args.model, n_channels, X.shape[-1], args.emg_feature_dim).to(device)
+    model = build_model(args.model, n_channels, X.shape[-1], args.emg_feature_dim, sfreq=args.sfreq).to(device)
     sample_batch, _ = next(iter(train_loader))
     initialize_model_and_log_shapes(
         model,
@@ -472,7 +475,7 @@ def main():
     ########################
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--config", type=Path, default=CONFIG_DIR / "train_config_v3.json")
+    parser.add_argument("--config", type=Path, default=CONFIG_DIR / "train_config_v3-6.json")
     parser.add_argument("--model", choices=["eegnet", "shallownet", "fbcnet"], default="eegnet")
     parser.add_argument("--max-folds", type=int, default=None)
     parser.add_argument("--no-print-layer-shapes", action="store_true")
