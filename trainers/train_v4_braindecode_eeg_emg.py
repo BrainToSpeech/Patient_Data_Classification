@@ -10,6 +10,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from braindecode.models import EEGNet as BraindecodeEEGNet
+from braindecode.models import FBCNet
 from braindecode.models import ShallowFBCSPNet
 
 from sklearn.model_selection import StratifiedKFold, train_test_split
@@ -74,6 +75,12 @@ def build_eeg_model(model_name, n_channels, n_times):
             n_outputs=2,
             n_times=n_times,
             final_conv_length="auto",
+        )
+    if model_name == "fbcnet":
+        return FBCNet(
+            n_chans=n_channels,
+            n_outputs=2,
+            n_times=n_times,
         )
     raise ValueError(f"Unknown model: {model_name}")
 
@@ -466,7 +473,7 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", type=Path, default=CONFIG_DIR / "train_config_v3.json")
-    parser.add_argument("--model", choices=["eegnet", "shallownet"], default="eegnet")
+    parser.add_argument("--model", choices=["eegnet", "shallownet", "fbcnet"], default="eegnet")
     parser.add_argument("--max-folds", type=int, default=None)
     parser.add_argument("--no-print-layer-shapes", action="store_true")
     add_patient_day_args(parser)
