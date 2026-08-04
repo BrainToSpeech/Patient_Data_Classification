@@ -417,11 +417,11 @@ def main():
     if len(original_y) != n_trials:
         raise ValueError(f"X and y.npy trial counts do not match: {n_trials} != {len(original_y)}")
     task_labels = np.unique(original_y)
-    required_labels = {0, 1, 2, 3}
+    required_labels = {0, 1, 2, 3, 4}
     missing_labels = required_labels - set(task_labels.tolist())
     if missing_labels:
         raise ValueError(f"Required labels are missing from y.npy: {sorted(missing_labels)}")
-    ovr_labels = np.array([0, 2], dtype=np.int64)
+    ovr_labels = np.array([0, 2, 4], dtype=np.int64)
     print("type of label: ", task_labels)
 
     ############################################
@@ -459,7 +459,7 @@ def main():
         "args": config_args,
         "input_shape": list(X.shape),
         "split_sizes": split_sizes,
-        "tasks": ["0_vs_rest", "1_vs_3", "2_vs_rest"],
+        "tasks": ["0_vs_rest", "1_vs_3", "2_vs_rest", "4_vs_rest"],
     }
     (run_dir / "run_config.json").write_text(json.dumps(run_config, indent=2))
 
@@ -742,6 +742,8 @@ def main():
                     f"train={len(fold_train_idx)} val={len(fold_val_idx)} "
                     f"test={len(fold_test_idx)} ---",
                 )
+
+                # 각 fold별로, train set의 mean과 std를 계산해 normalization을 수행
                 fold_mean = cv_source[fold_train_idx].mean(axis=(0, 2))[:, None].astype(np.float32)
                 fold_std = cv_source[fold_train_idx].std(axis=(0, 2))[:, None].astype(np.float32)
                 fold_std = np.maximum(fold_std, 1e-6)
@@ -879,7 +881,7 @@ def main():
                 (fold_dir / "results.json").write_text(json.dumps(fold_results, indent=2))
                 del fold_X
 
-        cv_task_names = ["0", "2", "1_vs_3"]
+        cv_task_names = ["0", "2", "4", "1_vs_3"]
         cv_summary = {}
         for label_name in cv_task_names:
             label_results = [cv_results[str(fold)][label_name] for fold in range(1, n_folds + 1)]

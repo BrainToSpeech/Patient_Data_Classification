@@ -647,11 +647,11 @@ def main():
     if len(original_y) != n_trials:
         raise ValueError(f"X and y.npy trial counts do not match: {n_trials} != {len(original_y)}")
     task_labels = np.unique(original_y)
-    required_labels = {0, 1, 2, 3}
+    required_labels = {0, 1, 2, 3, 4}
     missing_labels = required_labels - set(task_labels.tolist())
     if missing_labels:
         raise ValueError(f"Required labels are missing from y.npy: {sorted(missing_labels)}")
-    ovr_labels = np.array([0, 2], dtype=np.int64)
+    ovr_labels = np.array([0, 2, 4], dtype=np.int64)
     print("type of label: ", task_labels)
 
     ############################################
@@ -693,7 +693,7 @@ def main():
             "val": np.bincount(day_ids[val_idx], minlength=len(day_names)).tolist(),
             "test": np.bincount(day_ids[test_idx], minlength=len(day_names)).tolist(),
         },
-        "tasks": ["0_vs_rest", "1_vs_3", "2_vs_rest"],
+        "tasks": ["0_vs_rest", "1_vs_3", "2_vs_rest", "4_vs_rest"],
     }
     (run_dir / "run_config.json").write_text(json.dumps(run_config, indent=2))
 
@@ -1136,7 +1136,7 @@ def main():
                 del fold_X
                 del fold_X_emg
 
-        cv_task_names = ["0", "2", "1_vs_3"]
+        cv_task_names = ["0", "2", "4", "1_vs_3"]
         run_folds = range(1, args.max_folds + 1)
         cv_summary = {}
         for label_name in cv_task_names:
