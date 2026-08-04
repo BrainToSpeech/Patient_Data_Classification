@@ -49,7 +49,7 @@ y.npy:     (trials,)
 1_vs_3
 ```
 
-`--model eegnet`을 주면 Braindecode EEGNet을 쓰고, `--model shallownet`을 주면 Braindecode ShallowFBCSPNet을 씁니다.
+`--model eegnet`은 Braindecode EEGNet, `--model shallownet`은 ShallowFBCSPNet, `--model fbcnet`은 FBCNet을 사용합니다.
 
 ## 버전별 학습 파일
 
@@ -70,7 +70,7 @@ y.npy:     (trials,)
 `v4`, `v6`의 EEG+EMG 방식은 raw signal을 처음부터 붙이는 방식이 아닙니다. EEG는 Braindecode 모델에서 feature를 뽑고, EMG는 간단한 MLP에서 feature를 뽑은 뒤, 두 feature vector를 concat해서 최종 binary classifier에 넣습니다.
 
 ```text
-X_eeg -> Braindecode EEGNet/ShallowNet -> EEG feature
+X_eeg -> Braindecode EEGNet/ShallowNet/FBCNet  -> EEG feature
 X_emg -> Flatten + MLP                 -> EMG feature
 
 concat(EEG feature, EMG feature)

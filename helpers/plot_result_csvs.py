@@ -10,9 +10,9 @@ import pandas as pd
 
 
 LABEL_ORDER = ["0", "1 vs. 3", "2"]
-MODELS = ["EEGNet", "ShallowNet"]
-COLORS = {"EEGNet": "#222222", "ShallowNet": "#2ca25f"}
-MARKERS = {"EEGNet": "o", "ShallowNet": "s"}
+MODELS = ["EEGNet", "ShallowNet", "FBCNet"]
+COLORS = {"EEGNet": "#222222", "ShallowNet": "#2ca25f", "FBCNet": "#984ea3"}
+MARKERS = {"EEGNet": "o", "ShallowNet": "s", "FBCNet": "^"}
 
 
 def parse_mean_std(value):
@@ -56,7 +56,12 @@ def plot_csv(csv_path):
                 .set_index("session")
                 .reindex(sessions)
             )
-            offset = -0.05 if model == "EEGNet" else 0.05
+            offsets = {
+                "EEGNet": -0.08,
+                "ShallowNet": 0.0,
+                "FBCNet": 0.08,
+            }
+            offset = offsets[model]
             xs = [x + offset for x in x_positions]
 
             ax.errorbar(

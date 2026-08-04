@@ -1,4 +1,4 @@
-"""Train and test one-vs-rest EEGNet models with one shared stratified split."""
+"""Train and test one-vs-rest Braindecode EEG models with one shared stratified split."""
 
 import argparse
 import csv

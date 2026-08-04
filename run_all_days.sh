@@ -2,7 +2,7 @@
 set -euo pipefail
 
 PATIENT="sub1_hjlee" # sub1_hjlee    sub2_yjkim
-MODEL="shallownet" # eegnet shallownet
+MODEL="shallownet" # eegnet shallownet fbcnet
 RUN_NAME="v4_sub1_shallownet_all_days"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
