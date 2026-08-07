@@ -2,8 +2,8 @@
 set -euo pipefail
 
 PATIENT="sub2_yjkim" # sub1_hjlee    sub2_yjkim
-MODEL="eegnet" # eegnet shallownet fbcnet
-RUN_NAME="v3_sub2_eegnet_days_separate_260804" 
+MODEL="fbcnet" # eegnet shallownet fbcnet
+RUN_NAME="v3_sub2_fbcnet_days_separate_260804" 
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DATA_ROOT="$ROOT_DIR/data/processed/$PATIENT"
