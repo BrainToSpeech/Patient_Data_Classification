@@ -142,7 +142,7 @@ def write_log(log_path, message=""):
 def display_path(path):
     path = Path(path)
     try:
-        # Keep logs readable by hiding the full /home/... prefix.
+        # Keep logs readable by hiding the machine-specific absolute prefix.
         return f"./{path.relative_to(Path.cwd())}"
     except ValueError:
         return str(path)

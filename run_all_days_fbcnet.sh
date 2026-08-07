@@ -8,6 +8,7 @@ RUN_NAME="v3_sub2_fbcnet_days_separate_260804"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DATA_ROOT="$ROOT_DIR/data/processed/$PATIENT"
 TRAIN_SCRIPT="$ROOT_DIR/trainers/train_v3_braindecode_eeg.py"
+PYTHON_BIN="${PYTHON_BIN:-python}"
 # TRAIN_SCRIPT="$ROOT_DIR/trainers/train_v4_braindecode_eeg_emg.py"
 
 if [[ ! -f "$TRAIN_SCRIPT" ]]; then
@@ -32,7 +33,7 @@ for day_dir in "$DATA_ROOT"/*; do
   echo "=================================================="
   echo "Running: patient=$PATIENT day=$day model=$MODEL run_name=$RUN_NAME"
 
-  python3 "$TRAIN_SCRIPT" \
+  "$PYTHON_BIN" "$TRAIN_SCRIPT" \
     --patient "$PATIENT" \
     --day "$day" \
     --model "$MODEL" \

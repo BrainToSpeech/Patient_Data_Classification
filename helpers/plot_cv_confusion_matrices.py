@@ -15,6 +15,8 @@ if str(PROJECT_ROOT) not in sys.path:
 
 from trainers.train_v5_braindecode_eeg_all_sessions import (  # noqa: E402
     EEGDataset,
+    OVR_CHECKPOINT_NAMES,
+    PAIR_CHECKPOINT_NAME,
     build_model,
     day_label_stratify_key,
     load_all_patient_days,
@@ -96,6 +98,13 @@ def load_model(checkpoint, args, n_channels, n_times, device):
     return model
 
 
+def resolve_checkpoint(model_dir, checkpoint_name):
+    checkpoint = model_dir / checkpoint_name
+    if checkpoint.exists():
+        return checkpoint
+    return model_dir / "best_model.pt"  # Backward compatibility for old runs.
+
+
 def collect_confusions(run_dir):
     log(f"\nRun: {run_dir}")
     args = load_run_args(run_dir)
@@ -138,7 +147,8 @@ def collect_confusions(run_dir):
                 False,
                 task_seed + 2,
             )
-            checkpoint = run_dir / "cross_validation" / f"fold_{fold}" / f"y_{label_name}" / "best_model.pt"
+            model_dir = run_dir / "cross_validation" / f"fold_{fold}" / f"y_{label_name}"
+            checkpoint = resolve_checkpoint(model_dir, OVR_CHECKPOINT_NAMES[label])
             model = load_model(checkpoint, args, n_channels, n_times, device)
             confusions[label_name].append(
                 predict_confusion(model, fold_X, y, task_test_idx, args.batch_size, device)
@@ -147,7 +157,8 @@ def collect_confusions(run_dir):
 
         pair_y = pair_labels(original_y, target_label=1, comparison_label=3)
         pair_test_idx = pair_indices(original_y, fold_test_idx, 1, 3)
-        checkpoint = run_dir / "cross_validation" / f"fold_{fold}" / "y_1_vs_3" / "best_model.pt"
+        model_dir = run_dir / "cross_validation" / f"fold_{fold}" / "y_1_vs_3"
+        checkpoint = resolve_checkpoint(model_dir, PAIR_CHECKPOINT_NAME)
         log(f"  fold {fold}/5 task 1_vs_3: predicting test split")
         model = load_model(checkpoint, args, n_channels, n_times, device)
         confusions["1_vs_3"].append(

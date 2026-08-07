@@ -90,18 +90,38 @@ concat(EEG feature, EMG feature)
 
 ## 실행 예시
 
-아래 예시는 repo root(`/home/bts_sh/jihoon/Demo_binary`)에서 실행한다고 가정합니다.
+아래 예시는 저장소의 `Demo_binary` 디렉터리에서 실행한다고 가정합니다. 코드와 설정의 경로는 모두 이 디렉터리를 기준으로 처리되므로 저장소를 어느 위치에 내려받아도 됩니다.
 
 ### 1. 환경 준비
 
+지원 Python 버전은 **3.11**입니다. 새 컴퓨터에서는 다음과 같이 전용 Conda 환경을 만듭니다.
+
 ```bash
-pip install -r requirements_podcast.txt
+conda create -n demo_binary python=3.11 pip -y
+conda activate demo_binary
+python --version
 ```
 
-이미 `podcast` conda 환경을 쓰고 있다면 해당 환경을 activate한 뒤 실행하면 됩니다.
+PyTorch와 torchaudio는 운영체제와 NVIDIA driver에 맞는 wheel이 필요하므로 일반 requirements와 분리해서 설치합니다. 다음 명령은 `nvidia-smi`가 보고하는 지원 CUDA 버전을 확인해 CUDA 11.8/12.4/12.6 중 맞는 wheel을 선택하며, NVIDIA GPU가 없으면 CPU용 wheel을 설치합니다. macOS에서는 기본 macOS wheel을 설치합니다.
 
 ```bash
-conda activate podcast
+python -m pip install --upgrade pip
+python helpers/install_pytorch.py
+python -m pip install -r requirements_podcast.txt
+```
+
+자동 감지가 맞지 않는 특수한 환경에서는 직접 지정할 수 있습니다.
+
+```bash
+python helpers/install_pytorch.py --compute cu124
+# 또는 CPU만 사용할 때
+python helpers/install_pytorch.py --compute cpu
+```
+
+설치가 끝나면 환경과 GPU 인식을 확인합니다.
+
+```bash
+python -c "import torch, braindecode; print('torch:', torch.__version__); print('CUDA available:', torch.cuda.is_available())"
 ```
 
 ### 2. XDF를 NPZ로 변환
@@ -109,19 +129,19 @@ conda activate podcast
 EEG 변환:
 
 ```bash
-python3 helpers/xdf_to_np.py
+python helpers/xdf_to_np.py
 ```
 
 EMG 변환:
 
 ```bash
-python3 helpers/xdf_to_np_emg.py
+python helpers/xdf_to_np_emg.py
 ```
 
 ### 3. NPZ를 trainer 입력으로 변환
 
 ```bash
-python3 helpers/npz_to_eegnet_inputs.py
+python helpers/npz_to_eegnet_inputs.py
 ```
 
 실행 후 day별 폴더에 아래 파일들이 생기는지 확인합니다.
@@ -139,7 +159,7 @@ EMG가 없는 subject/day는 `X_emg.npy`가 없을 수 있습니다. 그런 경�
 한 day만 실행하는 예시입니다.
 
 ```bash
-python3 trainers/train_v3_braindecode_eeg.py \
+python trainers/train_v3_braindecode_eeg.py \
   --patient sub1_hjlee \
   --day 260602 \
   --model eegnet \
@@ -149,7 +169,7 @@ python3 trainers/train_v3_braindecode_eeg.py \
 ShallowNet으로 실행하려면:
 
 ```bash
-python3 trainers/train_v3_braindecode_eeg.py \
+python trainers/train_v3_braindecode_eeg.py \
   --patient sub1_hjlee \
   --day 260602 \
   --model shallownet \
@@ -161,7 +181,7 @@ python3 trainers/train_v3_braindecode_eeg.py \
 `X_eeg.npy`, `X_emg.npy`, `y.npy`가 모두 있는 day에서 실행합니다.
 
 ```bash
-python3 trainers/train_v4_braindecode_eeg_emg.py \
+python trainers/train_v4_braindecode_eeg_emg.py \
   --patient sub1_hjlee \
   --day 260602 \
   --model eegnet \
@@ -171,7 +191,7 @@ python3 trainers/train_v4_braindecode_eeg_emg.py \
 EMG 파일명이 기본값 `X_emg.npy`가 아니라면 `--emg-file`로 지정합니다.
 
 ```bash
-python3 trainers/train_v4_braindecode_eeg_emg.py \
+python trainers/train_v4_braindecode_eeg_emg.py \
   --patient sub1_hjlee \
   --day 260602 \
   --model eegnet \
@@ -184,7 +204,7 @@ python3 trainers/train_v4_braindecode_eeg_emg.py \
 한 patient 아래의 모든 day를 합쳐서 학습합니다.
 
 ```bash
-python3 trainers/train_v5_braindecode_eeg_all_sessions.py \
+python trainers/train_v5_braindecode_eeg_all_sessions.py \
   --patient sub1_hjlee \
   --model eegnet \
   --run-name v5_sub1_all_days_eegnet
@@ -197,7 +217,7 @@ python3 trainers/train_v5_braindecode_eeg_all_sessions.py \
 한 patient 아래의 모든 day를 합치되, EEG와 EMG를 함께 사용합니다.
 
 ```bash
-python3 trainers/train_v6_braindecode_eeg_emg_all_sessions.py \
+python trainers/train_v6_braindecode_eeg_emg_all_sessions.py \
   --patient sub1_hjlee \
   --model eegnet \
   --run-name v6_sub1_all_days_eeg_emg
@@ -208,6 +228,7 @@ python3 trainers/train_v6_braindecode_eeg_emg_all_sessions.py \
 ### 8. 여러 day를 반복 실행
 
 `run_all_days.sh`는 patient 아래의 day 폴더를 순회하면서 day별 trainer를 반복 실행하는 shell script입니다. 스크립트 상단에서 `PATIENT`, `MODEL`, `RUN_NAME`, `TRAIN_SCRIPT`를 바꾼 뒤 실행합니다.
+이 shell script는 Linux, macOS, WSL 또는 Git Bash에서 실행합니다. Windows PowerShell에서는 위의 `python trainers/...` 명령으로 trainer를 직접 실행합니다.
 
 ```bash
 bash run_all_days.sh
@@ -220,7 +241,7 @@ bash run_all_days.sh
 5-fold cross-validation 결과를 요약하려면 run root를 넣습니다.
 
 ```bash
-python3 helpers/summarize_cv_bal_acc.py \
+python helpers/summarize_cv_bal_acc.py \
   checkpoints/sub1_hjlee_nogit/v6_sub1_all_days_eeg_emg \
   --output-csv checkpoints/sub1_hjlee_nogit/v6_summary.csv
 ```
@@ -228,7 +249,7 @@ python3 helpers/summarize_cv_bal_acc.py \
 요약 CSV를 그림으로 만들려면:
 
 ```bash
-python3 helpers/plot_result_csvs.py checkpoints/sub1_hjlee_nogit/v6_summary.csv
+python helpers/plot_result_csvs.py checkpoints/sub1_hjlee_nogit/v6_summary.csv
 ```
 
 ## 출력 파일
@@ -246,7 +267,10 @@ checkpoints/<patient>_nogit/<run_name>/<timestamp>/
 - `results.json`: single split 실행 결과입니다.
 - `cross_validation.csv`: fold별 결과를 표 형태로 저장합니다.
 - `cross_validation_results.json`: fold별 결과와 평균/표준편차 요약입니다.
-- `best_model.pt`: 각 task/fold의 best checkpoint입니다. 이 파일은 Git에서 제외됩니다.
+- `stop_vs_rest.pt`: label 0(stop)과 나머지를 구분하는 best checkpoint입니다.
+- `help_vs_rest.pt`: label 2(help)와 나머지를 구분하는 best checkpoint입니다.
+- `toilet_vs_rest.pt`: label 4(toilet)와 나머지를 구분하는 best checkpoint입니다.
+- `yes_no.pt`: label 1(yes)과 label 3(no)를 구분하는 best checkpoint입니다.
 
 ## 참고
 

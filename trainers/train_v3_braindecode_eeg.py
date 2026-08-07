@@ -19,9 +19,15 @@ from torch.utils.data import DataLoader, Dataset, WeightedRandomSampler
 BASE_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = BASE_DIR.parent
 CONFIG_DIR = PROJECT_ROOT / "configs"
+OVR_CHECKPOINT_NAMES = {
+    0: "stop_vs_rest.pt",
+    2: "help_vs_rest.pt",
+    4: "toilet_vs_rest.pt",
+}
+PAIR_CHECKPOINT_NAME = "yes_no.pt"
 
-# python3 trainers/train_v3_braindecode_eeg.py   --patient sub2_yjkim   --day 260623   --model eegnet
-# python3 trainers/train_v3_braindecode_eeg.py   --patient sub2_yjkim   --day 260623   --model shallownet
+# python trainers/train_v3_braindecode_eeg.py   --patient sub2_yjkim   --day 260623   --model eegnet
+# python trainers/train_v3_braindecode_eeg.py   --patient sub2_yjkim   --day 260623   --model shallownet
 
 def add_patient_day_args(parser):
     parser.add_argument("--patient", required=True)
@@ -481,7 +487,7 @@ def main():
         write_log(log_path, f"\n=== y_{label_name} ===")
         model_dir = run_dir / f"y_{label_name}"
         model_dir.mkdir()
-        checkpoint = model_dir / "best_model.pt"
+        checkpoint = model_dir / OVR_CHECKPOINT_NAMES[int(label)]
 
         y = one_vs_rest_labels(original_y, label)
         task_seed = args.seed + int(label) * 10
@@ -567,7 +573,7 @@ def main():
             n_channels,
             args,
             device,
-            pair_model_dir / "best_model.pt",
+            pair_model_dir / PAIR_CHECKPOINT_NAME,
             log_path,
             log_prefix="1_vs_3 | ",
         )
@@ -647,7 +653,7 @@ def main():
                     window_name = f"{window_start}_{window_end}"
                     window_dir = diagnostic_dir / f"y_{label_name}" / window_name
                     window_dir.mkdir(parents=True)
-                    checkpoint = window_dir / "best_model.pt"
+                    checkpoint = window_dir / OVR_CHECKPOINT_NAMES[int(label)]
                     X_window = X[:, :, window_start:window_end]
 
                     write_log(log_path, f"\nlabel={label_name} window=[{window_start}:{window_end}]")
@@ -804,7 +810,7 @@ def main():
                         n_channels,
                         args,
                         device,
-                        label_dir / "best_model.pt",
+                        label_dir / OVR_CHECKPOINT_NAMES[int(label)],
                         log_path,
                         log_prefix=f"fold={fold} label={label_name} | ",
                     )
@@ -857,7 +863,7 @@ def main():
                     n_channels,
                     args,
                     device,
-                    pair_dir / "best_model.pt",
+                    pair_dir / PAIR_CHECKPOINT_NAME,
                     log_path,
                     log_prefix=f"fold={fold} label=1_vs_3 | ",
                 )
